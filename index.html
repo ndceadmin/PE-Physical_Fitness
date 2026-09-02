@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>體育科體適能數據系統 - 獻主會聖母院書院 (NDC)</title>
+  <title>體育科體適能數據系統 - 新會商會中學 (NDC)</title>
   
   <!-- Bootstrap 5, Icons & FontAwesome 6 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,7 +12,7 @@
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 
   <!-- Chart.js -->
@@ -22,27 +22,23 @@
     :root {
       --primary-color: #0284c7;
       --primary-hover: #0369a1;
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #334155;
+      --bg-color: #090d16;
+      --card-bg: #0f172a;
+      --border-color: #1e293b;
     }
 
     body {
-      background-color: #090d16;
+      background-color: var(--bg-color);
       font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
       color: #f1f5f9;
       min-height: 100vh;
     }
 
-    /* 頂部導航 */
     .main-navbar {
       background: #0f172a;
       border-bottom: 1px solid #1e293b;
     }
 
-    /* 卡片通用設計 */
     .app-card {
       background: #0f172a;
       border: 1px solid #1e293b;
@@ -50,14 +46,12 @@
       box-shadow: 0 4px 25px -5px rgba(0, 0, 0, 0.5);
     }
 
-    /* 測試工具列 */
     .demo-toolbar {
       background: #1e1b4b;
       border: 1px dashed #6366f1;
       border-radius: 14px;
     }
 
-    /* 貼上區域 Dropzone */
     .paste-dropzone {
       border: 2px dashed #38bdf8;
       background-color: #082f49;
@@ -71,7 +65,6 @@
       background-color: #0c4a6e;
     }
 
-    /* 數據表格 */
     .grid-container {
       max-height: 440px;
       overflow: auto;
@@ -103,7 +96,6 @@
       background: #090d16;
     }
 
-    /* 體能測驗卡片 */
     .fitness-record-card {
       border: 1px solid #334155;
       border-left: 4px solid #38bdf8;
@@ -119,7 +111,6 @@
       margin-bottom: 3px;
     }
 
-    /* 導航膠囊切換 (Pills) */
     .nav-pills .nav-link {
       border-radius: 10px;
       color: #94a3b8;
@@ -132,15 +123,6 @@
       box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
     }
 
-    /* 報告內卡片樣式 */
-    .report-badge-box {
-      background: #090d16;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    /* 報告列印排版最佳化 */
     @media print {
       body {
         background: #ffffff !important;
@@ -174,7 +156,7 @@
         background: #ffffff !important;
         color: #000000 !important;
       }
-      .app-card, .report-badge-box, .bg-slate-900, .bg-slate-950 {
+      .app-card {
         background: #ffffff !important;
         border-color: #cbd5e1 !important;
         color: #000000 !important;
@@ -188,19 +170,15 @@
 </head>
 <body>
 
-  <!-- ========================================================
-       狀態 0: 初始化載入遮罩
-       ======================================================== -->
+  <!-- 狀態 0: 初始化載入遮罩 -->
   <div id="view-loading" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="text-center">
       <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;"></div>
-      <p class="text-slate-400 mt-3 small fw-bold">載入香港中學生體適能常模與系統中...</p>
+      <p class="text-slate-400 mt-3 small fw-bold">正在載入精準分齡常模數據庫中...</p>
     </div>
   </div>
 
-  <!-- ========================================================
-       狀態 1: 登入頁面
-       ======================================================== -->
+  <!-- 狀態 1: 登入頁面 -->
   <div id="view-login" class="d-none justify-content-center align-items-center p-3" style="min-height: 100vh;">
     <div class="app-card p-4 p-md-5 text-center" style="max-width: 480px; width: 100%;">
       <div class="mb-4">
@@ -209,15 +187,15 @@
         </div>
       </div>
       <h3 class="fw-bold mb-1 text-white">體育科體適能數據系統</h3>
-      <p class="text-slate-400 small mb-4">新會商會中學 (NDC) ｜ 常模分析與改善處方平台</p>
+      <p class="text-slate-400 small mb-4">新會商會中學 (NDC) ｜ 實歲精準分齡常模分析平台</p>
 
       <div class="bg-slate-900 border border-slate-700 rounded-3 p-3 text-start small mb-4">
         <div class="fw-bold text-info mb-1">
           <i class="bi bi-info-circle-fill me-1"></i> 請使用學校帳號登入：
         </div>
         <ul class="mb-0 ps-3 text-slate-300" style="line-height: 1.6;">
-          <li><b>老師帳號</b>：檢索、批次匯入與檢視學生常模雷達圖報告</li>
-          <li><b>學生帳號</b>：即時檢視 11 項常模星形圖與個人化運動處方</li>
+          <li><b>老師帳號</b>：檢索、批次匯入與檢視學生精準分齡常模報告</li>
+          <li><b>學生帳號</b>：即時檢視個人 11 項常模星形圖與運動改善處方</li>
         </ul>
       </div>
 
@@ -229,9 +207,7 @@
     </div>
   </div>
 
-  <!-- ========================================================
-       狀態 2 & 3: 系統主內容區
-       ======================================================== -->
+  <!-- 狀態 2 & 3: 系統主內容區 -->
   <div id="app-wrapper" class="d-none min-vh-100 flex-column">
 
     <!-- 頂部導航欄 -->
@@ -243,7 +219,7 @@
           </div>
           <div>
             <span class="fw-bold fs-6 d-block text-white leading-none">體育科數據管理系統</span>
-            <small class="text-slate-400" style="font-size: 11px;">Notre Dame College ｜ 香港常模常態分析</small>
+            <small class="text-slate-400" style="font-size: 11px;">Notre Dame College ｜ 依據 DOB 與測試日之實歲精確常模系統</small>
           </div>
         </div>
 
@@ -260,24 +236,22 @@
 
     <main class="container-fluid py-4 flex-grow-1" style="max-width: 1300px;">
 
-      <!-- ====================================================
-           👨‍🏫 教師管理後台
-           ==================================================== -->
+      <!-- 👨‍🏫 教師管理後台 -->
       <div id="view-teacher" class="d-none">
 
-        <!-- 🛠️ 測試與 DEMO 管理工具列 -->
+        <!-- 測試與 DEMO 管理工具列 -->
         <div class="demo-toolbar p-3 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3 shadow-sm">
           <div class="d-flex align-items-center gap-2">
             <span class="badge bg-indigo-500 text-white px-2.5 py-1.5 fw-bold" style="background-color: #6366f1;">
-              <i class="bi bi-tools me-1"></i> 系統檢測專區
+              <i class="bi bi-calendar-check me-1"></i> 實歲精準分齡檢測
             </span>
             <span class="small text-slate-300">
-              DEMO 測試資料具有獨立標籤，<b>完全獨立運作，絕不影響真實學生記錄</b>。
+              DEMO 包含「陳大文 (DOB: 15/10/2012)」，於 2024-10 (12歲) 及 2025-11 (13歲) 測驗，<b>系統自動依測驗日實歲調用專屬常模</b>。
             </span>
           </div>
           <div class="d-flex gap-2">
             <button class="btn btn-warning btn-sm fw-bold shadow-sm" id="btnLoadDemo">
-              <i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試樣本
+              <i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 精準年齡測試樣本
             </button>
             <button class="btn btn-outline-danger btn-sm fw-bold" id="btnClearDemo">
               <i class="bi bi-trash3-fill me-1"></i> 清除 DEMO 測試資料
@@ -285,7 +259,7 @@
           </div>
         </div>
 
-        <!-- 頂部功能分頁膠囊 -->
+        <!-- 功能分頁膠囊 -->
         <ul class="nav nav-pills gap-2 mb-4 p-2 rounded-4 border border-slate-800" style="background: #0f172a;">
           <li class="nav-item flex-fill">
             <button class="nav-link active w-100 fs-6 fw-bold text-center" data-bs-toggle="pill" data-bs-target="#view-search-edit">
@@ -294,7 +268,7 @@
           </li>
           <li class="nav-item flex-fill">
             <button class="nav-link w-100 fs-6 fw-bold text-center" data-bs-toggle="pill" data-bs-target="#view-batch-import">
-              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Excel 試算表批次匯入
+              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Excel 試算表批次匯入 (8欄學生 / 19欄體測)
             </button>
           </li>
         </ul>
@@ -305,7 +279,7 @@
             <div class="app-card p-4 mb-4">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="fw-bold text-info mb-0"><i class="bi bi-funnel-fill me-1"></i> 快速檢索學生</h6>
-                <small class="text-slate-400">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 1A 班 / 99 號</b> 進行常模星形圖檢視</small>
+                <small class="text-slate-400">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 2A 班 / 99 號</b> 進行實歲常模對照</small>
               </div>
               <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-3">
@@ -314,7 +288,7 @@
                 </div>
                 <div class="col-12 col-md-3">
                   <label class="form-label small fw-bold text-slate-400 mb-1">班別</label>
-                  <input type="text" id="searchClass" class="form-control bg-dark text-white border-secondary" placeholder="例: 1A" style="text-transform: uppercase;">
+                  <input type="text" id="searchClass" class="form-control bg-dark text-white border-secondary" placeholder="例: 2A" style="text-transform: uppercase;">
                 </div>
                 <div class="col-12 col-md-3">
                   <label class="form-label small fw-bold text-slate-400 mb-1">學號</label>
@@ -328,9 +302,8 @@
               </div>
             </div>
 
-            <!-- 學生檔案與體適能卡片 -->
+            <!-- 學生檔案卡片 -->
             <div id="teacherStudentProfileArea" style="display: none;">
-              <!-- 學生頭部卡片 -->
               <div class="app-card p-4 mb-4 border-start border-4" style="border-left-color: #0284c7 !important;">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                   <div>
@@ -344,14 +317,14 @@
                       學籍編號：<span id="dispStudentID" class="badge bg-secondary me-2">--</span>
                       班級資訊：<span id="dispClassInfo" class="fw-bold text-white me-2">--</span>
                       性別：<span id="dispSex" class="me-2 badge bg-dark border border-slate-700">--</span>
+                      出生日期 (DOB)：<span id="dispDOB" class="text-info font-monospace me-2">--</span>
                       電郵：<span id="dispEmail" class="text-slate-300">--</span>
                     </div>
                   </div>
 
-                  <!-- 🌟 檢視學生個人常模報告按鍵 -->
                   <div>
                     <button class="btn btn-info btn-sm fw-bold px-3 py-2 shadow-sm d-flex align-items-center gap-2 rounded-3 text-dark" id="btnOpenStudentReportModal" style="background-color: #38bdf8; border: none;">
-                      <i class="fa-solid fa-chart-pie"></i> 📄 檢視學生個人報告版面 (11項常模星形圖)
+                      <i class="fa-solid fa-chart-pie"></i> 📄 檢視學生個人分齡常模報告 (11項星形圖)
                     </button>
                   </div>
                 </div>
@@ -385,17 +358,17 @@
           <div class="tab-pane fade" id="view-batch-import">
             <div class="app-card p-4">
               <ul class="nav nav-pills gap-2 mb-4">
-                <li class="nav-item"><button class="nav-link active fw-bold" data-bs-toggle="pill" data-bs-target="#imp-students">1. 學生名單 (7欄)</button></li>
-                <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-fitness">2. 體適能數據 (18欄/可空ID)</button></li>
+                <li class="nav-item"><button class="nav-link active fw-bold" data-bs-toggle="pill" data-bs-target="#imp-students">1. 學生名單 (8欄含DOB)</button></li>
+                <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-fitness">2. 體適能數據 (19欄含測試日)</button></li>
                 <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-ach">3. 體育成就 (6欄/可空ID)</button></li>
               </ul>
 
               <div class="tab-content">
-                <!-- 1. 學生名單 -->
+                <!-- 1. 學生名單 (8 欄) -->
                 <div class="tab-pane fade show active" id="imp-students">
                   <div class="paste-dropzone mb-3" id="dropStudents">
-                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-clipboard-plus me-1"></i> 點擊此處按 Ctrl+V 貼上學生名單</h6>
-                    <small class="text-slate-300">欄位格式：1.學生編號 | 2.學年 | 3.班別 | 4.學號 | 5.姓名 | 6.性別 | 7.學生電郵</small>
+                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-clipboard-plus me-1"></i> 點擊此處按 Ctrl+V 貼上學生名單 (8 欄)</h6>
+                    <small class="text-slate-300">欄位格式：1.學生編號 | 2.學年 | 3.班別 | 4.學號 | 5.姓名 | 6.性別 | <b>7.出生日期(dd/mm/yy)</b> | 8.學生電郵</small>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <span id="countStudents" class="badge bg-secondary px-3 py-2">0 筆資料</span>
@@ -403,17 +376,17 @@
                   </div>
                   <div class="grid-container">
                     <table class="table table-bordered excel-table" id="tblStudents">
-                      <thead><tr><th>#</th><th>學生編號</th><th>學年</th><th>班別</th><th>學號</th><th>姓名</th><th>性別</th><th>電郵</th></tr></thead>
-                      <tbody><tr><td colspan="8" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
+                      <thead><tr><th>#</th><th>學生編號</th><th>學年</th><th>班別</th><th>學號</th><th>姓名</th><th>性別</th><th>出生日期(DOB)</th><th>電郵</th></tr></thead>
+                      <tbody><tr><td colspan="9" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
                     </table>
                   </div>
                 </div>
 
-                <!-- 2. 體適能數據 -->
+                <!-- 2. 體適能數據 (19 欄) -->
                 <div class="tab-pane fade" id="imp-fitness">
                   <div class="paste-dropzone mb-3" id="dropFitness">
-                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-lightning-charge-fill me-1"></i> 點擊此處按 Ctrl+V 貼上 18 欄體適能數據</h6>
-                    <small class="text-slate-300">第 1 欄 ID 若留空，系統將自動生成</small>
+                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-lightning-charge-fill me-1"></i> 點擊此處按 Ctrl+V 貼上 19 欄體適能數據 (含測試日)</h6>
+                    <small class="text-slate-300">欄位格式：1.ID(選填) | 2.學年 | 3.學期 | 4.學生編號 | <b>5.測試日期(dd/mm/yy)</b> | 6.身高 | 7.體重 | 8.9分鐘跑 | 9.左握力 | 10.右握力 | 11.仰臥起坐 | 12.坐地前伸 | 13.折返跑 | 14.單腳站立 | 15.拋接球 | 16.跳遠 | 17.跳高 | 18.30米跑 | 19.抓直尺</small>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <span id="countFitness" class="badge bg-secondary px-3 py-2">0 筆資料</span>
@@ -423,17 +396,17 @@
                     <table class="table table-bordered excel-table" id="tblFitness">
                       <thead>
                         <tr>
-                          <th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學期</th><th>4.學生編號</th><th>5.身高</th><th>6.體重</th>
-                          <th>7.9分鐘跑</th><th>8.左握力</th><th>9.右握力</th><th>10.仰臥起坐</th><th>11.坐地前伸</th><th>12.折返跑</th>
-                          <th>13.單腳站立</th><th>14.拋接球</th><th>15.跳遠</th><th>16.跳高</th><th>17.30米跑</th><th>18.抓直尺</th>
+                          <th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學期</th><th>4.學生編號</th><th>5.測試日期</th><th>6.身高</th><th>7.體重</th>
+                          <th>8.9分鐘跑</th><th>9.左握力</th><th>10.右握力</th><th>11.仰臥起坐</th><th>12.坐地前伸</th><th>13.折返跑</th>
+                          <th>14.單腳站立</th><th>15.拋接球</th><th>16.跳遠</th><th>17.跳高</th><th>18.30米跑</th><th>19.抓直尺</th>
                         </tr>
                       </thead>
-                      <tbody><tr><td colspan="19" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
+                      <tbody><tr><td colspan="20" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
                     </table>
                   </div>
                 </div>
 
-                <!-- 3. 體育成就 -->
+                <!-- 3. 體育成就 (6 欄) -->
                 <div class="tab-pane fade" id="imp-ach">
                   <div class="paste-dropzone mb-3" id="dropAch">
                     <h6 class="text-info fw-bold mb-1"><i class="bi bi-trophy-fill me-1"></i> 點擊此處按 Ctrl+V 貼上體育成就 (6 欄)</h6>
@@ -456,27 +429,21 @@
         </div>
       </div>
 
-      <!-- ====================================================
-           🎓 學生登入後的個人報告頁面
-           ==================================================== -->
+      <!-- 🎓 學生登入後的個人報告頁面 -->
       <div id="view-student" class="d-none">
-        <div id="studentPersonalReportContainer">
-          <!-- 動態載入完整 11 項常模報告 -->
-        </div>
+        <div id="studentPersonalReportContainer"></div>
       </div>
 
     </main>
   </div>
 
-  <!-- ========================================================
-       📑 教師檢視學生常模報告 彈出視窗 (Modal)
-       ======================================================== -->
+  <!-- 📑 學生常模報告 彈出視窗 (Modal) -->
   <div class="modal fade" id="modalStudentReport" tabindex="-1" aria-labelledby="modalReportTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content border-0 rounded-4 shadow-lg text-white" style="background-color: #0b1120;">
         <div class="modal-header border-bottom border-slate-800 px-4 py-3" style="background-color: #0f172a;">
           <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2" id="modalReportTitle">
-            <i class="fa-solid fa-person-running text-info"></i> 學生 11 項能力常模檔案與改善處方報告書
+            <i class="fa-solid fa-person-running text-info"></i> 學生 11 項能力實歲常模檔案與改善處方報告書
           </h5>
           <div class="d-flex gap-2">
             <button class="btn btn-outline-light btn-sm fw-bold px-3 border-slate-700" onclick="window.print()">
@@ -485,16 +452,13 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
         </div>
-        <div class="modal-body p-4" id="modalReportContent" style="background-color: #090d16;">
-          <!-- 動態渲染常模報告 -->
-        </div>
+        <div class="modal-body p-4" id="modalReportContent" style="background-color: #090d16;"></div>
         <div class="modal-footer border-top border-slate-800 px-4 py-2" style="background-color: #0f172a;">
           <button type="button" class="btn btn-secondary btn-sm fw-bold px-4 rounded-3" data-bs-dismiss="modal">關閉視窗</button>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- Firebase Modular SDK & Core Logic -->
   <script type="module">
@@ -506,7 +470,6 @@
       getFirestore, doc, collection, query, where, getDocs, updateDoc, deleteDoc, writeBatch, serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // ⚙️ Firebase 設定
     const firebaseConfig = {
       apiKey: "AIzaSyDHibeqjwzdCwUUS49SdlfMs9bKCPY2M7s",
       authDomain: "pe-physical-fitness.firebaseapp.com",
@@ -517,7 +480,6 @@
       measurementId: "G-VELK2STM03"
     };
 
-    // 🔒 3 位指定老師白名單
     const TEACHER_EMAILS = [
       "ndcchansy@ndc.edu.hk",
       "ndcfungky@ndc.edu.hk",
@@ -530,39 +492,114 @@
     const provider = new GoogleAuthProvider();
 
     // ========================================================
-    // 🧠 香港中學生 11 項能力常模標準 (HK Norm Engine)
+    // 🧠 香港中學生 11 項能力【11 歲 ~ 18 歲男女分齡常模數據庫】
     // 依據香港教育局 EDB / CUHK / HKBU 中學生常模平均值與標準差
     // ========================================================
-    const HK_NORMS = {
+    const HK_NORMS_BY_AGE = {
       M: {
-        cardio: { mean: 1450, sd: 220, unit: 'm', name: '心肺耐力 (9分鐘跑)' },
-        strength: { mean: 30.0, sd: 6.5, unit: 'kg', name: '最大肌力 (手握力)' },
-        endurance: { mean: 36, sd: 8.5, unit: '次', name: '肌耐力 (仰臥起坐)' },
-        flexibility: { mean: 26.0, sd: 8.0, unit: 'cm', name: '柔軟度 (坐地前伸)' },
-        agility: { mean: 10.5, sd: 0.85, unit: '秒', name: '敏捷性 (4x10m折返)', lowerBetter: true },
-        balance: { mean: 32.0, sd: 12.0, unit: '秒', name: '平衡力 (閉目單腳站)' },
-        coordination: { mean: 22, sd: 5.5, unit: '次', name: '協調性 (30秒拋接球)' },
-        power: { mean: 195, sd: 25.0, unit: 'cm', name: '爆發力 (立定跳遠)' },
-        speed: { mean: 4.70, sd: 0.45, unit: '秒', name: '速度 (30米衝刺)', lowerBetter: true },
-        reaction: { mean: 13.0, sd: 3.2, unit: 'cm', name: '反應時間 (抓直尺)', lowerBetter: true },
-        bodyComp: { mean: 20.5, unit: '', name: '身體組成 (BMI)' }
+        11: {
+          cardio: { mean: 1240, sd: 200 }, strength: { mean: 19.0, sd: 4.5 }, endurance: { mean: 27, sd: 7.0 },
+          flexibility: { mean: 22.0, sd: 7.5 }, agility: { mean: 11.9, sd: 0.90, lowerBetter: true },
+          balance: { mean: 22.0, sd: 10.0 }, coordination: { mean: 16, sd: 5.0 }, power: { mean: 155, sd: 22.0 },
+          speed: { mean: 5.50, sd: 0.50, lowerBetter: true }, reaction: { mean: 15.5, sd: 3.5, lowerBetter: true },
+          bodyComp: { mean: 18.8 }
+        },
+        12: { // 12 歲
+          cardio: { mean: 1320, sd: 210 }, strength: { mean: 22.5, sd: 5.0 }, endurance: { mean: 30, sd: 8.0 },
+          flexibility: { mean: 23.5, sd: 7.5 }, agility: { mean: 11.4, sd: 0.85, lowerBetter: true },
+          balance: { mean: 26.0, sd: 11.0 }, coordination: { mean: 18, sd: 5.0 }, power: { mean: 168, sd: 24.0 },
+          speed: { mean: 5.25, sd: 0.45, lowerBetter: true }, reaction: { mean: 14.5, sd: 3.2, lowerBetter: true },
+          bodyComp: { mean: 19.5 }
+        },
+        13: { // 13 歲
+          cardio: { mean: 1400, sd: 220 }, strength: { mean: 27.0, sd: 5.8 }, endurance: { mean: 34, sd: 8.0 },
+          flexibility: { mean: 24.5, sd: 8.0 }, agility: { mean: 10.9, sd: 0.80, lowerBetter: true },
+          balance: { mean: 30.0, sd: 12.0 }, coordination: { mean: 20, sd: 5.0 }, power: { mean: 182, sd: 25.0 },
+          speed: { mean: 4.95, sd: 0.45, lowerBetter: true }, reaction: { mean: 13.8, sd: 3.0, lowerBetter: true },
+          bodyComp: { mean: 20.2 }
+        },
+        14: { // 14 歲
+          cardio: { mean: 1480, sd: 220 }, strength: { mean: 32.5, sd: 6.5 }, endurance: { mean: 37, sd: 8.5 },
+          flexibility: { mean: 25.5, sd: 8.0 }, agility: { mean: 10.5, sd: 0.75, lowerBetter: true },
+          balance: { mean: 34.0, sd: 12.0 }, coordination: { mean: 22, sd: 5.5 }, power: { mean: 198, sd: 25.0 },
+          speed: { mean: 4.70, sd: 0.40, lowerBetter: true }, reaction: { mean: 13.0, sd: 2.8, lowerBetter: true },
+          bodyComp: { mean: 20.8 }
+        },
+        15: { // 15 歲
+          cardio: { mean: 1550, sd: 230 }, strength: { mean: 37.5, sd: 7.0 }, endurance: { mean: 40, sd: 9.0 },
+          flexibility: { mean: 26.5, sd: 8.5 }, agility: { mean: 10.1, sd: 0.70, lowerBetter: true },
+          balance: { mean: 37.0, sd: 13.0 }, coordination: { mean: 24, sd: 5.5 }, power: { mean: 210, sd: 25.0 },
+          speed: { mean: 4.50, sd: 0.38, lowerBetter: true }, reaction: { mean: 12.2, sd: 2.6, lowerBetter: true },
+          bodyComp: { mean: 21.2 }
+        },
+        16: { // 16 歲
+          cardio: { mean: 1600, sd: 230 }, strength: { mean: 41.5, sd: 7.5 }, endurance: { mean: 42, sd: 9.0 },
+          flexibility: { mean: 27.5, sd: 8.5 }, agility: { mean: 9.8, sd: 0.65, lowerBetter: true },
+          balance: { mean: 40.0, sd: 14.0 }, coordination: { mean: 25, sd: 6.0 }, power: { mean: 218, sd: 25.0 },
+          speed: { mean: 4.35, sd: 0.35, lowerBetter: true }, reaction: { mean: 11.5, sd: 2.5, lowerBetter: true },
+          bodyComp: { mean: 21.6 }
+        },
+        17: { // 17-18 歲
+          cardio: { mean: 1640, sd: 240 }, strength: { mean: 44.0, sd: 8.0 }, endurance: { mean: 44, sd: 9.5 },
+          flexibility: { mean: 28.5, sd: 9.0 }, agility: { mean: 9.6, sd: 0.65, lowerBetter: true },
+          balance: { mean: 42.0, sd: 15.0 }, coordination: { mean: 26, sd: 6.0 }, power: { mean: 224, sd: 26.0 },
+          speed: { mean: 4.25, sd: 0.35, lowerBetter: true }, reaction: { mean: 11.0, sd: 2.4, lowerBetter: true },
+          bodyComp: { mean: 21.9 }
+        }
       },
       F: {
-        cardio: { mean: 1250, sd: 190, unit: 'm', name: '心肺耐力 (9分鐘跑)' },
-        strength: { mean: 22.0, sd: 5.0, unit: 'kg', name: '最大肌力 (手握力)' },
-        endurance: { mean: 28, sd: 7.5, unit: '次', name: '肌耐力 (仰臥起坐)' },
-        flexibility: { mean: 29.0, sd: 8.0, unit: 'cm', name: '柔軟度 (坐地前伸)' },
-        agility: { mean: 11.5, sd: 0.90, unit: '秒', name: '敏捷性 (4x10m折返)', lowerBetter: true },
-        balance: { mean: 35.0, sd: 12.0, unit: '秒', name: '平衡力 (閉目單腳站)' },
-        coordination: { mean: 20, sd: 5.0, unit: '次', name: '協調性 (30秒拋接球)' },
-        power: { mean: 155, sd: 20.0, unit: 'cm', name: '爆發力 (立定跳遠)' },
-        speed: { mean: 5.20, sd: 0.50, unit: '秒', name: '速度 (30米衝刺)', lowerBetter: true },
-        reaction: { mean: 14.0, sd: 3.2, unit: 'cm', name: '反應時間 (抓直尺)', lowerBetter: true },
-        bodyComp: { mean: 20.0, unit: '', name: '身體組成 (BMI)' }
+        11: {
+          cardio: { mean: 1140, sd: 180 }, strength: { mean: 16.5, sd: 4.0 }, endurance: { mean: 22, sd: 6.5 },
+          flexibility: { mean: 25.0, sd: 7.5 }, agility: { mean: 12.5, sd: 0.95, lowerBetter: true },
+          balance: { mean: 25.0, sd: 10.0 }, coordination: { mean: 15, sd: 4.5 }, power: { mean: 132, sd: 18.0 },
+          speed: { mean: 5.80, sd: 0.55, lowerBetter: true }, reaction: { mean: 16.2, sd: 3.5, lowerBetter: true },
+          bodyComp: { mean: 18.5 }
+        },
+        12: { // 12 歲
+          cardio: { mean: 1200, sd: 185 }, strength: { mean: 19.0, sd: 4.5 }, endurance: { mean: 25, sd: 7.0 },
+          flexibility: { mean: 27.0, sd: 7.5 }, agility: { mean: 12.0, sd: 0.90, lowerBetter: true },
+          balance: { mean: 29.0, sd: 11.0 }, coordination: { mean: 17, sd: 5.0 }, power: { mean: 142, sd: 19.0 },
+          speed: { mean: 5.55, sd: 0.50, lowerBetter: true }, reaction: { mean: 15.2, sd: 3.2, lowerBetter: true },
+          bodyComp: { mean: 19.2 }
+        },
+        13: { // 13 歲
+          cardio: { mean: 1240, sd: 190 }, strength: { mean: 21.5, sd: 4.8 }, endurance: { mean: 27, sd: 7.5 },
+          flexibility: { mean: 28.5, sd: 8.0 }, agility: { mean: 11.7, sd: 0.85, lowerBetter: true },
+          balance: { mean: 33.0, sd: 12.0 }, coordination: { mean: 19, sd: 5.0 }, power: { mean: 150, sd: 20.0 },
+          speed: { mean: 5.35, sd: 0.48, lowerBetter: true }, reaction: { mean: 14.4, sd: 3.0, lowerBetter: true },
+          bodyComp: { mean: 19.8 }
+        },
+        14: { // 14 歲
+          cardio: { mean: 1270, sd: 190 }, strength: { mean: 23.5, sd: 5.0 }, endurance: { mean: 29, sd: 7.5 },
+          flexibility: { mean: 29.5, sd: 8.0 }, agility: { mean: 11.4, sd: 0.80, lowerBetter: true },
+          balance: { mean: 36.0, sd: 12.0 }, coordination: { mean: 20, sd: 5.0 }, power: { mean: 156, sd: 20.0 },
+          speed: { mean: 5.20, sd: 0.45, lowerBetter: true }, reaction: { mean: 13.8, sd: 2.8, lowerBetter: true },
+          bodyComp: { mean: 20.4 }
+        },
+        15: { // 15 歲
+          cardio: { mean: 1290, sd: 195 }, strength: { mean: 24.8, sd: 5.2 }, endurance: { mean: 30, sd: 8.0 },
+          flexibility: { mean: 30.5, sd: 8.5 }, agility: { mean: 11.2, sd: 0.75, lowerBetter: true },
+          balance: { mean: 38.0, sd: 13.0 }, coordination: { mean: 21, sd: 5.5 }, power: { mean: 160, sd: 20.0 },
+          speed: { mean: 5.10, sd: 0.42, lowerBetter: true }, reaction: { mean: 13.4, sd: 2.6, lowerBetter: true },
+          bodyComp: { mean: 20.9 }
+        },
+        16: { // 16 歲
+          cardio: { mean: 1310, sd: 200 }, strength: { mean: 25.8, sd: 5.5 }, endurance: { mean: 31, sd: 8.0 },
+          flexibility: { mean: 31.5, sd: 8.5 }, agility: { mean: 11.0, sd: 0.70, lowerBetter: true },
+          balance: { mean: 40.0, sd: 14.0 }, coordination: { mean: 22, sd: 5.5 }, power: { mean: 163, sd: 20.0 },
+          speed: { mean: 5.02, sd: 0.40, lowerBetter: true }, reaction: { mean: 13.0, sd: 2.5, lowerBetter: true },
+          bodyComp: { mean: 21.2 }
+        },
+        17: { // 17-18 歲
+          cardio: { mean: 1330, sd: 200 }, strength: { mean: 26.5, sd: 5.5 }, endurance: { mean: 32, sd: 8.0 },
+          flexibility: { mean: 32.5, sd: 9.0 }, agility: { mean: 10.8, sd: 0.70, lowerBetter: true },
+          balance: { mean: 42.0, sd: 14.0 }, coordination: { mean: 23, sd: 6.0 }, power: { mean: 165, sd: 21.0 },
+          speed: { mean: 4.95, sd: 0.38, lowerBetter: true }, reaction: { mean: 12.6, sd: 2.4, lowerBetter: true },
+          bodyComp: { mean: 21.5 }
+        }
       }
     };
 
-    // 11 項能力之處方知識庫
     const PRESCRIPTION_DB = {
       cardio: { name: '心肺耐力', test: '9分鐘跑', icon: 'fa-heart-pulse', action: '間歇跳繩法 / 跑走結合', guide: '跳繩 1 分鐘（維持呼吸節奏）+ 休息 30 秒，連續做 6 組；或課後慢跑 12 分鐘，保持鼻吸嘴呼節奏。', freq: '每週 3-4 次，每次 10-15 分鐘' },
       strength: { name: '最大肌力', test: '手握力', icon: 'fa-hand-back-fist', action: '毛巾擰乾訓練 / 懸垂提握', guide: '雙手緊握濕毛巾用力擰乾維持 10 秒（做 5 組）；或在單槓上做自重靜態懸掛 15-20 秒。', freq: '每週 3 次，每次 5-8 分鐘' },
@@ -591,12 +628,98 @@
       { key: 'reaction', name: '反應時間', test: '抓直尺', unit: 'cm' }
     ];
 
-    // 常模分數計算器：0.0 到 10.0，以 0.5 為單位，5.0 為全港平均線
+    // 🗓️ 日期解析器 (支援 dd/mm/yyyy, dd/mm/yy, yyyy-mm-dd)
+    function parseCustomDate(str) {
+      if (!str) return null;
+      if (str instanceof Date) return str;
+      const s = String(str).trim();
+      if (!s) return null;
+
+      const parts = s.split(/[\/\-\.]/);
+      if (parts.length === 3) {
+        let day, month, year;
+        if (parts[0].length === 4) {
+          // yyyy-mm-dd
+          year = parseInt(parts[0], 10);
+          month = parseInt(parts[1], 10) - 1;
+          day = parseInt(parts[2], 10);
+        } else {
+          // dd/mm/yy or dd/mm/yyyy
+          day = parseInt(parts[0], 10);
+          month = parseInt(parts[1], 10) - 1;
+          year = parseInt(parts[2], 10);
+          if (year < 100) {
+            year = year > 50 ? 1900 + year : 2000 + year;
+          }
+        }
+        const d = new Date(year, month, day);
+        if (!isNaN(d.getTime())) return d;
+      }
+      const direct = new Date(s);
+      return isNaN(direct.getTime()) ? null : direct;
+    }
+
+    // 🧮 依據 DOB 與 測試日期 精確推算實歲
+    function calculateExactAge(dobStr, testDateStr) {
+      const dob = parseCustomDate(dobStr);
+      const testDate = parseCustomDate(testDateStr);
+      if (!dob || !testDate) return null;
+
+      let age = testDate.getFullYear() - dob.getFullYear();
+      const m = testDate.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && testDate.getDate() < dob.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
+    // 取得該次測驗之年齡與年級標籤
+    function getRecordAgeAndForm(student, record) {
+      let calcAge = null;
+      
+      // 1. 優先以 DOB + 測試日期 精確計算
+      if (student.dob && record.testDate) {
+        calcAge = calculateExactAge(student.dob, record.testDate);
+      }
+      
+      // 2. 其次使用記錄自帶 age 欄位
+      if (calcAge === null && record.age) {
+        calcAge = record.age;
+      }
+
+      // 3. 容錯：若均無日期則依學年班級推算
+      if (calcAge === null) {
+        const cls = (student.className || '').trim().toUpperCase();
+        let baseGrade = 1;
+        const match = cls.match(/^[S]?([1-6])/);
+        if (match) baseGrade = parseInt(match[1], 10);
+
+        let yearDiff = 0;
+        if (student.academicYear && record.academicYear) {
+          const stuY = parseInt(student.academicYear.split('-')[0], 10);
+          const recY = parseInt(record.academicYear.split('-')[0], 10);
+          if (!isNaN(stuY) && !isNaN(recY)) yearDiff = recY - stuY;
+        }
+        const calcGrade = Math.max(1, Math.min(6, baseGrade + yearDiff));
+        calcAge = calcGrade + 11;
+      }
+
+      const normAge = Math.max(11, Math.min(17, calcAge));
+      const gradeEst = Math.max(1, Math.min(6, normAge - 11));
+
+      return {
+        age: normAge,
+        exactAge: calcAge,
+        formName: `中${gradeEst} (S${gradeEst})`,
+        testDateDisplay: record.testDate || '-'
+      };
+    }
+
+    // 常模得分計算器
     function calculateDimensionScore(rawVal, normItem, isBMI = false) {
       if (rawVal === null || rawVal === undefined || isNaN(rawVal)) return 5.0;
       
       if (isBMI) {
-        // BMI 理想區間 (18.5 - 22.9 為滿分 10 分，過高或過低扣分)
         const diff = Math.abs(rawVal - 20.7);
         let s = 10.0 - (diff * 1.6);
         return Math.max(0, Math.min(10, Math.round(s * 2) / 2));
@@ -607,13 +730,11 @@
       const lowerBetter = normItem.lowerBetter || false;
 
       let z = lowerBetter ? (mean - rawVal) / sd : (rawVal - mean) / sd;
-      // Z=0 -> 5.0分 (全港平均), Z=+2.5 -> 10分, Z=-2.5 -> 0分
       let score = 5.0 + (z * 2.0);
-      let rounded = Math.round(score * 2) / 2; // 步進 0.5
+      let rounded = Math.round(score * 2) / 2;
       return Math.max(0, Math.min(10, rounded));
     }
 
-    // 輔助函式
     const parseNum = (v) => {
       if (!v && v !== 0) return null;
       const str = String(v).trim();
@@ -694,7 +815,7 @@
     });
 
     // ========================================================
-    // 🛠️ DEMO 測試資料注入與安全清除邏輯
+    // 🛠️ DEMO 注入（包含精準 DOB 與 測試日期）
     // ========================================================
     document.getElementById('btnLoadDemo').addEventListener('click', async () => {
       const btn = document.getElementById('btnLoadDemo');
@@ -704,30 +825,32 @@
       try {
         const batch = writeBatch(db);
 
+        // DEMO 學生 1：陳大文，DOB: 15/10/2012
         const demoStudents = [
           {
             docId: "DEMO_2025-2026_DEMO001",
-            data: { studentID: "DEMO001", academicYear: "2025-2026", className: "1A", classNo: 99, name: "陳大文 (DEMO)", sex: "M", email: "demo.student1@ndc.edu.hk", isDemo: true, updatedAt: serverTimestamp() }
+            data: { studentID: "DEMO001", academicYear: "2025-2026", className: "2A", classNo: 99, name: "陳大文 (DEMO)", sex: "M", dob: "15/10/2012", email: "demo.student1@ndc.edu.hk", isDemo: true, updatedAt: serverTimestamp() }
           },
           {
             docId: "DEMO_2025-2026_DEMO002",
-            data: { studentID: "DEMO002", academicYear: "2025-2026", className: "2B", classNo: 88, name: "李美玲 (DEMO)", sex: "F", email: "demo.student2@ndc.edu.hk", isDemo: true, updatedAt: serverTimestamp() }
+            data: { studentID: "DEMO002", academicYear: "2025-2026", className: "1B", classNo: 88, name: "李美玲 (DEMO)", sex: "F", dob: "05/03/2013", email: "demo.student2@ndc.edu.hk", isDemo: true, updatedAt: serverTimestamp() }
           }
         ];
         demoStudents.forEach(s => batch.set(doc(db, "students_core", s.docId), s.data, { merge: true }));
 
+        // 包含陳大文 2024-10-20 (12歲) 與 2025-11-18 (13歲) 精準實歲測驗
         const demoTests = [
           {
             docId: "DEMO_FIT_001_1",
-            data: { isDemo: true, academicYear: "2024-2025", term: "上學期", studentID: "DEMO001", height: 156.5, weight: 48.0, run9min: 1420, gripLeft: 23.5, gripRight: 25.0, sitUp: 33, sitAndReach: 29.0, shuttleRun: 11.2, balanceOneLeg: 28.5, ballCatch: 18, longJump: 168, verticalJump: 36, dash30m: 5.1, rulerDrop: 14.0, createdAt: serverTimestamp() }
+            data: { isDemo: true, academicYear: "2024-2025", term: "第一學期", studentID: "DEMO001", testDate: "20/10/2024", height: 156.5, weight: 48.0, run9min: 1420, gripLeft: 23.5, gripRight: 25.0, sitUp: 33, sitAndReach: 29.0, shuttleRun: 11.2, balanceOneLeg: 28.5, ballCatch: 18, longJump: 168, verticalJump: 36, dash30m: 5.1, rulerDrop: 14.0, createdAt: serverTimestamp() }
           },
           {
             docId: "DEMO_FIT_001_2",
-            data: { isDemo: true, academicYear: "2025-2026", term: "上學期", studentID: "DEMO001", height: 163.0, weight: 52.5, run9min: 1620, gripLeft: 29.0, gripRight: 31.5, sitUp: 42, sitAndReach: 33.5, shuttleRun: 10.2, balanceOneLeg: 36.0, ballCatch: 24, longJump: 215, verticalJump: 44, dash30m: 4.5, rulerDrop: 11.0, createdAt: serverTimestamp() }
+            data: { isDemo: true, academicYear: "2025-2026", term: "第一學期", studentID: "DEMO001", testDate: "18/11/2025", height: 163.0, weight: 52.5, run9min: 1600, gripLeft: 29.0, gripRight: 31.5, sitUp: 42, sitAndReach: 33.5, shuttleRun: 10.2, balanceOneLeg: 36.0, ballCatch: 24, longJump: 205, verticalJump: 44, dash30m: 4.6, rulerDrop: 11.0, createdAt: serverTimestamp() }
           },
           {
             docId: "DEMO_FIT_002_1",
-            data: { isDemo: true, academicYear: "2025-2026", term: "上學期", studentID: "DEMO002", height: 158.0, weight: 46.2, run9min: 1360, gripLeft: 20.0, gripRight: 21.5, sitUp: 31, sitAndReach: 36.0, shuttleRun: 11.6, balanceOneLeg: 42.0, ballCatch: 20, longJump: 152, verticalJump: 31, dash30m: 5.4, rulerDrop: 12.5, createdAt: serverTimestamp() }
+            data: { isDemo: true, academicYear: "2025-2026", term: "第一學期", studentID: "DEMO002", testDate: "22/10/2025", height: 158.0, weight: 46.2, run9min: 1360, gripLeft: 20.0, gripRight: 21.5, sitUp: 31, sitAndReach: 36.0, shuttleRun: 11.6, balanceOneLeg: 42.0, ballCatch: 20, longJump: 152, verticalJump: 31, dash30m: 5.4, rulerDrop: 12.5, createdAt: serverTimestamp() }
           }
         ];
         demoTests.forEach(t => batch.set(doc(db, "pe_tests", t.docId), t.data, { merge: true }));
@@ -747,20 +870,20 @@
         await batch.commit();
 
         document.getElementById('searchYear').value = "2025-2026";
-        document.getElementById('searchClass').value = "1A";
+        document.getElementById('searchClass').value = "2A";
         document.getElementById('searchClassNo').value = "99";
 
-        alert("✅ DEMO 測試資料注入成功！\n\n已自動在搜尋欄填入【2025-2026 / 1A 班 / 99 號 (陳大文)】，點擊「搜尋學生檔案」即可預覽完整常模星形圖報告。");
+        alert("✅ DEMO 測試資料注入成功！\n\n已填入【陳大文 (DOB: 15/10/2012)】。\n點擊「搜尋學生檔案」進入報告，即可檢驗系統依據「測試日期 - 出生日期」所計算的實歲常模切換！");
       } catch (err) {
         alert("❌ 注入 DEMO 失敗：" + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試樣本';
+        btn.innerHTML = '<i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 精準年齡測試樣本';
       }
     });
 
     document.getElementById('btnClearDemo').addEventListener('click', async () => {
-      if (!confirm("⚠️ 確定要清除所有 DEMO 測試資料嗎？\n\n系統僅會刪除標記為 isDemo: true 的測試資料，絕不會影響或刪除任何真實學生記錄。")) return;
+      if (!confirm("⚠️ 確定要清除所有 DEMO 測試資料嗎？")) return;
 
       const btn = document.getElementById('btnClearDemo');
       btn.disabled = true;
@@ -784,12 +907,12 @@
           await batch.commit();
           document.getElementById('teacherStudentProfileArea').style.display = 'none';
           currentTeacherStudent = null;
-          alert(`🎉 已成功安全清除 ${deletedCount} 筆 DEMO 測試資料！`);
+          alert(`🎉 已成功清除 ${deletedCount} 筆 DEMO 測試資料！`);
         } else {
-          alert("ℹ️ 目前資料庫中沒有任何 DEMO 測試資料。");
+          alert("ℹ️ 目前沒有 DEMO 測試資料。");
         }
       } catch (err) {
-        alert("❌ 清除 DEMO 失敗：" + err.message);
+        alert("❌ 清除失敗：" + err.message);
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="bi bi-trash3-fill me-1"></i> 清除 DEMO 測試資料';
@@ -797,7 +920,7 @@
     });
 
     // ========================================================
-    // 🎨 完整 11 項常模雷達圖報告 核心渲染引擎
+    // 🎨 完整 11 項【分齡常模雷達圖報告】核心渲染
     // ========================================================
     let activeRadarChartInstance = null;
 
@@ -815,13 +938,13 @@
         return;
       }
 
-      // 生成學期/學年下拉選單 HTML
-      const optionsHtml = fitnessRecords.map((r, idx) => `
-        <option value="${idx}" ${idx === 0 ? 'selected' : ''}>${r.academicYear || ''} ${r.term || ''}</option>
-      `).join('');
+      // 生成學期與精確實歲下拉選項
+      const optionsHtml = fitnessRecords.map((r, idx) => {
+        const info = getRecordAgeAndForm(student, r);
+        return `<option value="${idx}" ${idx === 0 ? 'selected' : ''}>${r.academicYear || ''} ${r.term || ''} (測試日: ${info.testDateDisplay} ｜ 實歲: ${info.age}歲)</option>`;
+      }).join('');
 
       container.innerHTML = `
-        <!-- 學生資訊頭部 -->
         <div class="app-card p-4 mb-4" style="background: #0f172a; border-color: #1e293b;">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
             <div class="d-flex align-items-center gap-3">
@@ -837,22 +960,21 @@
                 </div>
                 <div class="text-slate-400 small mt-1">
                   學籍編號：<span class="text-slate-200 font-monospace">${student.studentID}</span> ｜ 
+                  出生日期：<span class="text-info font-monospace">${student.dob || '未提供'}</span> ｜ 
                   電郵：<span class="text-slate-300">${student.email}</span>
                 </div>
               </div>
             </div>
             <div>
               <span class="badge px-3 py-2 text-slate-300 border border-slate-700" style="background: #1e293b; font-size: 0.8rem;">
-                <span class="d-inline-block rounded-circle bg-success me-1" style="width: 8px; height: 8px;"></span>
-                5.0 分 = 全港同性別常模平均線 (P50)
+                <span class="d-inline-block rounded-circle bg-emerald-400 me-1" style="width: 8px; height: 8px; background-color: #34d399;"></span>
+                5.0 分 = 全港同性別實歲常模平均線 (P50)
               </span>
             </div>
           </div>
         </div>
 
-        <!-- 11 項常模星形圖與實測數據明細 -->
         <div class="row g-4 mb-4">
-          <!-- 星形圖 -->
           <div class="col-12 col-lg-7">
             <div class="app-card p-4 h-100 d-flex flex-column" style="background: #0f172a;">
               <div class="d-flex justify-content-between align-items-center mb-3">
@@ -860,7 +982,7 @@
                   <h5 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
                     <i class="fa-solid fa-chart-pie text-info"></i> 11 項能力常模星形圖
                   </h5>
-                  <small id="radarSubtitle-${containerId}" class="text-slate-400">基準：香港中學生體適能常模 (0 ~ 10 分)</small>
+                  <small id="radarSubtitle-${containerId}" class="text-slate-400">基準：載入中...</small>
                 </div>
                 <div id="reportYearSelectArea">
                   <select id="selectRecordIndex-${containerId}" class="form-select form-select-sm bg-dark text-info border-slate-700 fw-bold">
@@ -874,35 +996,30 @@
             </div>
           </div>
 
-          <!-- 實測 vs 全港平均明細 -->
           <div class="col-12 col-lg-5">
             <div class="app-card p-4 h-100 d-flex flex-column" style="background: #0f172a;">
               <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-slate-800">
                 <h6 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
-                  <i class="fa-solid fa-table-list text-success"></i> 實測值 vs 全港常模平均
+                  <i class="fa-solid fa-table-list text-success"></i> 實測值 vs 全港同齡平均
                 </h6>
-                <span class="badge bg-secondary text-info font-monospace" style="font-size: 11px;">香港中學生標準</span>
+                <span id="normGroupBadge-${containerId}" class="badge bg-secondary text-info font-monospace" style="font-size: 11px;">香港中學生常模</span>
               </div>
-              <div id="statsListContainer-${containerId}" class="overflow-auto pe-1 d-flex flex-column gap-2" style="max-height: 390px;">
-                <!-- 動態注入明細 -->
-              </div>
+              <div id="statsListContainer-${containerId}" class="overflow-auto pe-1 d-flex flex-column gap-2" style="max-height: 390px;"></div>
             </div>
           </div>
         </div>
 
-        <!-- 個人體適能診斷與改善處方 -->
         <div class="app-card p-4 mb-4" style="background: #0f172a;">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 pb-3 mb-3 border-bottom border-slate-800">
             <div>
               <h5 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
                 <i class="fa-solid fa-heart-pulse text-danger"></i> 個人體能診斷與改善處方
               </h5>
-              <small class="text-slate-400">已根據香港常模完成診斷，並自動生成微訓練菜單</small>
+              <small class="text-slate-400">系統已按測試當日實歲常模完成診斷，並自動產生專屬微訓練處方</small>
             </div>
             <div id="profileBadge-${containerId}"></div>
           </div>
 
-          <!-- 3 欄概況 -->
           <div class="row g-3 mb-4">
             <div class="col-12 col-md-4">
               <div class="p-3 rounded-3 border h-100" style="background: #081d19; border-color: #065f46;">
@@ -930,7 +1047,6 @@
             </div>
           </div>
 
-          <!-- 零器材改善指南 -->
           <div>
             <h6 class="fw-bold text-slate-200 mb-3 d-flex align-items-center gap-2">
               <i class="fa-solid fa-dumbbell text-warning"></i> 弱項客製化改善指南（校園 / 居家零器材鍛鍊）
@@ -939,7 +1055,6 @@
           </div>
         </div>
 
-        <!-- 歷年體育成就榮譽榜 -->
         <div class="app-card p-4" style="background: #0f172a;">
           <h6 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
             <i class="fa-solid fa-trophy text-warning"></i> 歷年校內外體育成就與代表隊榮譽
@@ -955,16 +1070,13 @@
         </div>
       `;
 
-      // 綁定下拉事件
       const selectEl = document.getElementById(`selectRecordIndex-${containerId}`);
       selectEl.addEventListener('change', (e) => {
         updateRadarAndDiagnosis(student, fitnessRecords[e.target.value], containerId);
       });
 
-      // 初始化第一個選中的紀錄
       updateRadarAndDiagnosis(student, fitnessRecords[0], containerId);
 
-      // 渲染成就列表
       const tableBody = document.getElementById(`reportCompTableBody-${containerId}`);
       if (!achRecords || achRecords.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-slate-500 py-3">暫無體育成就紀錄</td></tr>`;
@@ -980,26 +1092,34 @@
       }
     }
 
-    // 計算並刷新雷達圖與處方
     function updateRadarAndDiagnosis(student, record, containerId) {
       if (!record) return;
       const sex = (student.sex || 'M').toUpperCase() === 'F' ? 'F' : 'M';
-      const norms = HK_NORMS[sex];
+      const sexLabel = sex === 'M' ? '男' : '女';
+      
+      const ageInfo = getRecordAgeAndForm(student, record);
+      const testAge = ageInfo.age;
+      
+      const ageNormMap = HK_NORMS_BY_AGE[sex];
+      const norms = ageNormMap[testAge] || ageNormMap[14];
 
-      // 計算 BMI
+      const subtitleEl = document.getElementById(`radarSubtitle-${containerId}`);
+      if (subtitleEl) subtitleEl.textContent = `基準：香港 ${testAge} 歲 ${sexLabel}生常模標準 (實歲: ${testAge} 歲 ｜ 測試日: ${ageInfo.testDateDisplay})`;
+
+      const groupBadgeEl = document.getElementById(`normGroupBadge-${containerId}`);
+      if (groupBadgeEl) groupBadgeEl.textContent = `${sexLabel}生 ${testAge}歲 香港常模平均 (P50)`;
+
       let bmi = null;
       if (record.height && record.weight) {
         const h_m = record.height / 100;
         bmi = Number((record.weight / (h_m * h_m)).toFixed(1));
       }
 
-      // 取手握力最大值 (左手 vs 右手)
       let maxGrip = null;
       if (record.gripLeft || record.gripRight) {
         maxGrip = Math.max(record.gripLeft || 0, record.gripRight || 0);
       }
 
-      // 組合各項實測值對照表
       const rawValues = {
         cardio: record.run9min,
         strength: maxGrip,
@@ -1014,13 +1134,11 @@
         reaction: record.rulerDrop
       };
 
-      // 計算 11 個維度的常模得分 (0.0 ~ 10.0, step 0.5)
       const scores = {};
       DIMENSIONS.forEach(d => {
         scores[d.key] = calculateDimensionScore(rawValues[d.key], norms[d.key], d.key === 'bodyComp');
       });
 
-      // 1. 渲染右側實測明細
       const statsContainer = document.getElementById(`statsListContainer-${containerId}`);
       statsContainer.innerHTML = DIMENSIONS.map(d => {
         const sc = scores[d.key];
@@ -1035,7 +1153,7 @@
             <div class="d-flex justify-content-between align-items-center mb-1">
               <div>
                 <span class="small fw-bold text-white">${d.name}</span>
-                <span class="text-slate-400 font-monospace ms-1" style="font-size: 11px;">實測: ${raw}${unit} (全港均值: ${normMean}${unit})</span>
+                <span class="text-slate-400 font-monospace ms-1" style="font-size: 11px;">實測: ${raw}${unit} (全港${testAge}歲均值: ${normMean}${unit})</span>
               </div>
               <span class="fw-bold ${sc >= 5.0 ? 'text-info' : 'text-danger'}" style="font-size: 0.85rem;">
                 ${sc.toFixed(1)} <small class="text-slate-500 font-normal">/ 10</small>
@@ -1048,7 +1166,6 @@
         `;
       }).join('');
 
-      // 2. 繪製動態雷達圖
       const canvas = document.getElementById(`radarCanvas-${containerId}`);
       if (canvas) {
         if (activeRadarChartInstance) {
@@ -1064,7 +1181,7 @@
             labels: labels,
             datasets: [
               {
-                label: `學生常模得分 (${sex === 'M' ? '男生' : '女生'})`,
+                label: `實測常模得分 (${sexLabel}生 ${testAge}歲)`,
                 data: dataScores,
                 backgroundColor: 'rgba(56, 189, 248, 0.25)',
                 borderColor: '#38bdf8',
@@ -1073,7 +1190,7 @@
                 borderWidth: 2.5
               },
               {
-                label: '全港平均線 (5.0 分)',
+                label: `全港同齡平均線 (${testAge}歲 P50 = 5.0分)`,
                 data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
                 borderColor: 'rgba(244, 63, 94, 0.75)',
                 borderDash: [4, 4],
@@ -1103,11 +1220,11 @@
         });
       }
 
-      // 3. 生成處方與特質
-      generatePrescriptionsAndAdvice(scores, sex, containerId);
+      generatePrescriptionsAndAdvice(scores, sex, testAge, containerId);
     }
 
-    function generatePrescriptionsAndAdvice(scores, sex, containerId) {
+    function generatePrescriptionsAndAdvice(scores, sex, age, containerId) {
+      const sexLabel = sex === 'M' ? '男' : '女';
       let sortedItems = [];
       DIMENSIONS.forEach(d => {
         sortedItems.push({
@@ -1124,13 +1241,12 @@
       const weaknesses = sortedItems.filter(i => i.score < 5.0);
       const avgScore = (sortedItems.reduce((acc, curr) => acc + curr.score, 0) / 11).toFixed(1);
 
-      // A. 特質判定
       let profileType = "全能均衡型運動員";
       let sportRec = "具備均衡的各項素質，適合參加羽毛球、籃球、手球等高綜合度球類項目。";
 
       if (scores.cardio >= 7.0 && scores.endurance >= 7.0) {
         profileType = "心肺耐力型健將";
-        sportRec = `心肺與耐力顯著高於全港同齡平均，極具長跑 (800m/1500m/越野跑)、游泳或單車專項天賦。`;
+        sportRec = `心肺與耐力顯著高於全港 ${age} 歲${sexLabel}生平均，極具長跑 (800m/1500m/越野跑)、游泳或單車專項天賦。`;
       } else if (scores.power >= 7.0 && scores.speed >= 7.0 && scores.agility >= 7.0) {
         profileType = "爆發與速度型選手";
         sportRec = `下肢爆發力與速度突出，推薦短跑 (100m/200m)、跳遠、七人欖球或籃球快攻型位置。`;
@@ -1149,7 +1265,6 @@
       `;
       document.getElementById(`sportsRecText-${containerId}`).innerText = sportRec;
 
-      // B. 優勢項目
       const stEl = document.getElementById(`strengthsContainer-${containerId}`);
       if (strengths.length > 0) {
         stEl.innerHTML = strengths.slice(0, 3).map(s => `
@@ -1162,7 +1277,6 @@
         stEl.innerHTML = `<p class="text-slate-400 fst-italic mb-0">各項均衡發展中，持之以恆鍛鍊即可突破 7.0 分！</p>`;
       }
 
-      // C. 弱項項目
       const wkEl = document.getElementById(`weaknessesContainer-${containerId}`);
       if (weaknesses.length > 0) {
         wkEl.innerHTML = weaknesses.map(w => `
@@ -1172,10 +1286,9 @@
           </div>
         `).join('');
       } else {
-        wkEl.innerHTML = `<p class="text-success fw-bold mb-0"><i class="fa-solid fa-star me-1"></i>太棒了！所有能力均達全港平均線（5.0分）以上！</p>`;
+        wkEl.innerHTML = `<p class="text-success fw-bold mb-0"><i class="fa-solid fa-star me-1"></i>太棒了！所有能力均達全港 ${age} 歲${sexLabel}生平均線以上！</p>`;
       }
 
-      // D. 最低 3 項處方卡片
       const priorityPrescriptions = sortedItems.slice().reverse().slice(0, 3);
       const cardsEl = document.getElementById(`prescriptionCardsContainer-${containerId}`);
       cardsEl.innerHTML = priorityPrescriptions.map(p => {
@@ -1209,9 +1322,7 @@
       }).join('');
     }
 
-    // ========================================================
-    // 學生端與教師端檢視觸發
-    // ========================================================
+    // 學生端載入
     async function loadStudentPersonalView(studentEmail) {
       const container = document.getElementById('studentPersonalReportContainer');
       try {
@@ -1274,6 +1385,7 @@
         document.getElementById('dispStudentID').textContent = currentTeacherStudent.studentID;
         document.getElementById('dispClassInfo').textContent = `${currentTeacherStudent.academicYear} ${currentTeacherStudent.className} (${currentTeacherStudent.classNo}號)`;
         document.getElementById('dispSex').textContent = currentTeacherStudent.sex === 'M' ? '男 (M)' : '女 (F)';
+        document.getElementById('dispDOB').textContent = currentTeacherStudent.dob || '未提供';
         document.getElementById('dispEmail').textContent = currentTeacherStudent.email;
 
         const demoTag = document.getElementById('dispDemoTag');
@@ -1304,11 +1416,11 @@
       } else {
         fitContainer.innerHTML = records.map(r => `
           <div class="fitness-record-card p-3" id="fit-card-${r.docId}">
-            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-slate-800">
+            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-slate-800 flex-wrap gap-2">
               <div>
                 <span class="badge bg-primary fs-6 me-2">${r.academicYear || ''}</span>
-                <span class="badge bg-info text-dark fs-6">${r.term || ''}</span>
-                <small class="text-slate-400 ms-2">ID: <code>${r.docId}</code></small>
+                <span class="badge bg-info text-dark fs-6 me-2">${r.term || ''}</span>
+                <small class="text-slate-400">測試日: <b>${r.testDate || '未提供'}</b> ｜ ID: <code>${r.docId}</code></small>
                 ${r.isDemo ? '<span class="badge bg-warning text-dark ms-1">DEMO</span>' : ''}
               </div>
               <div class="d-flex gap-2">
@@ -1317,6 +1429,7 @@
               </div>
             </div>
             <div class="row g-2">
+              <div class="col-6 col-md-2"><div class="field-label">測試日期 (dd/mm/yy)</div><input type="text" class="form-control form-control-sm bg-dark text-white border-secondary f-testDate" value="${r.testDate ?? ''}" placeholder="dd/mm/yyyy"></div>
               <div class="col-6 col-md-2"><div class="field-label">身高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-height" value="${r.height ?? ''}"></div>
               <div class="col-6 col-md-2"><div class="field-label">體重 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-weight" value="${r.weight ?? ''}"></div>
               <div class="col-6 col-md-2"><div class="field-label">9分鐘跑 (m)</div><input type="number" class="form-control form-control-sm bg-dark text-white border-secondary f-run9min" value="${r.run9min ?? ''}"></div>
@@ -1367,7 +1480,6 @@
       }
     }
 
-    // 點擊彈出「學生 11 項常模報告」
     document.getElementById('btnOpenStudentReportModal').addEventListener('click', () => {
       if (!currentTeacherStudent) return alert("請先搜尋並選取學生！");
 
@@ -1387,6 +1499,7 @@
       const card = document.getElementById(`fit-card-${docId}`);
       try {
         await updateDoc(doc(db, "pe_tests", docId), {
+          testDate: card.querySelector('.f-testDate').value.trim(),
           height: parseNum(card.querySelector('.f-height').value),
           weight: parseNum(card.querySelector('.f-weight').value),
           run9min: parseNum(card.querySelector('.f-run9min').value),
@@ -1403,7 +1516,7 @@
           rulerDrop: parseNum(card.querySelector('.f-rulerDrop').value),
           updatedAt: serverTimestamp()
         });
-        alert("✅ 成績已成功更新！");
+        alert("✅ 成績與測試日期已成功更新！");
         loadTeacherFitnessRecords(currentTeacherStudent.studentID);
       } catch(e) { alert("更新失敗：" + e.message); }
     };
@@ -1435,7 +1548,7 @@
     };
 
     // ========================================================
-    // Excel 批次貼上解析器
+    // Excel 批次貼上解析器 (學生 8 欄 / 體測 19 欄)
     // ========================================================
     function setupGrid(dropId, tblId, countId, uploadBtnId, colCount, onUpload) {
       const dropzone = document.getElementById(dropId);
@@ -1497,34 +1610,59 @@
       });
     }
 
-    setupGrid('dropStudents', 'tblStudents', 'countStudents', 'btnUploadStudents', 7, async (rows) => {
+    // 1. 學生名單 (8 欄)
+    setupGrid('dropStudents', 'tblStudents', 'countStudents', 'btnUploadStudents', 8, async (rows) => {
       const batch = writeBatch(db);
       rows.forEach(r => {
         const docRef = doc(db, "students_core", `${r[1]}_${r[0]}`);
         batch.set(docRef, {
-          studentID: r[0], academicYear: r[1], className: r[2], classNo: parseNum(r[3]),
-          name: r[4], sex: r[5], email: r[6].toLowerCase(), isDemo: false, updatedAt: serverTimestamp()
+          studentID: r[0],
+          academicYear: r[1],
+          className: r[2],
+          classNo: parseNum(r[3]),
+          name: r[4],
+          sex: r[5],
+          dob: r[6], // 7.出生日期
+          email: r[7].toLowerCase(), // 8.電郵
+          isDemo: false,
+          updatedAt: serverTimestamp()
         }, { merge: true });
       });
       await batch.commit();
     });
 
-    setupGrid('dropFitness', 'tblFitness', 'countFitness', 'btnUploadFitness', 18, async (rows) => {
+    // 2. 體適能數據 (19 欄)
+    setupGrid('dropFitness', 'tblFitness', 'countFitness', 'btnUploadFitness', 19, async (rows) => {
       const batch = writeBatch(db);
       rows.forEach(r => {
         const docRef = r[0] ? doc(db, "pe_tests", r[0]) : doc(collection(db, "pe_tests"));
         batch.set(docRef, {
-          academicYear: r[1], term: r[2], studentID: r[3],
-          height: parseNum(r[4]), weight: parseNum(r[5]), run9min: parseNum(r[6]),
-          gripLeft: parseNum(r[7]), gripRight: parseNum(r[8]), sitUp: parseNum(r[9]),
-          sitAndReach: parseNum(r[10]), shuttleRun: parseNum(r[11]), balanceOneLeg: parseNum(r[12]),
-          ballCatch: parseNum(r[13]), longJump: parseNum(r[14]), verticalJump: parseNum(r[15]),
-          dash30m: parseNum(r[16]), rulerDrop: parseNum(r[17]), isDemo: false, createdAt: serverTimestamp()
+          academicYear: r[1],
+          term: r[2],
+          studentID: r[3],
+          testDate: r[4], // 5.測試日期
+          height: parseNum(r[5]),
+          weight: parseNum(r[6]),
+          run9min: parseNum(r[7]),
+          gripLeft: parseNum(r[8]),
+          gripRight: parseNum(r[9]),
+          sitUp: parseNum(r[10]),
+          sitAndReach: parseNum(r[11]),
+          shuttleRun: parseNum(r[12]),
+          balanceOneLeg: parseNum(r[13]),
+          ballCatch: parseNum(r[14]),
+          longJump: parseNum(r[15]),
+          verticalJump: parseNum(r[16]),
+          dash30m: parseNum(r[17]),
+          rulerDrop: parseNum(r[18]),
+          isDemo: false,
+          createdAt: serverTimestamp()
         }, { merge: true });
       });
       await batch.commit();
     });
 
+    // 3. 體育成就 (6 欄)
     setupGrid('dropAch', 'tblAch', 'countAch', 'btnUploadAch', 6, async (rows) => {
       const batch = writeBatch(db);
       rows.forEach(r => {
