@@ -3,269 +3,440 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>體適能與體育數據系統 - NDC</title>
+  <title>體育科體適能數據系統 - 新會商會中學 (NDC)</title>
+  
+  <!-- Bootstrap 5 & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
-    body { background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif; }
-    .card { border-radius: 10px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .paste-dropzone { border: 2px dashed #0d6efd; background-color: #f8faff; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; }
-    .grid-container { max-height: 450px; overflow: auto; border: 1px solid #dee2e6; border-radius: 6px; background: #fff; }
-    .excel-table { white-space: nowrap; font-size: 0.88rem; margin-bottom: 0; }
-    .excel-table th { position: sticky; top: 0; background-color: #e9ecef !important; text-align: center; z-index: 2; padding: 8px; }
-    .excel-table td { border: 1px solid #dee2e6; padding: 4px 8px; vertical-align: middle; }
-    .test-record-card { border: 1px solid #e0e0e0; border-left: 5px solid #0d6efd; border-radius: 8px; background: #ffffff; }
-    .item-label { font-size: 0.75rem; color: #6c757d; font-weight: 600; margin-bottom: 2px; }
-    .stat-badge { background: #e7f1ff; border-radius: 8px; padding: 10px; text-align: center; }
-    .stat-badge .num { font-size: 1.4rem; font-weight: bold; color: #0d6efd; }
-    .stat-badge .lbl { font-size: 0.75rem; color: #6c757d; }
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* 現代卡片設計 */
+    .app-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    /* 頂部導航 */
+    .main-navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    /* 按鈕與標籤 */
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      border-radius: 10px;
+      font-weight: 600;
+      padding: 8px 18px;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+    .btn-outline-danger {
+      border-radius: 8px;
+    }
+
+    /* 貼上區域 Dropzone */
+    .paste-dropzone {
+      border: 2px dashed #93c5fd;
+      background-color: var(--primary-light);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .paste-dropzone:hover {
+      background-color: #dbeafe;
+      border-color: var(--primary-color);
+    }
+
+    /* 數據表格 */
+    .grid-container {
+      max-height: 460px;
+      overflow: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .excel-table {
+      white-space: nowrap;
+      font-size: 0.85rem;
+      margin-bottom: 0;
+    }
+    .excel-table th {
+      position: sticky;
+      top: 0;
+      background-color: #f1f5f9 !important;
+      color: #334155;
+      font-weight: 700;
+      text-align: center;
+      z-index: 2;
+      padding: 10px;
+      border-bottom: 2px solid var(--border-color);
+    }
+    .excel-table td {
+      border: 1px solid #f1f5f9;
+      padding: 6px 10px;
+      vertical-align: middle;
+    }
+
+    /* 體能測驗卡片 */
+    .fitness-record-card {
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 16px;
+    }
+    .field-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    /* 學生報告數據指標框 */
+    .stat-badge {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .stat-badge .num {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary-color);
+    }
+    .stat-badge .lbl {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* 導航膠囊切換 (Pills) */
+    .nav-pills .nav-link {
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 10px 18px;
+    }
+    .nav-pills .nav-link.active {
+      background-color: var(--primary-color);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
   </style>
 </head>
 <body>
 
   <!-- ========================================================
-       頂部導航欄 (登入成功後才會顯示)
+       狀態 0: 初始化載入中遮罩 (防止畫面閃爍)
        ======================================================== -->
-  <nav class="navbar navbar-expand navbar-dark bg-primary px-3 mb-3" id="mainNavbar" style="display: none;">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold">
-        <i class="bi bi-activity"></i> NDC 體育科數據管理系統
-      </span>
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-white small" id="currentUserDisplay">載入中...</span>
-        <button class="btn btn-outline-light btn-sm" id="btnLogout">
-          <i class="bi bi-box-arrow-right"></i> 登出
-        </button>
-      </div>
+  <div id="view-loading" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+      <p class="text-muted mt-3 small fw-bold">系統載入中，請稍候...</p>
     </div>
-  </nav>
+  </div>
 
-  <div class="container-fluid py-2" style="max-width: 1400px;">
-
-    <!-- ========================================================
-         PAGE 1: 登入頁面 (預設顯示)
-         ======================================================== -->
-    <div id="view-login" class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-      <div class="card p-4 p-md-5 text-center shadow" style="max-width: 480px; width: 100%;">
-        <div class="mb-3">
-          <i class="bi bi-shield-lock-fill text-primary" style="font-size: 3.5rem;"></i>
+  <!-- ========================================================
+       狀態 1: 登入頁面 (未登入時顯示，登入後 100% 隱藏)
+       ======================================================== -->
+  <div id="view-login" class="d-none justify-content-center align-items-center p-3" style="min-height: 100vh;">
+    <div class="app-card p-4 p-md-5 text-center" style="max-width: 460px; width: 100%;">
+      <div class="mb-4">
+        <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-4 shadow-sm" style="width: 70px; height: 70px;">
+          <i class="bi bi-shield-check" style="font-size: 2.2rem;"></i>
         </div>
-        <h4 class="fw-bold mb-1">體育科體適能數據系統</h4>
-        <p class="text-muted small mb-4">新會商會中學 (NDC)</p>
-
-        <div class="alert alert-light border text-start small mb-4">
-          <i class="bi bi-info-circle-fill text-primary me-1"></i>
-          請使用學校 Google 帳號 (<b>@ndc.edu.hk</b>) 登入：
-          <ul class="mb-0 mt-1 ps-3 text-muted">
-            <li><b>老師帳號</b>：進入搜尋查改與 Excel 批次匯入後台</li>
-            <li><b>學生帳號</b>：直接檢視個人歷年體適能成績與體育成就</li>
-          </ul>
-        </div>
-
-        <button class="btn btn-primary btn-lg w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2" id="btnLoginGoogle">
-          <i class="bi bi-google"></i> 使用 @ndc.edu.hk 帳號登入
-        </button>
-
-        <div id="loginAlert" class="alert alert-danger mt-3 small text-start" style="display: none;"></div>
       </div>
+      <h3 class="fw-bold mb-1 text-slate-900">體育科體適能數據系統</h3>
+      <p class="text-muted small mb-4">新會商會中學 (NDC)</p>
+
+      <div class="bg-light border rounded-3 p-3 text-start small mb-4">
+        <div class="fw-bold text-primary mb-1">
+          <i class="bi bi-info-circle-fill me-1"></i> 請使用學校帳號登入：
+        </div>
+        <ul class="mb-0 ps-3 text-muted" style="line-height: 1.6;">
+          <li><b>老師帳號</b>：進入學生查改與 Excel 批次匯入後台</li>
+          <li><b>學生帳號</b>：檢視個人歷年體能測驗與體育成就</li>
+        </ul>
+      </div>
+
+      <button class="btn btn-primary btn-lg w-100 py-2.5 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm" id="btnLoginGoogle">
+        <i class="bi bi-google"></i> 使用 @ndc.edu.hk 帳號登入
+      </button>
+
+      <div id="loginAlert" class="alert alert-danger mt-3 small text-start mb-0" style="display: none;"></div>
     </div>
+  </div>
 
+  <!-- ========================================================
+       狀態 2 & 3: 系統主內容區 (登入後才會顯示)
+       ======================================================== -->
+  <div id="app-wrapper" class="d-none min-vh-100 flex-column">
 
-    <!-- ========================================================
-         PAGE 2: 老師專用後台 (只有 3 位指定老師能看到)
-         ======================================================== -->
-    <div id="view-teacher" style="display: none;">
-      <ul class="nav nav-pills nav-fill mb-3 bg-white p-2 rounded shadow-sm">
-        <li class="nav-item">
-          <button class="nav-link active fs-6 fw-bold" data-bs-toggle="pill" data-bs-target="#view-search-edit">
-            🔍 學生個人檔案與歷年查改
+    <!-- 頂部導航欄 -->
+    <header class="main-navbar px-3 py-2 sticky-top">
+      <div class="container-fluid d-flex align-items-center justify-content-between" style="max-width: 1400px;">
+        <div class="d-flex align-items-center gap-2">
+          <div class="bg-primary text-white rounded-3 p-1.5 px-2">
+            <i class="bi bi-activity fw-bold"></i>
+          </div>
+          <div>
+            <span class="fw-bold fs-6 d-block leading-none">體育科數據管理系統</span>
+            <small class="text-muted text-[11px]">Notre Dame College</small>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <div class="text-end d-none d-sm-block">
+            <div id="currentUserDisplay" class="small fw-bold">載入中...</div>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm fw-bold px-3" id="btnLogout">
+            <i class="bi bi-box-arrow-right me-1"></i> 登出
           </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link fs-6 fw-bold" data-bs-toggle="pill" data-bs-target="#view-batch-import">
-            📤 Excel 批次試算表匯入
-          </button>
-        </li>
-      </ul>
+        </div>
+      </div>
+    </header>
 
-      <div class="tab-content">
-        <!-- 搜尋查改 -->
-        <div class="tab-pane fade show active" id="view-search-edit">
-          <div class="card p-3 mb-3">
-            <div class="row g-2 align-items-center">
-              <div class="col-md-3">
-                <label class="form-label small text-muted mb-1">學年</label>
-                <input type="text" id="searchYear" class="form-control" value="2025-2026">
+    <main class="container-fluid py-4 flex-grow-1" style="max-width: 1400px;">
+
+      <!-- ====================================================
+           👨‍🏫 教師管理後台 (3 位指定老師專用)
+           ==================================================== -->
+      <div id="view-teacher" class="d-none">
+        <!-- 頂部功能分頁膠囊 -->
+        <ul class="nav nav-pills gap-2 mb-4 bg-white p-2 rounded-4 border shadow-sm">
+          <li class="nav-item flex-fill">
+            <button class="nav-link active w-100 fs-6 fw-bold text-center" data-bs-toggle="pill" data-bs-target="#view-search-edit">
+              <i class="bi bi-search me-1"></i> 學生個人檔案與歷年查改
+            </button>
+          </li>
+          <li class="nav-item flex-fill">
+            <button class="nav-link w-100 fs-6 fw-bold text-center" data-bs-toggle="pill" data-bs-target="#view-batch-import">
+              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Excel 批次試算表匯入
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- 分頁 A：搜尋與成績編輯 -->
+          <div class="tab-pane fade show active" id="view-search-edit">
+            <div class="app-card p-4 mb-4">
+              <h6 class="fw-bold text-muted mb-3"><i class="bi bi-funnel-fill text-primary"></i> 快速檢索學生</h6>
+              <div class="row g-3 align-items-end">
+                <div class="col-12 col-md-3">
+                  <label class="form-label small fw-bold text-muted mb-1">學年</label>
+                  <input type="text" id="searchYear" class="form-control" value="2025-2026">
+                </div>
+                <div class="col-12 col-md-3">
+                  <label class="form-label small fw-bold text-muted mb-1">班別</label>
+                  <input type="text" id="searchClass" class="form-control" placeholder="例: 1A" style="text-transform: uppercase;">
+                </div>
+                <div class="col-12 col-md-3">
+                  <label class="form-label small fw-bold text-muted mb-1">學號</label>
+                  <input type="number" id="searchClassNo" class="form-control" placeholder="例: 5">
+                </div>
+                <div class="col-12 col-md-3">
+                  <button class="btn btn-primary w-100 py-2" id="btnSearch">
+                    <i class="bi bi-search me-1"></i> 搜尋學生檔案
+                  </button>
+                </div>
               </div>
-              <div class="col-md-3">
-                <label class="form-label small text-muted mb-1">班別</label>
-                <input type="text" id="searchClass" class="form-control" placeholder="例: 1A" style="text-transform: uppercase;">
+            </div>
+
+            <!-- 學生檔案與體適能卡片 -->
+            <div id="teacherStudentProfileArea" style="display: none;">
+              <div class="app-card p-4 mb-4 border-start border-primary border-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <div>
+                    <h4 class="fw-bold mb-1 text-primary" id="dispStudentName">--</h4>
+                    <div class="text-muted small">
+                      學籍編號：<span id="dispStudentID" class="badge bg-dark me-2">--</span>
+                      班級資訊：<span id="dispClassInfo" class="fw-bold text-dark me-2">--</span>
+                      性別：<span id="dispSex" class="me-2">--</span>
+                      電郵：<span id="dispEmail">--</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-3">
-                <label class="form-label small text-muted mb-1">學號</label>
-                <input type="number" id="searchClassNo" class="form-control" placeholder="例: 5">
-              </div>
-              <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-primary w-100 mt-4" id="btnSearch">
-                  <i class="bi bi-search"></i> 搜尋學生
-                </button>
+
+              <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                  <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#tab-t-fitness">
+                    🏃 體適能歷年紀錄 (<span id="testCountBadge">0</span>)
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tab-t-ach">
+                    🏆 體育榮譽與成就 (<span id="achCountBadge">0</span>)
+                  </button>
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="tab-t-fitness">
+                  <div id="fitnessRecordsList" class="d-flex flex-column gap-3"></div>
+                </div>
+                <div class="tab-pane fade" id="tab-t-ach">
+                  <div id="achievementsList" class="d-flex flex-column gap-3"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div id="teacherStudentProfileArea" style="display: none;">
-            <div class="card p-3 mb-3 bg-white border-start border-primary border-4">
-              <div class="d-flex justify-content-between align-items-center flex-wrap">
-                <div>
-                  <h4 class="mb-1 text-primary" id="dispStudentName">--</h4>
-                  <div class="text-muted small">
-                    學生編號: <span id="dispStudentID" class="badge bg-dark me-2">--</span>
-                    班別: <span id="dispClassInfo" class="fw-bold me-2">--</span>
-                    性別: <span id="dispSex" class="me-2">--</span>
-                    電郵: <span id="dispEmail">--</span>
+          <!-- 分頁 B：Excel 試算表批次匯入 -->
+          <div class="tab-pane fade" id="view-batch-import">
+            <div class="app-card p-4">
+              <ul class="nav nav-pills gap-2 mb-4">
+                <li class="nav-item"><button class="nav-link active fw-bold" data-bs-toggle="pill" data-bs-target="#imp-students">1. 學生名單 (7欄)</button></li>
+                <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-fitness">2. 體適能數據 (18欄/可空ID)</button></li>
+                <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-ach">3. 體育成就 (6欄/可空ID)</button></li>
+              </ul>
+
+              <div class="tab-content">
+                <!-- 1. 學生名單 -->
+                <div class="tab-pane fade show active" id="imp-students">
+                  <div class="paste-dropzone mb-3" id="dropStudents">
+                    <h6 class="text-primary fw-bold mb-1"><i class="bi bi-clipboard-plus me-1"></i> 點擊此處按 Ctrl+V 貼上學生名單</h6>
+                    <small class="text-muted">欄位格式：1.學生編號 | 2.學年 | 3.班別 | 4.學號 | 5.姓名 | 6.性別 | 7.學生電郵</small>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span id="countStudents" class="badge bg-secondary px-3 py-2">0 筆資料</span>
+                    <button class="btn btn-success fw-bold px-4" id="btnUploadStudents" disabled>確認寫入學生資料庫</button>
+                  </div>
+                  <div class="grid-container">
+                    <table class="table table-bordered excel-table" id="tblStudents">
+                      <thead><tr><th>#</th><th>學生編號</th><th>學年</th><th>班別</th><th>學號</th><th>姓名</th><th>性別</th><th>電郵</th></tr></thead>
+                      <tbody><tr><td colspan="8" class="text-center text-muted py-4">請在此處貼上資料</td></tr></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- 2. 體適能數據 -->
+                <div class="tab-pane fade" id="imp-fitness">
+                  <div class="paste-dropzone mb-3" id="dropFitness">
+                    <h6 class="text-primary fw-bold mb-1"><i class="bi bi-lightning-charge-fill me-1"></i> 點擊此處按 Ctrl+V 貼上體適能數據 (18 欄)</h6>
+                    <small class="text-muted">第一欄 ID 若留空，系統將自動生成</small>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span id="countFitness" class="badge bg-secondary px-3 py-2">0 筆資料</span>
+                    <button class="btn btn-success fw-bold px-4" id="btnUploadFitness" disabled>確認寫入體適能資料庫</button>
+                  </div>
+                  <div class="grid-container">
+                    <table class="table table-bordered excel-table" id="tblFitness">
+                      <thead>
+                        <tr>
+                          <th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學期</th><th>4.學生編號</th><th>5.身高</th><th>6.體重</th>
+                          <th>7.9分鐘跑</th><th>8.左握力</th><th>9.右握力</th><th>10.仰臥起坐</th><th>11.坐地前伸</th><th>12.折返跑</th>
+                          <th>13.單腳站立</th><th>14.拋接球</th><th>15.跳遠</th><th>16.跳高</th><th>17.30米跑</th><th>18.抓直尺</th>
+                        </tr>
+                      </thead>
+                      <tbody><tr><td colspan="19" class="text-center text-muted py-4">請在此處貼上資料</td></tr></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- 3. 體育成就 -->
+                <div class="tab-pane fade" id="imp-ach">
+                  <div class="paste-dropzone mb-3" id="dropAch">
+                    <h6 class="text-primary fw-bold mb-1"><i class="bi bi-trophy-fill me-1"></i> 點擊此處按 Ctrl+V 貼上體育成就 (6 欄)</h6>
+                    <small class="text-muted">欄位格式：1.ID(選填) | 2.學年 | 3.學生編號 | 4.比賽名稱 | 5.成績 | 6.榮譽</small>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span id="countAch" class="badge bg-secondary px-3 py-2">0 筆資料</span>
+                    <button class="btn btn-success fw-bold px-4" id="btnUploadAch" disabled>確認寫入成就資料庫</button>
+                  </div>
+                  <div class="grid-container">
+                    <table class="table table-bordered excel-table" id="tblAch">
+                      <thead><tr><th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學生編號</th><th>4.比賽名稱</th><th>5.成績</th><th>6.榮譽</th></tr></thead>
+                      <tbody><tr><td colspan="7" class="text-center text-muted py-4">請在此處貼上資料</td></tr></tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <ul class="nav nav-tabs mb-3">
-              <li class="nav-item">
-                <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#tab-t-fitness">
-                  🏃 體適能歷年紀錄 (<span id="testCountBadge">0</span>)
-                </button>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tab-t-ach">
-                  🏆 體育榮譽與成就 (<span id="achCountBadge">0</span>)
-                </button>
-              </li>
-            </ul>
 
-            <div class="tab-content">
-              <div class="tab-pane fade show active" id="tab-t-fitness">
-                <div id="fitnessRecordsList" class="d-flex flex-column gap-3"></div>
-              </div>
-              <div class="tab-pane fade" id="tab-t-ach">
-                <div id="achievementsList" class="d-flex flex-column gap-3"></div>
-              </div>
+      <!-- ====================================================
+           🎓 學生個人報告頁面 (一般學生專用)
+           ==================================================== -->
+      <div id="view-student" class="d-none">
+        <!-- 學生基本身分卡 -->
+        <div class="app-card p-4 mb-4 border-top border-primary border-4">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h3 class="fw-bold text-primary mb-1" id="stuViewName">載入中...</h3>
+              <p class="text-muted mb-0">
+                班級：<b class="text-dark" id="stuViewClass">--</b> | 
+                學號：<b class="text-dark" id="stuViewClassNo">--</b> | 
+                學生編號：<b class="text-dark" id="stuViewID">--</b>
+              </p>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+              <span class="badge bg-success-subtle text-success fs-6 px-3 py-2 border border-success rounded-pill">
+                <i class="bi bi-check-circle-fill me-1"></i> 學生檔案已驗證
+              </span>
             </div>
           </div>
         </div>
 
-        <!-- 批次匯入 -->
-        <div class="tab-pane fade" id="view-batch-import">
-          <div class="card p-4">
-            <ul class="nav nav-pills mb-3">
-              <li class="nav-item"><button class="nav-link active fw-bold" data-bs-toggle="pill" data-bs-target="#imp-students">1. 學生名單 (7欄)</button></li>
-              <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-fitness">2. 體適能數據 (18欄/可空ID)</button></li>
-              <li class="nav-item"><button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#imp-ach">3. 體育成就 (6欄/可空ID)</button></li>
-            </ul>
-
-            <div class="tab-content">
-              <!-- 1. 學生名單 -->
-              <div class="tab-pane fade show active" id="imp-students">
-                <div class="paste-dropzone mb-3" id="dropStudents">
-                  <h6 class="text-primary fw-bold mb-1">📋 點擊此處按 Ctrl+V 貼上學生名單</h6>
-                  <small class="text-muted">欄位：1.學生編號 | 2.學年 | 3.班別 | 4.學號 | 5.姓名 | 6.性別 | 7.學生電郵</small>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  <span id="countStudents" class="badge bg-secondary">0 筆資料</span>
-                  <button class="btn btn-success" id="btnUploadStudents" disabled>確認寫入學生資料庫</button>
-                </div>
-                <div class="grid-container">
-                  <table class="table table-bordered excel-table" id="tblStudents">
-                    <thead><tr><th>#</th><th>學生編號</th><th>學年</th><th>班別</th><th>學號</th><th>姓名</th><th>性別</th><th>電郵</th></tr></thead>
-                    <tbody><tr><td colspan="8" class="text-center text-muted py-3">請在此處貼上資料</td></tr></tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 2. 體適能 -->
-              <div class="tab-pane fade" id="imp-fitness">
-                <div class="paste-dropzone mb-3" id="dropFitness">
-                  <h6 class="text-primary fw-bold mb-1">⚡ 點擊此處按 Ctrl+V 貼上體適能數據 (18 欄)</h6>
-                  <small class="text-muted">第一欄 ID 若留空，系統將自動生成</small>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  <span id="countFitness" class="badge bg-secondary">0 筆資料</span>
-                  <button class="btn btn-success" id="btnUploadFitness" disabled>確認寫入體適能資料庫</button>
-                </div>
-                <div class="grid-container">
-                  <table class="table table-bordered excel-table" id="tblFitness">
-                    <thead>
-                      <tr>
-                        <th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學期</th><th>4.學生編號</th><th>5.身高</th><th>6.體重</th>
-                        <th>7.9分鐘跑</th><th>8.左握力</th><th>9.右握力</th><th>10.仰臥起坐</th><th>11.坐地前伸</th><th>12.折返跑</th>
-                        <th>13.單腳站立</th><th>14.拋接球</th><th>15.跳遠</th><th>16.跳高</th><th>17.30米跑</th><th>18.抓直尺</th>
-                      </tr>
-                    </thead>
-                    <tbody><tr><td colspan="19" class="text-center text-muted py-3">請在此處貼上資料</td></tr></tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 3. 成就 -->
-              <div class="tab-pane fade" id="imp-ach">
-                <div class="paste-dropzone mb-3" id="dropAch">
-                  <h6 class="text-primary fw-bold mb-1">🏆 點擊此處按 Ctrl+V 貼上體育成就 (6 欄)</h6>
-                  <small class="text-muted">欄位：1.ID(選填) | 2.學年 | 3.學生編號 | 4.比賽名稱 | 5.成績 | 6.榮譽</small>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  <span id="countAch" class="badge bg-secondary">0 筆資料</span>
-                  <button class="btn btn-success" id="btnUploadAch" disabled>確認寫入成就資料庫</button>
-                </div>
-                <div class="grid-container">
-                  <table class="table table-bordered excel-table" id="tblAch">
-                    <thead><tr><th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學生編號</th><th>4.比賽名稱</th><th>5.成績</th><th>6.榮譽</th></tr></thead>
-                    <tbody><tr><td colspan="7" class="text-center text-muted py-3">請在此處貼上資料</td></tr></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+        <!-- 體能測驗卡片清單 -->
+        <div class="app-card p-4 mb-4">
+          <h5 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i> 我的歷年體適能測驗紀錄</h5>
+          <div id="stuFitnessContainer" class="d-flex flex-column gap-3">
+            <div class="text-center py-4 text-muted">正在載入您的測驗數據...</div>
           </div>
         </div>
-      </div>
-    </div>
 
-
-    <!-- ========================================================
-         PAGE 3: 學生個人專屬報告頁面 (只讀)
-         ======================================================== -->
-    <div id="view-student" style="display: none;">
-      <div class="card p-4 mb-4 bg-white border-top border-primary border-4">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h3 class="fw-bold text-primary mb-1" id="stuViewName">載入中...</h3>
-            <p class="text-muted mb-0">
-              班別：<b class="text-dark" id="stuViewClass">--</b> | 
-              學號：<b class="text-dark" id="stuViewClassNo">--</b> | 
-              學生編號：<b class="text-dark" id="stuViewID">--</b>
-            </p>
-          </div>
-          <div class="col-md-4 mt-3 mt-md-0 text-md-end">
-            <span class="badge bg-success-subtle text-success fs-6 px-3 py-2 border border-success">
-              <i class="bi bi-person-check-fill"></i> 學生身份已驗證
-            </span>
+        <!-- 成就清單 -->
+        <div class="app-card p-4 mb-4">
+          <h5 class="fw-bold mb-3"><i class="bi bi-trophy-fill text-warning me-2"></i> 我的體育代表隊與獲獎紀錄</h5>
+          <div id="stuAchContainer">
+            <div class="text-center py-4 text-muted">暫無體育成就紀錄。</div>
           </div>
         </div>
       </div>
 
-      <div class="card p-4 mb-4">
-        <h5 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-primary"></i> 我的歷年體適能測驗紀錄</h5>
-        <div id="stuFitnessContainer" class="d-flex flex-column gap-3">
-          <div class="text-center py-4 text-muted">正在載入您的測驗數據...</div>
-        </div>
-      </div>
-
-      <div class="card p-4 mb-4">
-        <h5 class="fw-bold mb-3"><i class="bi bi-trophy-fill text-warning"></i> 我的體育比賽與獲獎紀錄</h5>
-        <div id="stuAchContainer">
-          <div class="text-center py-4 text-muted">暫無體育成就紀錄。</div>
-        </div>
-      </div>
-    </div>
-
+    </main>
   </div>
+
 
   <!-- Firebase Modular SDK -->
   <script type="module">
@@ -277,45 +448,42 @@
       getFirestore, doc, collection, query, where, getDocs, updateDoc, deleteDoc, writeBatch, serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // ⚠️ 請務必將以下替換成你 Firebase Console 裡的真實專案設定！
+    // ⚙️ Firebase 設定
     const firebaseConfig = {
-  apiKey: "AIzaSyDHibeqjwzdCwUUS49SdlfMs9bKCPY2M7s",
-  authDomain: "pe-physical-fitness.firebaseapp.com",
-  projectId: "pe-physical-fitness",
-  storageBucket: "pe-physical-fitness.firebasestorage.app",
-  messagingSenderId: "55587846084",
-  appId: "1:55587846084:web:3fe109a9009edf13631691",
-  measurementId: "G-VELK2STM03"
-};
+      apiKey: "AIzaSyDHibeqjwzdCwUUS49SdlfMs9bKCPY2M7s",
+      authDomain: "pe-physical-fitness.firebaseapp.com",
+      projectId: "pe-physical-fitness",
+      storageBucket: "pe-physical-fitness.firebasestorage.app",
+      messagingSenderId: "55587846084",
+      appId: "1:55587846084:web:3fe109a9009edf13631691",
+      measurementId: "G-VELK2STM03"
+    };
 
-
-    // 🔒 3位老師的白名單
+    // 🔒 3 位指定老師白名單
     const TEACHER_EMAILS = [
       "ndcchansy@ndc.edu.hk",
       "ndcfungky@ndc.edu.hk",
       "ndccheukt@ndc.edu.hk"
     ];
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // DOM 元素選取
+    const viewLoading = document.getElementById('view-loading');
+    const viewLogin = document.getElementById('view-login');
+    const appWrapper = document.getElementById('app-wrapper');
+    const viewTeacher = document.getElementById('view-teacher');
+    const viewStudent = document.getElementById('view-student');
+    const currentUserDisplay = document.getElementById('currentUserDisplay');
     const alertBox = document.getElementById('loginAlert');
+
     const showAlert = (msg) => {
       alertBox.innerHTML = msg;
       alertBox.style.display = 'block';
     };
-
-    // 檢查 Firebase Config 是否有填寫
-    if (firebaseConfig.apiKey === "YOUR_API_KEY") {
-      showAlert("⚠️ <b>尚未設定 Firebase 密鑰！</b><br>請在程式碼中的 <code>firebaseConfig</code> 貼上你的 Firebase API Key，系統才能啟用 Google 登入與資料庫連線。");
-    }
-
-    let app, auth, db, provider;
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
-      provider = new GoogleAuthProvider();
-    } catch (e) {
-      showAlert("Firebase 初始化失敗：" + e.message);
-    }
 
     const parseNum = (v) => {
       if (!v && v !== 0) return null;
@@ -325,15 +493,29 @@
       return isNaN(n) ? str : n;
     };
 
-    // ========================================================
-    // 登入狀態監聽與版面分流 (Routing)
-    // ========================================================
-    const viewLogin = document.getElementById('view-login');
-    const viewTeacher = document.getElementById('view-teacher');
-    const viewStudent = document.getElementById('view-student');
-    const mainNavbar = document.getElementById('mainNavbar');
-    const currentUserDisplay = document.getElementById('currentUserDisplay');
+    // 🚀 核心視圖切換器 (保證畫面絕對不重疊)
+    function switchView(target) {
+      viewLoading.classList.add('d-none');
+      if (target === 'login') {
+        viewLogin.classList.remove('d-none');
+        viewLogin.classList.add('d-flex');
+        appWrapper.classList.add('d-none');
+      } else if (target === 'teacher') {
+        viewLogin.classList.add('d-none');
+        viewLogin.classList.remove('d-flex');
+        appWrapper.classList.remove('d-none');
+        viewTeacher.classList.remove('d-none');
+        viewStudent.classList.add('d-none');
+      } else if (target === 'student') {
+        viewLogin.classList.add('d-none');
+        viewLogin.classList.remove('d-flex');
+        appWrapper.classList.remove('d-none');
+        viewTeacher.classList.add('d-none');
+        viewStudent.classList.remove('d-none');
+      }
+    }
 
+    // 登入事件
     document.getElementById('btnLoginGoogle').addEventListener('click', async () => {
       alertBox.style.display = 'none';
       try {
@@ -343,51 +525,40 @@
       }
     });
 
+    // 登出事件
     document.getElementById('btnLogout').addEventListener('click', () => {
       signOut(auth);
     });
 
-    if (auth) {
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-          // 未登入：強制只顯示登入頁面
-          viewLogin.style.display = 'flex';
-          viewTeacher.style.display = 'none';
-          viewStudent.style.display = 'none';
-          mainNavbar.style.display = 'none';
-          return;
-        }
+    // 監聽登入狀態
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        switchView('login');
+        return;
+      }
 
-        const email = (user.email || "").toLowerCase().trim();
+      const email = (user.email || "").toLowerCase().trim();
 
-        // 1. 限制非 @ndc.edu.hk 帳戶登入
-        if (!email.endsWith("@ndc.edu.hk")) {
-          alert(`❌ 存取拒絕！\n\n檢測到你的帳號為：${email}\n本系統僅限 @ndc.edu.hk 學校帳戶登入。`);
-          await signOut(auth);
-          return;
-        }
+      // 檢查校園網域
+      if (!email.endsWith("@ndc.edu.hk")) {
+        alert(`❌ 存取拒絕！\n\n檢測到帳號為：${email}\n本系統僅限 @ndc.edu.hk 學校帳戶登入。`);
+        await signOut(auth);
+        return;
+      }
 
-        // 登入成功，隱藏登入頁，顯示導航欄
-        viewLogin.style.display = 'none';
-        mainNavbar.style.display = 'flex';
-
-        // 2. 判斷是否為 3 位老師
-        if (TEACHER_EMAILS.includes(email)) {
-          currentUserDisplay.innerHTML = `<span class="badge bg-warning text-dark me-1">體育科老師</span> ${email}`;
-          viewTeacher.style.display = 'block';
-          viewStudent.style.display = 'none';
-        } else {
-          // 3. 一般學生
-          currentUserDisplay.innerHTML = `<span class="badge bg-light text-dark me-1">學生</span> ${email}`;
-          viewTeacher.style.display = 'none';
-          viewStudent.style.display = 'block';
-          loadStudentPersonalView(email);
-        }
-      });
-    }
+      // 權限分流
+      if (TEACHER_EMAILS.includes(email)) {
+        currentUserDisplay.innerHTML = `<span class="badge bg-warning text-dark me-1">體育科老師</span> ${email}`;
+        switchView('teacher');
+      } else {
+        currentUserDisplay.innerHTML = `<span class="badge bg-primary text-white me-1">學生</span> ${email}`;
+        switchView('student');
+        loadStudentPersonalView(email);
+      }
+    });
 
     // ========================================================
-    // 學生個人報告載入邏輯
+    // 學生個人端載入
     // ========================================================
     async function loadStudentPersonalView(studentEmail) {
       const fitContainer = document.getElementById('stuFitnessContainer');
@@ -409,7 +580,7 @@
         document.getElementById('stuViewClassNo').textContent = `${sData.classNo} 號`;
         document.getElementById('stuViewID').textContent = sData.studentID;
 
-        // 讀取該學生的體適能成績
+        // 讀取體適能
         const qFit = query(collection(db, "pe_tests"), where("studentID", "==", sData.studentID));
         const fitSnap = await getDocs(qFit);
         const fitList = [];
@@ -420,10 +591,10 @@
           fitContainer.innerHTML = `<div class="text-center text-muted py-4">暫無體適能測驗紀錄。</div>`;
         } else {
           fitContainer.innerHTML = fitList.map(r => `
-            <div class="card p-3 border">
+            <div class="fitness-record-card">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge bg-primary fs-6">${r.academicYear || ''} (${r.term || ''})</span>
-                <small class="text-muted">身高: <b>${r.height ?? '-'} cm</b> | 體重: <b>${r.weight ?? '-'} kg</b></small>
+                <span class="badge bg-primary fs-6 px-3 py-1.5">${r.academicYear || ''} (${r.term || ''})</span>
+                <span class="text-muted small">身高: <b>${r.height ?? '-'} cm</b> | 體重: <b>${r.weight ?? '-'} kg</b></span>
               </div>
               <div class="row g-2">
                 <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.run9min ?? '-'}</div><div class="lbl">9分鐘跑 (m)</div></div></div>
@@ -443,7 +614,7 @@
           `).join('');
         }
 
-        // 讀取該學生的體育成就
+        // 讀取成就
         const qAch = query(collection(db, "sports_achievements"), where("studentID", "==", sData.studentID));
         const achSnap = await getDocs(qAch);
         const achList = [];
@@ -453,12 +624,12 @@
           achContainer.innerHTML = `<div class="text-center text-muted py-3">暫無體育成就紀錄。</div>`;
         } else {
           achContainer.innerHTML = achList.map(a => `
-            <div class="card p-3 mb-2 bg-light border">
+            <div class="p-3 mb-2 bg-light border rounded-3">
               <div class="d-flex justify-content-between align-items-center">
                 <span class="badge bg-warning text-dark">${a.academicYear}</span>
                 <span class="fw-bold text-success">${a.honour || ''}</span>
               </div>
-              <h6 class="mt-2 mb-1">${a.competition || ''}</h6>
+              <h6 class="mt-2 mb-1 fw-bold">${a.competition || ''}</h6>
               <small class="text-muted">成績: ${a.results || '-'}</small>
             </div>
           `).join('');
@@ -469,7 +640,7 @@
     }
 
     // ========================================================
-    // 老師管理端邏輯 (搜尋、改錯、匯入)
+    // 老師管理端邏輯
     // ========================================================
     let currentTeacherStudent = null;
 
@@ -518,10 +689,10 @@
 
       const fitContainer = document.getElementById('fitnessRecordsList');
       if (records.length === 0) {
-        fitContainer.innerHTML = `<div class="text-center text-muted p-4 bg-white rounded">暫無此學生的體適能測驗紀錄。</div>`;
+        fitContainer.innerHTML = `<div class="text-center text-muted p-4 bg-white rounded-3 border">暫無此學生的體適能測驗紀錄。</div>`;
       } else {
         fitContainer.innerHTML = records.map(r => `
-          <div class="test-record-card p-3" id="fit-card-${r.docId}">
+          <div class="fitness-record-card p-3" id="fit-card-${r.docId}">
             <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
               <div>
                 <span class="badge bg-primary fs-6 me-2">${r.academicYear || ''}</span>
@@ -529,25 +700,25 @@
                 <small class="text-muted ms-2">ID: <code>${r.docId}</code></small>
               </div>
               <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-success" onclick="updateFitnessRecord('${r.docId}')">💾 儲存修改</button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteFitnessRecord('${r.docId}')">🗑️ 刪除</button>
+                <button class="btn btn-sm btn-success fw-bold" onclick="updateFitnessRecord('${r.docId}')">💾 儲存修改</button>
+                <button class="btn btn-sm btn-outline-danger fw-bold" onclick="deleteFitnessRecord('${r.docId}')">🗑️ 刪除</button>
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-6 col-md-2"><div class="item-label">身高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-height" value="${r.height ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">體重 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-weight" value="${r.weight ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">9分鐘跑 (m)</div><input type="number" class="form-control form-control-sm f-run9min" value="${r.run9min ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">左手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-gripLeft" value="${r.gripLeft ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">右手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-gripRight" value="${r.gripRight ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">仰臥起坐 (次)</div><input type="number" class="form-control form-control-sm f-sitUp" value="${r.sitUp ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">坐地前伸 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-sitAndReach" value="${r.sitAndReach ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">折返跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm f-shuttleRun" value="${r.shuttleRun ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">單腳站立 (秒)</div><input type="number" step="0.1" class="form-control form-control-sm f-balanceOneLeg" value="${r.balanceOneLeg ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">拋接球 (次)</div><input type="number" class="form-control form-control-sm f-ballCatch" value="${r.ballCatch ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">立定跳遠 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-longJump" value="${r.longJump ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">立定跳高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-verticalJump" value="${r.verticalJump ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">30米跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm f-dash30m" value="${r.dash30m ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="item-label">抓直尺 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-rulerDrop" value="${r.rulerDrop ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">身高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-height" value="${r.height ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">體重 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-weight" value="${r.weight ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">9分鐘跑 (m)</div><input type="number" class="form-control form-control-sm f-run9min" value="${r.run9min ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">左手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-gripLeft" value="${r.gripLeft ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">右手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-gripRight" value="${r.gripRight ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">仰臥起坐 (次)</div><input type="number" class="form-control form-control-sm f-sitUp" value="${r.sitUp ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">坐地前伸 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-sitAndReach" value="${r.sitAndReach ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">折返跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm f-shuttleRun" value="${r.shuttleRun ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">單腳站立 (秒)</div><input type="number" step="0.1" class="form-control form-control-sm f-balanceOneLeg" value="${r.balanceOneLeg ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">拋接球 (次)</div><input type="number" class="form-control form-control-sm f-ballCatch" value="${r.ballCatch ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">立定跳遠 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-longJump" value="${r.longJump ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">立定跳高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-verticalJump" value="${r.verticalJump ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">30米跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm f-dash30m" value="${r.dash30m ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">抓直尺 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-rulerDrop" value="${r.rulerDrop ?? ''}"></div>
             </div>
           </div>
         `).join('');
@@ -561,15 +732,15 @@
 
       const achContainer = document.getElementById('achievementsList');
       if (achRecords.length === 0) {
-        achContainer.innerHTML = `<div class="text-center text-muted p-4 bg-white rounded">暫無成就紀錄。</div>`;
+        achContainer.innerHTML = `<div class="text-center text-muted p-4 bg-white rounded-3 border">暫無成就紀錄。</div>`;
       } else {
         achContainer.innerHTML = achRecords.map(r => `
-          <div class="card p-3 mb-2" id="ach-card-${r.docId}">
+          <div class="app-card p-3 mb-2" id="ach-card-${r.docId}">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="badge bg-warning text-dark">${r.academicYear}</span>
               <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-success" onclick="updateAchRecord('${r.docId}')">💾 儲存</button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteAchRecord('${r.docId}')">🗑️ 刪除</button>
+                <button class="btn btn-sm btn-success fw-bold" onclick="updateAchRecord('${r.docId}')">💾 儲存</button>
+                <button class="btn btn-sm btn-outline-danger fw-bold" onclick="deleteAchRecord('${r.docId}')">🗑️ 刪除</button>
               </div>
             </div>
             <div class="row g-2">
@@ -631,7 +802,9 @@
       loadTeacherFitnessRecords(currentTeacherStudent.studentID);
     };
 
-    // Excel 貼上初始化
+    // ========================================================
+    // Excel 批次貼上解析器
+    // ========================================================
     function setupGrid(dropId, tblId, countId, uploadBtnId, colCount, onUpload) {
       const dropzone = document.getElementById(dropId);
       const tbody = document.querySelector(`#${tblId} tbody`);
@@ -661,7 +834,7 @@
         });
 
         countBadge.textContent = `${valid} 筆資料`;
-        countBadge.className = 'badge bg-primary';
+        countBadge.className = 'badge bg-primary px-3 py-2';
         uploadBtn.disabled = valid === 0;
       });
 
@@ -680,8 +853,9 @@
         try {
           await onUpload(rows);
           alert(`🎉 成功寫入 ${rows.length} 筆資料！`);
-          tbody.innerHTML = `<tr><td colspan="${colCount + 1}" class="text-center text-muted py-3">請在此處貼上資料</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="${colCount + 1}" class="text-center text-muted py-4">請在此處貼上資料</td></tr>`;
           countBadge.textContent = '0 筆資料';
+          countBadge.className = 'badge bg-secondary px-3 py-2';
         } catch (err) {
           alert("❌ 寫入失敗：" + err.message);
         } finally {
