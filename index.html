@@ -61,7 +61,7 @@
       background-color: var(--primary-hover);
       border-color: var(--primary-hover);
     }
-    .btn-outline-danger, .btn-outline-primary, .btn-outline-warning {
+    .btn-outline-danger, .btn-outline-primary, .btn-outline-warning, .btn-outline-secondary {
       border-radius: 8px;
     }
 
@@ -165,6 +165,39 @@
       color: #fff;
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
     }
+
+    /* 報告列印樣式優化 */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #modalStudentReport, #modalStudentReport * {
+        visibility: visible;
+      }
+      #modalStudentReport {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .modal-header .btn, .modal-footer, .btn-close {
+        display: none !important;
+      }
+      .modal-dialog {
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
+      .modal-content {
+        border: none !important;
+        box-shadow: none !important;
+      }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -180,7 +213,7 @@
   </div>
 
   <!-- ========================================================
-       狀態 1: 登入頁面 (未登入時顯示)
+       狀態 1: 登入頁面
        ======================================================== -->
   <div id="view-login" class="d-none justify-content-center align-items-center p-3" style="min-height: 100vh;">
     <div class="app-card p-4 p-md-5 text-center" style="max-width: 460px; width: 100%;">
@@ -211,7 +244,7 @@
   </div>
 
   <!-- ========================================================
-       狀態 2 & 3: 系統主內容區 (登入後顯示)
+       狀態 2 & 3: 系統主內容區
        ======================================================== -->
   <div id="app-wrapper" class="d-none min-vh-100 flex-column">
 
@@ -242,11 +275,11 @@
     <main class="container-fluid py-4 flex-grow-1" style="max-width: 1400px;">
 
       <!-- ====================================================
-           👨‍🏫 教師管理後台 (3 位指定老師專用)
+           👨‍🏫 教師管理後台
            ==================================================== -->
       <div id="view-teacher" class="d-none">
 
-        <!-- 🛠️ 測試與 DEMO 管理工具列 (安全獨立) -->
+        <!-- 🛠️ 測試與 DEMO 管理工具列 -->
         <div class="demo-toolbar p-3 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3 shadow-sm">
           <div class="d-flex align-items-center gap-2">
             <span class="badge bg-warning text-dark px-2.5 py-1.5 fw-bold">
@@ -311,8 +344,9 @@
 
             <!-- 學生檔案與體適能卡片 -->
             <div id="teacherStudentProfileArea" style="display: none;">
+              <!-- 學生頭部卡片 (含檢視個人報告按鍵) -->
               <div class="app-card p-4 mb-4 border-start border-primary border-4" id="studentHeaderCard">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                   <div>
                     <div class="d-flex align-items-center gap-2 mb-1">
                       <h4 class="fw-bold text-primary mb-0" id="dispStudentName">--</h4>
@@ -326,6 +360,13 @@
                       性別：<span id="dispSex" class="me-2">--</span>
                       電郵：<span id="dispEmail">--</span>
                     </div>
+                  </div>
+
+                  <!-- 🌟 新增：檢視學生報告按鈕 -->
+                  <div>
+                    <button class="btn btn-primary btn-sm fw-bold px-3 py-2 shadow-sm d-flex align-items-center gap-2 rounded-3" id="btnOpenStudentReportModal">
+                      <i class="bi bi-file-earmark-person-fill fs-6"></i> 檢視學生報告版面
+                    </button>
                   </div>
                 </div>
               </div>
@@ -429,9 +470,8 @@
         </div>
       </div>
 
-
       <!-- ====================================================
-           🎓 學生個人報告頁面 (一般學生專用)
+           🎓 學生登入後的個人報告頁面
            ==================================================== -->
       <div id="view-student" class="d-none">
         <div class="app-card p-4 mb-4 border-top border-primary border-4">
@@ -468,6 +508,34 @@
       </div>
 
     </main>
+  </div>
+
+
+  <!-- ========================================================
+       📑 學生個人體育及體適能報告書 彈出視窗 (Modal)
+       ======================================================== -->
+  <div class="modal fade" id="modalStudentReport" tabindex="-1" aria-labelledby="modalReportTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header bg-light border-bottom px-4 py-3">
+          <h5 class="modal-title fw-bold text-dark d-flex align-items-center gap-2" id="modalReportTitle">
+            <i class="bi bi-file-earmark-medical-fill text-primary"></i> 學生個人體適能與成就報告書
+          </h5>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-dark btn-sm fw-bold px-3" onclick="window.print()">
+              <i class="bi bi-printer-fill me-1"></i> 列印報告 / 另存 PDF
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-4 bg-white" id="modalReportContent">
+          <!-- 動態載入學生報告內容 -->
+        </div>
+        <div class="modal-footer bg-light border-top px-4 py-2">
+          <button type="button" class="btn btn-secondary btn-sm fw-bold px-4 rounded-3" data-bs-dismiss="modal">關閉視窗</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -597,7 +665,6 @@
       try {
         const batch = writeBatch(db);
 
-        // 1. DEMO 學生資料 (陳大文 1A 99 / 李美玲 2B 88)
         const demoStudents = [
           {
             docId: "DEMO_2025-2026_DEMO001",
@@ -610,7 +677,6 @@
         ];
         demoStudents.forEach(s => batch.set(doc(db, "students_core", s.docId), s.data, { merge: true }));
 
-        // 2. DEMO 體適能紀錄 (包含跨學年紀錄)
         const demoTests = [
           {
             docId: "DEMO_FIT_001_1",
@@ -627,7 +693,6 @@
         ];
         demoTests.forEach(t => batch.set(doc(db, "pe_tests", t.docId), t.data, { merge: true }));
 
-        // 3. DEMO 體育成就紀錄
         const demoAchs = [
           {
             docId: "DEMO_ACH_001_1",
@@ -646,12 +711,11 @@
 
         await batch.commit();
 
-        // 自動為搜尋列填入測試資料
         document.getElementById('searchYear').value = "2025-2026";
         document.getElementById('searchClass').value = "1A";
         document.getElementById('searchClassNo').value = "99";
 
-        alert("✅ DEMO 測試資料注入成功！\n\n已自動在搜尋欄填入【2025-2026 / 1A 班 / 99 號 (陳大文)】，點擊「搜尋學生檔案」即可立即檢測各項功能。");
+        alert("✅ DEMO 測試資料注入成功！\n\n已自動在搜尋欄填入【2025-2026 / 1A 班 / 99 號 (陳大文)】，點擊「搜尋學生檔案」即可檢驗。");
       } catch (err) {
         alert("❌ 注入 DEMO 失敗：" + err.message);
       } finally {
@@ -672,7 +736,6 @@
         const batch = writeBatch(db);
         let deletedCount = 0;
 
-        // 查詢所有 isDemo == true 的文件
         const [stuSnap, fitSnap, achSnap] = await Promise.all([
           getDocs(query(collection(db, "students_core"), where("isDemo", "==", true))),
           getDocs(query(collection(db, "pe_tests"), where("isDemo", "==", true))),
@@ -685,7 +748,6 @@
 
         if (deletedCount > 0) {
           await batch.commit();
-          // 如果目前正在檢視 DEMO 學生，關閉該檢視區
           if (currentTeacherStudent && currentTeacherStudent.isDemo) {
             document.getElementById('teacherStudentProfileArea').style.display = 'none';
             currentTeacherStudent = null;
@@ -786,6 +848,8 @@
     // 老師管理端邏輯
     // ========================================================
     let currentTeacherStudent = null;
+    let currentLoadedFitness = [];
+    let currentLoadedAchs = [];
 
     document.getElementById('btnSearch').addEventListener('click', async () => {
       const year = document.getElementById('searchYear').value.trim();
@@ -815,7 +879,6 @@
         document.getElementById('dispSex').textContent = currentTeacherStudent.sex;
         document.getElementById('dispEmail').textContent = currentTeacherStudent.email;
 
-        // 如果是 DEMO 學生，顯示專屬標籤
         const demoTag = document.getElementById('dispDemoTag');
         if (currentTeacherStudent.isDemo) {
           demoTag.style.display = 'inline-block';
@@ -836,6 +899,7 @@
       const records = [];
       fitSnap.forEach(d => records.push({ docId: d.id, ...d.data() }));
       records.sort((a,b) => (b.academicYear || '').localeCompare(a.academicYear || ''));
+      currentLoadedFitness = records;
       document.getElementById('testCountBadge').textContent = records.length;
 
       const fitContainer = document.getElementById('fitnessRecordsList');
@@ -880,6 +944,7 @@
       const achSnap = await getDocs(qAch);
       const achRecords = [];
       achSnap.forEach(d => achRecords.push({ docId: d.id, ...d.data() }));
+      currentLoadedAchs = achRecords;
       document.getElementById('achCountBadge').textContent = achRecords.length;
 
       const achContainer = document.getElementById('achievementsList');
@@ -908,6 +973,127 @@
       }
     }
 
+    // ========================================================
+    // 🌟 彈出式「學生個人報告」渲染邏輯
+    // ========================================================
+    document.getElementById('btnOpenStudentReportModal').addEventListener('click', () => {
+      if (!currentTeacherStudent) return alert("請先搜尋並選取學生！");
+
+      const s = currentTeacherStudent;
+      const modalBody = document.getElementById('modalReportContent');
+
+      // 產生體適能報告 HTML
+      let fitnessHtml = '';
+      if (currentLoadedFitness.length === 0) {
+        fitnessHtml = `<div class="p-4 text-center text-muted bg-light rounded-3">暫無體適能測驗數據</div>`;
+      } else {
+        fitnessHtml = currentLoadedFitness.map(r => {
+          // 計算 BMI
+          let bmiStr = '-';
+          if (r.height && r.weight) {
+            const h_m = r.height / 100;
+            bmiStr = (r.weight / (h_m * h_m)).toFixed(1);
+          }
+
+          return `
+            <div class="border rounded-3 p-3 mb-3 bg-white shadow-sm">
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                <div>
+                  <span class="badge bg-primary fs-6 px-3 py-1.5">${r.academicYear || ''} ${r.term || ''}</span>
+                  ${r.isDemo ? '<span class="badge bg-warning text-dark ms-2">DEMO 測試</span>' : ''}
+                </div>
+                <div class="text-muted small">
+                  身高：<b class="text-dark">${r.height ?? '-'} cm</b> | 
+                  體重：<b class="text-dark">${r.weight ?? '-'} kg</b> | 
+                  BMI：<b class="text-primary">${bmiStr}</b>
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.run9min ?? '-'}</div><div class="lbl">9分鐘跑 (m)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.gripLeft ?? '-'}</div><div class="lbl">左手握力 (kg)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.gripRight ?? '-'}</div><div class="lbl">右手握力 (kg)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.sitUp ?? '-'}</div><div class="lbl">仰臥起坐 (次)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.sitAndReach ?? '-'}</div><div class="lbl">坐地前伸 (cm)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.shuttleRun ?? '-'}</div><div class="lbl">折返跑 (秒)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.balanceOneLeg ?? '-'}</div><div class="lbl">單腳站立 (秒)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.ballCatch ?? '-'}</div><div class="lbl">拋接球 (次)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.longJump ?? '-'}</div><div class="lbl">立定跳遠 (cm)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.verticalJump ?? '-'}</div><div class="lbl">立定跳高 (cm)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.dash30m ?? '-'}</div><div class="lbl">30米跑 (秒)</div></div></div>
+                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.rulerDrop ?? '-'}</div><div class="lbl">抓直尺 (cm)</div></div></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 產生成就 HTML
+      let achHtml = '';
+      if (currentLoadedAchs.length === 0) {
+        achHtml = `<div class="p-3 text-center text-muted bg-light rounded-3">暫無體育代表隊與獲獎成就紀錄</div>`;
+      } else {
+        achHtml = currentLoadedAchs.map(a => `
+          <div class="p-3 mb-2 bg-light border rounded-3 d-flex justify-content-between align-items-center">
+            <div>
+              <span class="badge bg-warning text-dark me-2">${a.academicYear}</span>
+              <strong class="text-dark">${a.competition || ''}</strong>
+              <span class="text-muted small ms-2">(成績: ${a.results || '-'})</span>
+            </div>
+            <span class="fw-bold text-success fs-6">${a.honour || ''}</span>
+          </div>
+        `).join('');
+      }
+
+      // 組合完整報告 HTML
+      modalBody.innerHTML = `
+        <div class="p-2">
+          <!-- 報告抬頭 (列印標準版) -->
+          <div class="text-center pb-3 mb-4 border-bottom border-2">
+            <h4 class="fw-bold text-dark mb-1">新會商會中學 NOTRE DAME COLLEGE</h4>
+            <h5 class="fw-bold text-primary mb-0">體育科 - 學生體適能與體育成就個人報告書</h5>
+          </div>
+
+          <!-- 學生個人資料框 -->
+          <div class="bg-light p-3 rounded-3 border mb-4">
+            <div class="row g-2">
+              <div class="col-6 col-md-3"><strong>學生姓名：</strong> ${s.name} ${s.isDemo ? '<span class="badge bg-warning text-dark">DEMO</span>' : ''}</div>
+              <div class="col-6 col-md-3"><strong>學籍編號：</strong> ${s.studentID}</div>
+              <div class="col-6 col-md-3"><strong>班別 / 學號：</strong> ${s.className} (${s.classNo} 號)</div>
+              <div class="col-6 col-md-3"><strong>學年：</strong> ${s.academicYear}</div>
+            </div>
+          </div>
+
+          <!-- 區塊 1: 體適能紀錄 -->
+          <div class="mb-4">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i> 歷年體適能測驗紀錄</h6>
+            ${fitnessHtml}
+          </div>
+
+          <!-- 區塊 2: 體育成就 -->
+          <div class="mb-4">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-trophy-fill text-warning me-2"></i> 體育代表隊與獲獎紀錄</h6>
+            ${achHtml}
+          </div>
+
+          <!-- 報告底部簽章與備註 (列印時顯著) -->
+          <div class="pt-4 mt-4 border-top text-muted small d-flex justify-content-between align-items-end">
+            <div>
+              <p class="mb-1">發出單位：新會商會中學體育組</p>
+              <p class="mb-0">列印/檢視日期：${new Date().toLocaleDateString('zh-HK')}</p>
+            </div>
+            <div class="text-center" style="min-width: 150px;">
+              <div style="border-bottom: 1px solid #94a3b8; height: 35px; width: 140px; margin: 0 auto;"></div>
+              <small class="d-block mt-1">體育科主任 / 體育科老師簽署</small>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 喚起 Modal
+      const modal = new bootstrap.Modal(document.getElementById('modalStudentReport'));
+      modal.show();
+    });
+
     window.updateFitnessRecord = async function(docId) {
       const card = document.getElementById(`fit-card-${docId}`);
       try {
@@ -929,6 +1115,7 @@
           updatedAt: serverTimestamp()
         });
         alert("✅ 成績已成功更新！");
+        loadTeacherFitnessRecords(currentTeacherStudent.studentID);
       } catch(e) { alert("更新失敗：" + e.message); }
     };
 
@@ -948,6 +1135,7 @@
           updatedAt: serverTimestamp()
         });
         alert("✅ 成就已更新！");
+        loadTeacherFitnessRecords(currentTeacherStudent.studentID);
       } catch(e) { alert("更新失敗：" + e.message); }
     };
 
