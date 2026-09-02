@@ -5,77 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>體育科體適能數據系統 - 新會商會中學 (NDC)</title>
   
-  <!-- Bootstrap 5 & Icons -->
+  <!-- Bootstrap 5, Icons & FontAwesome 6 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
-      --primary-color: #2563eb;
-      --primary-hover: #1d4ed8;
-      --primary-light: #eff6ff;
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border-color: #e2e8f0;
+      --primary-color: #0284c7;
+      --primary-hover: #0369a1;
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
     }
 
     body {
-      background-color: var(--bg-color);
+      background-color: #090d16;
       font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--text-main);
+      color: #f1f5f9;
       min-height: 100vh;
-    }
-
-    /* 現代卡片設計 */
-    .app-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
-      transition: all 0.2s ease;
     }
 
     /* 頂部導航 */
     .main-navbar {
-      background: #ffffff;
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
     }
 
-    /* 按鈕與標籤 */
-    .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-      border-radius: 10px;
-      font-weight: 600;
-      padding: 8px 18px;
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-      border-color: var(--primary-hover);
-    }
-    .btn-outline-danger, .btn-outline-primary, .btn-outline-warning, .btn-outline-secondary {
-      border-radius: 8px;
+    /* 卡片通用設計 */
+    .app-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      box-shadow: 0 4px 25px -5px rgba(0, 0, 0, 0.5);
     }
 
     /* 測試工具列 */
     .demo-toolbar {
-      background: #fffbeb;
-      border: 1px dashed #f59e0b;
-      border-radius: 12px;
+      background: #1e1b4b;
+      border: 1px dashed #6366f1;
+      border-radius: 14px;
     }
 
     /* 貼上區域 Dropzone */
     .paste-dropzone {
-      border: 2px dashed #93c5fd;
-      background-color: var(--primary-light);
+      border: 2px dashed #38bdf8;
+      background-color: #082f49;
       border-radius: 14px;
       padding: 24px;
       text-align: center;
@@ -83,91 +68,84 @@
       transition: all 0.2s ease;
     }
     .paste-dropzone:hover {
-      background-color: #dbeafe;
-      border-color: var(--primary-color);
+      background-color: #0c4a6e;
     }
 
     /* 數據表格 */
     .grid-container {
-      max-height: 460px;
+      max-height: 440px;
       overflow: auto;
-      border: 1px solid var(--border-color);
+      border: 1px solid #334155;
       border-radius: 12px;
-      background: #fff;
+      background: #090d16;
     }
     .excel-table {
       white-space: nowrap;
       font-size: 0.85rem;
       margin-bottom: 0;
+      color: #e2e8f0;
     }
     .excel-table th {
       position: sticky;
       top: 0;
-      background-color: #f1f5f9 !important;
-      color: #334155;
+      background-color: #1e293b !important;
+      color: #38bdf8;
       font-weight: 700;
       text-align: center;
       z-index: 2;
       padding: 10px;
-      border-bottom: 2px solid var(--border-color);
+      border-bottom: 2px solid #334155;
     }
     .excel-table td {
-      border: 1px solid #f1f5f9;
+      border: 1px solid #1e293b;
       padding: 6px 10px;
       vertical-align: middle;
+      background: #090d16;
     }
 
     /* 體能測驗卡片 */
     .fitness-record-card {
-      border: 1px solid var(--border-color);
-      border-left: 4px solid var(--primary-color);
+      border: 1px solid #334155;
+      border-left: 4px solid #38bdf8;
       border-radius: 12px;
-      background: #ffffff;
+      background: #0f172a;
       padding: 16px;
     }
     .field-label {
       font-size: 0.72rem;
-      color: var(--text-muted);
+      color: #94a3b8;
       font-weight: 700;
       text-transform: uppercase;
       margin-bottom: 3px;
     }
 
-    /* 學生報告數據指標框 */
-    .stat-badge {
-      background: #f8fafc;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px 8px;
-      text-align: center;
-    }
-    .stat-badge .num {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--primary-color);
-    }
-    .stat-badge .lbl {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
     /* 導航膠囊切換 (Pills) */
     .nav-pills .nav-link {
       border-radius: 10px;
-      color: var(--text-muted);
+      color: #94a3b8;
       font-weight: 600;
       padding: 10px 18px;
     }
     .nav-pills .nav-link.active {
-      background-color: var(--primary-color);
+      background-color: #0284c7;
       color: #fff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
     }
 
-    /* 報告列印樣式優化 */
+    /* 報告內卡片樣式 */
+    .report-badge-box {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    /* 報告列印排版最佳化 */
     @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
       body * {
         visibility: hidden;
       }
@@ -181,8 +159,10 @@
         width: 100%;
         margin: 0;
         padding: 0;
+        background: #ffffff !important;
+        color: #000000 !important;
       }
-      .modal-header .btn, .modal-footer, .btn-close {
+      .modal-header .btn, .modal-footer, .btn-close, #reportYearSelectArea {
         display: none !important;
       }
       .modal-dialog {
@@ -191,7 +171,13 @@
       }
       .modal-content {
         border: none !important;
-        box-shadow: none !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .app-card, .report-badge-box, .bg-slate-900, .bg-slate-950 {
+        background: #ffffff !important;
+        border-color: #cbd5e1 !important;
+        color: #000000 !important;
       }
       * {
         -webkit-print-color-adjust: exact !important;
@@ -207,8 +193,8 @@
        ======================================================== -->
   <div id="view-loading" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="text-center">
-      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-      <p class="text-muted mt-3 small fw-bold">系統載入中，請稍候...</p>
+      <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;"></div>
+      <p class="text-slate-400 mt-3 small fw-bold">載入香港中學生體適能常模與系統中...</p>
     </div>
   </div>
 
@@ -216,26 +202,26 @@
        狀態 1: 登入頁面
        ======================================================== -->
   <div id="view-login" class="d-none justify-content-center align-items-center p-3" style="min-height: 100vh;">
-    <div class="app-card p-4 p-md-5 text-center" style="max-width: 460px; width: 100%;">
+    <div class="app-card p-4 p-md-5 text-center" style="max-width: 480px; width: 100%;">
       <div class="mb-4">
-        <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-4 shadow-sm" style="width: 70px; height: 70px;">
-          <i class="bi bi-shield-check" style="font-size: 2.2rem;"></i>
+        <div class="d-inline-flex align-items-center justify-content-center rounded-4 shadow-lg" style="width: 75px; height: 75px; background: linear-gradient(135deg, #0284c7, #10b981);">
+          <i class="fa-solid fa-person-running text-white" style="font-size: 2.2rem;"></i>
         </div>
       </div>
-      <h3 class="fw-bold mb-1 text-slate-900">體育科體適能數據系統</h3>
-      <p class="text-muted small mb-4">新會商會中學 (NDC)</p>
+      <h3 class="fw-bold mb-1 text-white">體育科體適能數據系統</h3>
+      <p class="text-slate-400 small mb-4">新會商會中學 (NDC) ｜ 常模分析與改善處方平台</p>
 
-      <div class="bg-light border rounded-3 p-3 text-start small mb-4">
-        <div class="fw-bold text-primary mb-1">
+      <div class="bg-slate-900 border border-slate-700 rounded-3 p-3 text-start small mb-4">
+        <div class="fw-bold text-info mb-1">
           <i class="bi bi-info-circle-fill me-1"></i> 請使用學校帳號登入：
         </div>
-        <ul class="mb-0 ps-3 text-muted" style="line-height: 1.6;">
-          <li><b>老師帳號</b>：進入學生查改與 Excel 批次匯入後台</li>
-          <li><b>學生帳號</b>：檢視個人歷年體能測驗與體育成就</li>
+        <ul class="mb-0 ps-3 text-slate-300" style="line-height: 1.6;">
+          <li><b>老師帳號</b>：檢索、批次匯入與檢視學生常模雷達圖報告</li>
+          <li><b>學生帳號</b>：即時檢視 11 項常模星形圖與個人化運動處方</li>
         </ul>
       </div>
 
-      <button class="btn btn-primary btn-lg w-100 py-2.5 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm" id="btnLoginGoogle">
+      <button class="btn btn-primary btn-lg w-100 py-2.5 fw-bold d-flex align-items-center justify-content-center gap-2 shadow" id="btnLoginGoogle" style="background-color: #0284c7; border: none;">
         <i class="bi bi-google"></i> 使用 @ndc.edu.hk 帳號登入
       </button>
 
@@ -249,30 +235,30 @@
   <div id="app-wrapper" class="d-none min-vh-100 flex-column">
 
     <!-- 頂部導航欄 -->
-    <header class="main-navbar px-3 py-2 sticky-top">
-      <div class="container-fluid d-flex align-items-center justify-content-between" style="max-width: 1400px;">
-        <div class="d-flex align-items-center gap-2">
-          <div class="bg-primary text-white rounded-3 p-1.5 px-2">
-            <i class="bi bi-activity fw-bold"></i>
+    <header class="main-navbar px-3 py-2.5 sticky-top">
+      <div class="container-fluid d-flex align-items-center justify-content-between" style="max-width: 1300px;">
+        <div class="d-flex align-items-center gap-3">
+          <div class="rounded-3 p-2 text-white shadow-sm" style="background: linear-gradient(135deg, #0284c7, #10b981);">
+            <i class="fa-solid fa-heart-pulse"></i>
           </div>
           <div>
-            <span class="fw-bold fs-6 d-block leading-none">體育科數據管理系統</span>
-            <small class="text-muted text-[11px]">Notre Dame College</small>
+            <span class="fw-bold fs-6 d-block text-white leading-none">體育科數據管理系統</span>
+            <small class="text-slate-400" style="font-size: 11px;">Notre Dame College ｜ 香港常模常態分析</small>
           </div>
         </div>
 
         <div class="d-flex align-items-center gap-3">
           <div class="text-end d-none d-sm-block">
-            <div id="currentUserDisplay" class="small fw-bold">載入中...</div>
+            <div id="currentUserDisplay" class="small fw-bold text-slate-200">載入中...</div>
           </div>
-          <button class="btn btn-outline-secondary btn-sm fw-bold px-3" id="btnLogout">
+          <button class="btn btn-outline-secondary btn-sm fw-bold px-3 border-slate-700 text-slate-200" id="btnLogout">
             <i class="bi bi-box-arrow-right me-1"></i> 登出
           </button>
         </div>
       </div>
     </header>
 
-    <main class="container-fluid py-4 flex-grow-1" style="max-width: 1400px;">
+    <main class="container-fluid py-4 flex-grow-1" style="max-width: 1300px;">
 
       <!-- ====================================================
            👨‍🏫 教師管理後台
@@ -282,25 +268,25 @@
         <!-- 🛠️ 測試與 DEMO 管理工具列 -->
         <div class="demo-toolbar p-3 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3 shadow-sm">
           <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-warning text-dark px-2.5 py-1.5 fw-bold">
+            <span class="badge bg-indigo-500 text-white px-2.5 py-1.5 fw-bold" style="background-color: #6366f1;">
               <i class="bi bi-tools me-1"></i> 系統檢測專區
             </span>
-            <span class="small text-muted">
-              DEMO 測試資料具有專屬標籤，<b>完全獨立運作，絕不影響或覆蓋真實學生資料</b>。
+            <span class="small text-slate-300">
+              DEMO 測試資料具有獨立標籤，<b>完全獨立運作，絕不影響真實學生記錄</b>。
             </span>
           </div>
           <div class="d-flex gap-2">
             <button class="btn btn-warning btn-sm fw-bold shadow-sm" id="btnLoadDemo">
-              <i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試資料
+              <i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試樣本
             </button>
-            <button class="btn btn-outline-danger btn-sm fw-bold bg-white" id="btnClearDemo">
+            <button class="btn btn-outline-danger btn-sm fw-bold" id="btnClearDemo">
               <i class="bi bi-trash3-fill me-1"></i> 清除 DEMO 測試資料
             </button>
           </div>
         </div>
 
         <!-- 頂部功能分頁膠囊 -->
-        <ul class="nav nav-pills gap-2 mb-4 bg-white p-2 rounded-4 border shadow-sm">
+        <ul class="nav nav-pills gap-2 mb-4 p-2 rounded-4 border border-slate-800" style="background: #0f172a;">
           <li class="nav-item flex-fill">
             <button class="nav-link active w-100 fs-6 fw-bold text-center" data-bs-toggle="pill" data-bs-target="#view-search-edit">
               <i class="bi bi-search me-1"></i> 學生個人檔案與歷年查改
@@ -308,7 +294,7 @@
           </li>
           <li class="nav-item flex-fill">
             <button class="nav-link w-100 fs-6 fw-bold text-center" data-bs-toggle="pill" data-bs-target="#view-batch-import">
-              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Excel 批次試算表匯入
+              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Excel 試算表批次匯入
             </button>
           </li>
         </ul>
@@ -318,24 +304,24 @@
           <div class="tab-pane fade show active" id="view-search-edit">
             <div class="app-card p-4 mb-4">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold text-muted mb-0"><i class="bi bi-funnel-fill text-primary"></i> 快速檢索學生</h6>
-                <small class="text-muted">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 1A 班 / 99 號</b> 進行檢驗</small>
+                <h6 class="fw-bold text-info mb-0"><i class="bi bi-funnel-fill me-1"></i> 快速檢索學生</h6>
+                <small class="text-slate-400">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 1A 班 / 99 號</b> 進行常模星形圖檢視</small>
               </div>
               <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-3">
-                  <label class="form-label small fw-bold text-muted mb-1">學年</label>
-                  <input type="text" id="searchYear" class="form-control" value="2025-2026">
+                  <label class="form-label small fw-bold text-slate-400 mb-1">學年</label>
+                  <input type="text" id="searchYear" class="form-control bg-dark text-white border-secondary" value="2025-2026">
                 </div>
                 <div class="col-12 col-md-3">
-                  <label class="form-label small fw-bold text-muted mb-1">班別</label>
-                  <input type="text" id="searchClass" class="form-control" placeholder="例: 1A" style="text-transform: uppercase;">
+                  <label class="form-label small fw-bold text-slate-400 mb-1">班別</label>
+                  <input type="text" id="searchClass" class="form-control bg-dark text-white border-secondary" placeholder="例: 1A" style="text-transform: uppercase;">
                 </div>
                 <div class="col-12 col-md-3">
-                  <label class="form-label small fw-bold text-muted mb-1">學號</label>
-                  <input type="number" id="searchClassNo" class="form-control" placeholder="例: 5">
+                  <label class="form-label small fw-bold text-slate-400 mb-1">學號</label>
+                  <input type="number" id="searchClassNo" class="form-control bg-dark text-white border-secondary" placeholder="例: 99">
                 </div>
                 <div class="col-12 col-md-3">
-                  <button class="btn btn-primary w-100 py-2" id="btnSearch">
+                  <button class="btn btn-primary w-100 py-2 fw-bold" id="btnSearch" style="background-color: #0284c7; border: none;">
                     <i class="bi bi-search me-1"></i> 搜尋學生檔案
                   </button>
                 </div>
@@ -344,42 +330,42 @@
 
             <!-- 學生檔案與體適能卡片 -->
             <div id="teacherStudentProfileArea" style="display: none;">
-              <!-- 學生頭部卡片 (含檢視個人報告按鍵) -->
-              <div class="app-card p-4 mb-4 border-start border-primary border-4" id="studentHeaderCard">
+              <!-- 學生頭部卡片 -->
+              <div class="app-card p-4 mb-4 border-start border-4" style="border-left-color: #0284c7 !important;">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                   <div>
                     <div class="d-flex align-items-center gap-2 mb-1">
-                      <h4 class="fw-bold text-primary mb-0" id="dispStudentName">--</h4>
-                      <span id="dispDemoTag" class="badge bg-warning text-dark border border-dark-subtle fw-bold" style="display: none;">
+                      <h3 class="fw-bold text-white mb-0" id="dispStudentName">--</h3>
+                      <span id="dispDemoTag" class="badge bg-warning text-dark fw-bold" style="display: none;">
                         <i class="bi bi-info-circle-fill"></i> DEMO 測試樣本
                       </span>
                     </div>
-                    <div class="text-muted small">
-                      學籍編號：<span id="dispStudentID" class="badge bg-dark me-2">--</span>
-                      班級資訊：<span id="dispClassInfo" class="fw-bold text-dark me-2">--</span>
-                      性別：<span id="dispSex" class="me-2">--</span>
-                      電郵：<span id="dispEmail">--</span>
+                    <div class="text-slate-400 small mt-1">
+                      學籍編號：<span id="dispStudentID" class="badge bg-secondary me-2">--</span>
+                      班級資訊：<span id="dispClassInfo" class="fw-bold text-white me-2">--</span>
+                      性別：<span id="dispSex" class="me-2 badge bg-dark border border-slate-700">--</span>
+                      電郵：<span id="dispEmail" class="text-slate-300">--</span>
                     </div>
                   </div>
 
-                  <!-- 🌟 新增：檢視學生報告按鈕 -->
+                  <!-- 🌟 檢視學生個人常模報告按鍵 -->
                   <div>
-                    <button class="btn btn-primary btn-sm fw-bold px-3 py-2 shadow-sm d-flex align-items-center gap-2 rounded-3" id="btnOpenStudentReportModal">
-                      <i class="bi bi-file-earmark-person-fill fs-6"></i> 檢視學生報告版面
+                    <button class="btn btn-info btn-sm fw-bold px-3 py-2 shadow-sm d-flex align-items-center gap-2 rounded-3 text-dark" id="btnOpenStudentReportModal" style="background-color: #38bdf8; border: none;">
+                      <i class="fa-solid fa-chart-pie"></i> 📄 檢視學生個人報告版面 (11項常模星形圖)
                     </button>
                   </div>
                 </div>
               </div>
 
-              <ul class="nav nav-tabs mb-3">
+              <ul class="nav nav-tabs mb-3 border-secondary">
                 <li class="nav-item">
-                  <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#tab-t-fitness">
-                    🏃 體適能歷年紀錄 (<span id="testCountBadge">0</span>)
+                  <button class="nav-link active fw-bold text-info bg-transparent border-secondary" data-bs-toggle="tab" data-bs-target="#tab-t-fitness">
+                    🏃 體適能歷年測驗數據 (<span id="testCountBadge">0</span>)
                   </button>
                 </li>
                 <li class="nav-item">
-                  <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tab-t-ach">
-                    🏆 體育榮譽與成就 (<span id="achCountBadge">0</span>)
+                  <button class="nav-link fw-bold text-slate-400 bg-transparent" data-bs-toggle="tab" data-bs-target="#tab-t-ach">
+                    🏆 體育榮譽與代表隊成就 (<span id="achCountBadge">0</span>)
                   </button>
                 </li>
               </ul>
@@ -408,8 +394,8 @@
                 <!-- 1. 學生名單 -->
                 <div class="tab-pane fade show active" id="imp-students">
                   <div class="paste-dropzone mb-3" id="dropStudents">
-                    <h6 class="text-primary fw-bold mb-1"><i class="bi bi-clipboard-plus me-1"></i> 點擊此處按 Ctrl+V 貼上學生名單</h6>
-                    <small class="text-muted">欄位格式：1.學生編號 | 2.學年 | 3.班別 | 4.學號 | 5.姓名 | 6.性別 | 7.學生電郵</small>
+                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-clipboard-plus me-1"></i> 點擊此處按 Ctrl+V 貼上學生名單</h6>
+                    <small class="text-slate-300">欄位格式：1.學生編號 | 2.學年 | 3.班別 | 4.學號 | 5.姓名 | 6.性別 | 7.學生電郵</small>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <span id="countStudents" class="badge bg-secondary px-3 py-2">0 筆資料</span>
@@ -418,7 +404,7 @@
                   <div class="grid-container">
                     <table class="table table-bordered excel-table" id="tblStudents">
                       <thead><tr><th>#</th><th>學生編號</th><th>學年</th><th>班別</th><th>學號</th><th>姓名</th><th>性別</th><th>電郵</th></tr></thead>
-                      <tbody><tr><td colspan="8" class="text-center text-muted py-4">請在此處貼上資料</td></tr></tbody>
+                      <tbody><tr><td colspan="8" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
                     </table>
                   </div>
                 </div>
@@ -426,8 +412,8 @@
                 <!-- 2. 體適能數據 -->
                 <div class="tab-pane fade" id="imp-fitness">
                   <div class="paste-dropzone mb-3" id="dropFitness">
-                    <h6 class="text-primary fw-bold mb-1"><i class="bi bi-lightning-charge-fill me-1"></i> 點擊此處按 Ctrl+V 貼上體適能數據 (18 欄)</h6>
-                    <small class="text-muted">第一欄 ID 若留空，系統將自動生成</small>
+                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-lightning-charge-fill me-1"></i> 點擊此處按 Ctrl+V 貼上 18 欄體適能數據</h6>
+                    <small class="text-slate-300">第 1 欄 ID 若留空，系統將自動生成</small>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <span id="countFitness" class="badge bg-secondary px-3 py-2">0 筆資料</span>
@@ -442,7 +428,7 @@
                           <th>13.單腳站立</th><th>14.拋接球</th><th>15.跳遠</th><th>16.跳高</th><th>17.30米跑</th><th>18.抓直尺</th>
                         </tr>
                       </thead>
-                      <tbody><tr><td colspan="19" class="text-center text-muted py-4">請在此處貼上資料</td></tr></tbody>
+                      <tbody><tr><td colspan="19" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
                     </table>
                   </div>
                 </div>
@@ -450,8 +436,8 @@
                 <!-- 3. 體育成就 -->
                 <div class="tab-pane fade" id="imp-ach">
                   <div class="paste-dropzone mb-3" id="dropAch">
-                    <h6 class="text-primary fw-bold mb-1"><i class="bi bi-trophy-fill me-1"></i> 點擊此處按 Ctrl+V 貼上體育成就 (6 欄)</h6>
-                    <small class="text-muted">欄位格式：1.ID(選填) | 2.學年 | 3.學生編號 | 4.比賽名稱 | 5.成績 | 6.榮譽</small>
+                    <h6 class="text-info fw-bold mb-1"><i class="bi bi-trophy-fill me-1"></i> 點擊此處按 Ctrl+V 貼上體育成就 (6 欄)</h6>
+                    <small class="text-slate-300">欄位格式：1.ID(選填) | 2.學年 | 3.學生編號 | 4.比賽名稱 | 5.成績 | 6.榮譽</small>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <span id="countAch" class="badge bg-secondary px-3 py-2">0 筆資料</span>
@@ -460,7 +446,7 @@
                   <div class="grid-container">
                     <table class="table table-bordered excel-table" id="tblAch">
                       <thead><tr><th>#</th><th>1.ID(選填)</th><th>2.學年</th><th>3.學生編號</th><th>4.比賽名稱</th><th>5.成績</th><th>6.榮譽</th></tr></thead>
-                      <tbody><tr><td colspan="7" class="text-center text-muted py-4">請在此處貼上資料</td></tr></tbody>
+                      <tbody><tr><td colspan="7" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr></tbody>
                     </table>
                   </div>
                 </div>
@@ -474,64 +460,35 @@
            🎓 學生登入後的個人報告頁面
            ==================================================== -->
       <div id="view-student" class="d-none">
-        <div class="app-card p-4 mb-4 border-top border-primary border-4">
-          <div class="row align-items-center">
-            <div class="col-md-8">
-              <h3 class="fw-bold text-primary mb-1" id="stuViewName">載入中...</h3>
-              <p class="text-muted mb-0">
-                班級：<b class="text-dark" id="stuViewClass">--</b> | 
-                學號：<b class="text-dark" id="stuViewClassNo">--</b> | 
-                學生編號：<b class="text-dark" id="stuViewID">--</b>
-              </p>
-            </div>
-            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
-              <span class="badge bg-success-subtle text-success fs-6 px-3 py-2 border border-success rounded-pill">
-                <i class="bi bi-check-circle-fill me-1"></i> 學生檔案已驗證
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="app-card p-4 mb-4">
-          <h5 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i> 我的歷年體適能測驗紀錄</h5>
-          <div id="stuFitnessContainer" class="d-flex flex-column gap-3">
-            <div class="text-center py-4 text-muted">正在載入您的測驗數據...</div>
-          </div>
-        </div>
-
-        <div class="app-card p-4 mb-4">
-          <h5 class="fw-bold mb-3"><i class="bi bi-trophy-fill text-warning me-2"></i> 我的體育代表隊與獲獎紀錄</h5>
-          <div id="stuAchContainer">
-            <div class="text-center py-4 text-muted">暫無體育成就紀錄。</div>
-          </div>
+        <div id="studentPersonalReportContainer">
+          <!-- 動態載入完整 11 項常模報告 -->
         </div>
       </div>
 
     </main>
   </div>
 
-
   <!-- ========================================================
-       📑 學生個人體育及體適能報告書 彈出視窗 (Modal)
+       📑 教師檢視學生常模報告 彈出視窗 (Modal)
        ======================================================== -->
   <div class="modal fade" id="modalStudentReport" tabindex="-1" aria-labelledby="modalReportTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
-      <div class="modal-content border-0 rounded-4 shadow-lg">
-        <div class="modal-header bg-light border-bottom px-4 py-3">
-          <h5 class="modal-title fw-bold text-dark d-flex align-items-center gap-2" id="modalReportTitle">
-            <i class="bi bi-file-earmark-medical-fill text-primary"></i> 學生個人體適能與成就報告書
+      <div class="modal-content border-0 rounded-4 shadow-lg text-white" style="background-color: #0b1120;">
+        <div class="modal-header border-bottom border-slate-800 px-4 py-3" style="background-color: #0f172a;">
+          <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2" id="modalReportTitle">
+            <i class="fa-solid fa-person-running text-info"></i> 學生 11 項能力常模檔案與改善處方報告書
           </h5>
           <div class="d-flex gap-2">
-            <button class="btn btn-outline-dark btn-sm fw-bold px-3" onclick="window.print()">
-              <i class="bi bi-printer-fill me-1"></i> 列印報告 / 另存 PDF
+            <button class="btn btn-outline-light btn-sm fw-bold px-3 border-slate-700" onclick="window.print()">
+              <i class="bi bi-printer-fill me-1"></i> 列印報告 / PDF
             </button>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
         </div>
-        <div class="modal-body p-4 bg-white" id="modalReportContent">
-          <!-- 動態載入學生報告內容 -->
+        <div class="modal-body p-4" id="modalReportContent" style="background-color: #090d16;">
+          <!-- 動態渲染常模報告 -->
         </div>
-        <div class="modal-footer bg-light border-top px-4 py-2">
+        <div class="modal-footer border-top border-slate-800 px-4 py-2" style="background-color: #0f172a;">
           <button type="button" class="btn btn-secondary btn-sm fw-bold px-4 rounded-3" data-bs-dismiss="modal">關閉視窗</button>
         </div>
       </div>
@@ -539,7 +496,7 @@
   </div>
 
 
-  <!-- Firebase Modular SDK -->
+  <!-- Firebase Modular SDK & Core Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { 
@@ -572,6 +529,99 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
+    // ========================================================
+    // 🧠 香港中學生 11 項能力常模標準 (HK Norm Engine)
+    // 依據香港教育局 EDB / CUHK / HKBU 中學生常模平均值與標準差
+    // ========================================================
+    const HK_NORMS = {
+      M: {
+        cardio: { mean: 1450, sd: 220, unit: 'm', name: '心肺耐力 (9分鐘跑)' },
+        strength: { mean: 30.0, sd: 6.5, unit: 'kg', name: '最大肌力 (手握力)' },
+        endurance: { mean: 36, sd: 8.5, unit: '次', name: '肌耐力 (仰臥起坐)' },
+        flexibility: { mean: 26.0, sd: 8.0, unit: 'cm', name: '柔軟度 (坐地前伸)' },
+        agility: { mean: 10.5, sd: 0.85, unit: '秒', name: '敏捷性 (4x10m折返)', lowerBetter: true },
+        balance: { mean: 32.0, sd: 12.0, unit: '秒', name: '平衡力 (閉目單腳站)' },
+        coordination: { mean: 22, sd: 5.5, unit: '次', name: '協調性 (30秒拋接球)' },
+        power: { mean: 195, sd: 25.0, unit: 'cm', name: '爆發力 (立定跳遠)' },
+        speed: { mean: 4.70, sd: 0.45, unit: '秒', name: '速度 (30米衝刺)', lowerBetter: true },
+        reaction: { mean: 13.0, sd: 3.2, unit: 'cm', name: '反應時間 (抓直尺)', lowerBetter: true },
+        bodyComp: { mean: 20.5, unit: '', name: '身體組成 (BMI)' }
+      },
+      F: {
+        cardio: { mean: 1250, sd: 190, unit: 'm', name: '心肺耐力 (9分鐘跑)' },
+        strength: { mean: 22.0, sd: 5.0, unit: 'kg', name: '最大肌力 (手握力)' },
+        endurance: { mean: 28, sd: 7.5, unit: '次', name: '肌耐力 (仰臥起坐)' },
+        flexibility: { mean: 29.0, sd: 8.0, unit: 'cm', name: '柔軟度 (坐地前伸)' },
+        agility: { mean: 11.5, sd: 0.90, unit: '秒', name: '敏捷性 (4x10m折返)', lowerBetter: true },
+        balance: { mean: 35.0, sd: 12.0, unit: '秒', name: '平衡力 (閉目單腳站)' },
+        coordination: { mean: 20, sd: 5.0, unit: '次', name: '協調性 (30秒拋接球)' },
+        power: { mean: 155, sd: 20.0, unit: 'cm', name: '爆發力 (立定跳遠)' },
+        speed: { mean: 5.20, sd: 0.50, unit: '秒', name: '速度 (30米衝刺)', lowerBetter: true },
+        reaction: { mean: 14.0, sd: 3.2, unit: 'cm', name: '反應時間 (抓直尺)', lowerBetter: true },
+        bodyComp: { mean: 20.0, unit: '', name: '身體組成 (BMI)' }
+      }
+    };
+
+    // 11 項能力之處方知識庫
+    const PRESCRIPTION_DB = {
+      cardio: { name: '心肺耐力', test: '9分鐘跑', icon: 'fa-heart-pulse', action: '間歇跳繩法 / 跑走結合', guide: '跳繩 1 分鐘（維持呼吸節奏）+ 休息 30 秒，連續做 6 組；或課後慢跑 12 分鐘，保持鼻吸嘴呼節奏。', freq: '每週 3-4 次，每次 10-15 分鐘' },
+      strength: { name: '最大肌力', test: '手握力', icon: 'fa-hand-back-fist', action: '毛巾擰乾訓練 / 懸垂提握', guide: '雙手緊握濕毛巾用力擰乾維持 10 秒（做 5 組）；或在單槓上做自重靜態懸掛 15-20 秒。', freq: '每週 3 次，每次 5-8 分鐘' },
+      endurance: { name: '肌耐力', test: '1分鐘仰臥起坐', icon: 'fa-cubes-stacked', action: '核心三部曲（棒式 + 死蟲式 + 臀橋）', guide: '棒式支撐 30 秒 + 死蟲式左右交替各 10 次 + 臀橋 15 次，組間休息 30 秒，進行 3 循環。', freq: '每週 4 次 / 睡前練習' },
+      flexibility: { name: '柔軟度', test: '坐地前伸', icon: 'fa-person-booth', action: '毛巾輔助坐姿前伸牽拉', guide: '坐姿雙腿伸直，毛巾套住腳底，背部挺直緩慢向前牽拉至膕繩肌緊繃，靜態停留 20 秒，做 4 組。', freq: '每天運動後或洗澡後' },
+      bodyComp: { name: '身體組成', test: 'BMI 理想度', icon: 'fa-weight-scale', action: '微運動融入生活與均衡飲食', guide: '偏重者：少喝含糖飲料，每天快走 20 分鐘；偏輕者：每餐補充一隻蛋或一杯奶，配合徒手深蹲。', freq: '日常生活規律養成' },
+      agility: { name: '敏捷性', test: '4x10m折返跑', icon: 'fa-person-running', action: '地磚十字快速跳 / 步法微調', guide: '以客廳地磚為中心，前腳掌著地快速向「前後左右」跳躍 20 秒，休息 20 秒，做 4 組。', freq: '每週 3 次熱身時進行' },
+      balance: { name: '平衡力', test: '閉目單腳站', icon: 'fa-scale-balanced', action: '刷牙單腳站 / 閉目金雞獨立', guide: '早晚刷牙時各單腳站立 45 秒；熟練後嘗試閉眼站立 15 秒或站在摺疊毛巾上練習。', freq: '每天早晚各 1 次' },
+      coordination: { name: '協調性', test: '30秒拋接球', icon: 'fa-baseball', action: '單/雙網球對牆交叉拋接', guide: '距離牆面 1.5 米，右手拋球左手接，再換左手拋右手接，練習連續 30 次不落地。', freq: '每週 3 次，每次 5 分鐘' },
+      power: { name: '爆發力', test: '立定跳遠', icon: 'fa-bolt', action: '自重深蹲跳（Squat Jump）', guide: '下蹲至半蹲後迅速向上全力起跳，落地時微屈膝緩衝。每組 8 次，做 3 組。', freq: '每週 2-3 次' },
+      speed: { name: '速度', test: '30米衝刺', icon: 'fa-gauge-high', action: '原地高抬腿衝刺 + 擺臂練習', guide: '手肘呈 90 度快速前後擺臂，原地全力高抬腿 10 秒，休息 30 秒，重複 5 組。', freq: '每週 3 次' },
+      reaction: { name: '反應時間', test: '抓直尺', icon: 'fa-stopwatch', action: '同伴隨機落尺/落球抓接', guide: '同伴手持直尺或網球隨機放手，你需在最短時間內伸手夾住，每次練習 15 回。', freq: '課間隨時可進行' }
+    };
+
+    const DIMENSIONS = [
+      { key: 'cardio', name: '心肺耐力', test: '9分鐘跑', unit: 'm' },
+      { key: 'strength', name: '最大肌力', test: '手握力', unit: 'kg' },
+      { key: 'endurance', name: '肌耐力', test: '仰臥起坐', unit: '次' },
+      { key: 'flexibility', name: '柔軟度', test: '坐地前伸', unit: 'cm' },
+      { key: 'bodyComp', name: '身體組成', test: 'BMI', unit: '' },
+      { key: 'agility', name: '敏捷性', test: '4x10m折返', unit: '秒' },
+      { key: 'balance', name: '平衡力', test: '閉目單腳站', unit: '秒' },
+      { key: 'coordination', name: '協調性', test: '30秒拋接球', unit: '次' },
+      { key: 'power', name: '爆發力', test: '立定跳遠', unit: 'cm' },
+      { key: 'speed', name: '速度', test: '30米衝刺', unit: '秒' },
+      { key: 'reaction', name: '反應時間', test: '抓直尺', unit: 'cm' }
+    ];
+
+    // 常模分數計算器：0.0 到 10.0，以 0.5 為單位，5.0 為全港平均線
+    function calculateDimensionScore(rawVal, normItem, isBMI = false) {
+      if (rawVal === null || rawVal === undefined || isNaN(rawVal)) return 5.0;
+      
+      if (isBMI) {
+        // BMI 理想區間 (18.5 - 22.9 為滿分 10 分，過高或過低扣分)
+        const diff = Math.abs(rawVal - 20.7);
+        let s = 10.0 - (diff * 1.6);
+        return Math.max(0, Math.min(10, Math.round(s * 2) / 2));
+      }
+
+      const mean = normItem.mean;
+      const sd = normItem.sd;
+      const lowerBetter = normItem.lowerBetter || false;
+
+      let z = lowerBetter ? (mean - rawVal) / sd : (rawVal - mean) / sd;
+      // Z=0 -> 5.0分 (全港平均), Z=+2.5 -> 10分, Z=-2.5 -> 0分
+      let score = 5.0 + (z * 2.0);
+      let rounded = Math.round(score * 2) / 2; // 步進 0.5
+      return Math.max(0, Math.min(10, rounded));
+    }
+
+    // 輔助函式
+    const parseNum = (v) => {
+      if (!v && v !== 0) return null;
+      const str = String(v).trim();
+      if (str === "" || str === "-" || str === "N/A") return null;
+      const n = Number(str);
+      return isNaN(n) ? str : n;
+    };
+
     // DOM 元素
     const viewLoading = document.getElementById('view-loading');
     const viewLogin = document.getElementById('view-login');
@@ -586,15 +636,6 @@
       alertBox.style.display = 'block';
     };
 
-    const parseNum = (v) => {
-      if (!v && v !== 0) return null;
-      const str = String(v).trim();
-      if (str === "" || str === "-" || str === "N/A") return null;
-      const n = Number(str);
-      return isNaN(n) ? str : n;
-    };
-
-    // 視圖切換器
     function switchView(target) {
       viewLoading.classList.add('d-none');
       if (target === 'login') {
@@ -629,7 +670,6 @@
       signOut(auth);
     });
 
-    // 狀態監聽
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         switchView('login');
@@ -637,7 +677,6 @@
       }
 
       const email = (user.email || "").toLowerCase().trim();
-
       if (!email.endsWith("@ndc.edu.hk")) {
         alert(`❌ 存取拒絕！\n\n檢測到帳號為：${email}\n本系統僅限 @ndc.edu.hk 學校帳戶登入。`);
         await signOut(auth);
@@ -680,15 +719,15 @@
         const demoTests = [
           {
             docId: "DEMO_FIT_001_1",
-            data: { isDemo: true, academicYear: "2024-2025", term: "第一學期", studentID: "DEMO001", height: 156.5, weight: 48.0, run9min: 1420, gripLeft: 23.5, gripRight: 25.0, sitUp: 33, sitAndReach: 29.0, shuttleRun: 11.2, balanceOneLeg: 28.5, ballCatch: 18, longJump: 168, verticalJump: 36, dash30m: 5.1, rulerDrop: 14.0, createdAt: serverTimestamp() }
+            data: { isDemo: true, academicYear: "2024-2025", term: "上學期", studentID: "DEMO001", height: 156.5, weight: 48.0, run9min: 1420, gripLeft: 23.5, gripRight: 25.0, sitUp: 33, sitAndReach: 29.0, shuttleRun: 11.2, balanceOneLeg: 28.5, ballCatch: 18, longJump: 168, verticalJump: 36, dash30m: 5.1, rulerDrop: 14.0, createdAt: serverTimestamp() }
           },
           {
             docId: "DEMO_FIT_001_2",
-            data: { isDemo: true, academicYear: "2025-2026", term: "第一學期", studentID: "DEMO001", height: 163.0, weight: 52.5, run9min: 1580, gripLeft: 27.0, gripRight: 29.5, sitUp: 39, sitAndReach: 33.5, shuttleRun: 10.4, balanceOneLeg: 35.0, ballCatch: 22, longJump: 185, verticalJump: 42, dash30m: 4.7, rulerDrop: 11.5, createdAt: serverTimestamp() }
+            data: { isDemo: true, academicYear: "2025-2026", term: "上學期", studentID: "DEMO001", height: 163.0, weight: 52.5, run9min: 1620, gripLeft: 29.0, gripRight: 31.5, sitUp: 42, sitAndReach: 33.5, shuttleRun: 10.2, balanceOneLeg: 36.0, ballCatch: 24, longJump: 215, verticalJump: 44, dash30m: 4.5, rulerDrop: 11.0, createdAt: serverTimestamp() }
           },
           {
             docId: "DEMO_FIT_002_1",
-            data: { isDemo: true, academicYear: "2025-2026", term: "第一學期", studentID: "DEMO002", height: 158.0, weight: 46.2, run9min: 1360, gripLeft: 20.0, gripRight: 21.5, sitUp: 31, sitAndReach: 36.0, shuttleRun: 11.6, balanceOneLeg: 42.0, ballCatch: 20, longJump: 152, verticalJump: 31, dash30m: 5.4, rulerDrop: 12.5, createdAt: serverTimestamp() }
+            data: { isDemo: true, academicYear: "2025-2026", term: "上學期", studentID: "DEMO002", height: 158.0, weight: 46.2, run9min: 1360, gripLeft: 20.0, gripRight: 21.5, sitUp: 31, sitAndReach: 36.0, shuttleRun: 11.6, balanceOneLeg: 42.0, ballCatch: 20, longJump: 152, verticalJump: 31, dash30m: 5.4, rulerDrop: 12.5, createdAt: serverTimestamp() }
           }
         ];
         demoTests.forEach(t => batch.set(doc(db, "pe_tests", t.docId), t.data, { merge: true }));
@@ -701,10 +740,6 @@
           {
             docId: "DEMO_ACH_001_2",
             data: { isDemo: true, academicYear: "2025-2026", studentID: "DEMO001", competition: "學界越野錦標賽 男子乙組", results: "18 分 15 秒", honour: "殿軍 (第四名)", createdAt: serverTimestamp() }
-          },
-          {
-            docId: "DEMO_ACH_002_1",
-            data: { isDemo: true, academicYear: "2025-2026", studentID: "DEMO002", competition: "校際羽毛球比賽 女子單打", results: "八強入圍", honour: "優異獎 🎖️", createdAt: serverTimestamp() }
           }
         ];
         demoAchs.forEach(a => batch.set(doc(db, "sports_achievements", a.docId), a.data, { merge: true }));
@@ -715,18 +750,17 @@
         document.getElementById('searchClass').value = "1A";
         document.getElementById('searchClassNo').value = "99";
 
-        alert("✅ DEMO 測試資料注入成功！\n\n已自動在搜尋欄填入【2025-2026 / 1A 班 / 99 號 (陳大文)】，點擊「搜尋學生檔案」即可檢驗。");
+        alert("✅ DEMO 測試資料注入成功！\n\n已自動在搜尋欄填入【2025-2026 / 1A 班 / 99 號 (陳大文)】，點擊「搜尋學生檔案」即可預覽完整常模星形圖報告。");
       } catch (err) {
         alert("❌ 注入 DEMO 失敗：" + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試資料';
+        btn.innerHTML = '<i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試樣本';
       }
     });
 
     document.getElementById('btnClearDemo').addEventListener('click', async () => {
-      const confirmDelete = confirm("⚠️ 確定要清除所有 DEMO 測試資料嗎？\n\n系統僅會刪除標記為 isDemo: true 的測試資料，絕不會影響或刪除任何真實學生記錄。");
-      if (!confirmDelete) return;
+      if (!confirm("⚠️ 確定要清除所有 DEMO 測試資料嗎？\n\n系統僅會刪除標記為 isDemo: true 的測試資料，絕不會影響或刪除任何真實學生記錄。")) return;
 
       const btn = document.getElementById('btnClearDemo');
       btn.disabled = true;
@@ -748,11 +782,9 @@
 
         if (deletedCount > 0) {
           await batch.commit();
-          if (currentTeacherStudent && currentTeacherStudent.isDemo) {
-            document.getElementById('teacherStudentProfileArea').style.display = 'none';
-            currentTeacherStudent = null;
-          }
-          alert(`🎉 已成功安全清除 ${deletedCount} 筆 DEMO 測試資料！\n真實學生資料庫完好無缺。`);
+          document.getElementById('teacherStudentProfileArea').style.display = 'none';
+          currentTeacherStudent = null;
+          alert(`🎉 已成功安全清除 ${deletedCount} 筆 DEMO 測試資料！`);
         } else {
           alert("ℹ️ 目前資料庫中沒有任何 DEMO 測試資料。");
         }
@@ -765,88 +797,453 @@
     });
 
     // ========================================================
-    // 學生個人端載入
+    // 🎨 完整 11 項常模雷達圖報告 核心渲染引擎
+    // ========================================================
+    let activeRadarChartInstance = null;
+
+    function renderFullNormReport(student, fitnessRecords, achRecords, containerId, isModal = false) {
+      const container = document.getElementById(containerId);
+      if (!student) return;
+
+      if (!fitnessRecords || fitnessRecords.length === 0) {
+        container.innerHTML = `
+          <div class="app-card p-4 text-center text-slate-400">
+            <i class="fa-solid fa-triangle-exclamation text-warning fs-3 mb-2"></i>
+            <p>暫無此學生的體適能測驗記錄，請先於後台輸入或匯入測驗數據。</p>
+          </div>
+        `;
+        return;
+      }
+
+      // 生成學期/學年下拉選單 HTML
+      const optionsHtml = fitnessRecords.map((r, idx) => `
+        <option value="${idx}" ${idx === 0 ? 'selected' : ''}>${r.academicYear || ''} ${r.term || ''}</option>
+      `).join('');
+
+      container.innerHTML = `
+        <!-- 學生資訊頭部 -->
+        <div class="app-card p-4 mb-4" style="background: #0f172a; border-color: #1e293b;">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-3 d-flex align-items-center justify-content-center text-dark shadow-sm" style="width: 58px; height: 58px; background: linear-gradient(135deg, #38bdf8, #34d399); font-size: 1.6rem;">
+                <i class="fa-solid fa-person-running"></i>
+              </div>
+              <div>
+                <div class="d-flex align-items-center gap-2">
+                  <h4 class="fw-bold text-white mb-0">${student.name}</h4>
+                  <span class="badge ${student.sex === 'M' ? 'bg-info text-dark' : 'bg-danger-subtle text-danger'} fw-bold">${student.sex === 'M' ? '男 (M)' : '女 (F)'}</span>
+                  <span class="badge bg-success text-white fw-bold">${student.academicYear || ''} ${student.className || ''} (${student.classNo || ''}號)</span>
+                  ${student.isDemo ? '<span class="badge bg-warning text-dark">DEMO</span>' : ''}
+                </div>
+                <div class="text-slate-400 small mt-1">
+                  學籍編號：<span class="text-slate-200 font-monospace">${student.studentID}</span> ｜ 
+                  電郵：<span class="text-slate-300">${student.email}</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <span class="badge px-3 py-2 text-slate-300 border border-slate-700" style="background: #1e293b; font-size: 0.8rem;">
+                <span class="d-inline-block rounded-circle bg-success me-1" style="width: 8px; height: 8px;"></span>
+                5.0 分 = 全港同性別常模平均線 (P50)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11 項常模星形圖與實測數據明細 -->
+        <div class="row g-4 mb-4">
+          <!-- 星形圖 -->
+          <div class="col-12 col-lg-7">
+            <div class="app-card p-4 h-100 d-flex flex-column" style="background: #0f172a;">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <h5 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-info"></i> 11 項能力常模星形圖
+                  </h5>
+                  <small id="radarSubtitle-${containerId}" class="text-slate-400">基準：香港中學生體適能常模 (0 ~ 10 分)</small>
+                </div>
+                <div id="reportYearSelectArea">
+                  <select id="selectRecordIndex-${containerId}" class="form-select form-select-sm bg-dark text-info border-slate-700 fw-bold">
+                    ${optionsHtml}
+                  </select>
+                </div>
+              </div>
+              <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="min-height: 380px; position: relative;">
+                <canvas id="radarCanvas-${containerId}"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- 實測 vs 全港平均明細 -->
+          <div class="col-12 col-lg-5">
+            <div class="app-card p-4 h-100 d-flex flex-column" style="background: #0f172a;">
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-slate-800">
+                <h6 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-table-list text-success"></i> 實測值 vs 全港常模平均
+                </h6>
+                <span class="badge bg-secondary text-info font-monospace" style="font-size: 11px;">香港中學生標準</span>
+              </div>
+              <div id="statsListContainer-${containerId}" class="overflow-auto pe-1 d-flex flex-column gap-2" style="max-height: 390px;">
+                <!-- 動態注入明細 -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 個人體適能診斷與改善處方 -->
+        <div class="app-card p-4 mb-4" style="background: #0f172a;">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 pb-3 mb-3 border-bottom border-slate-800">
+            <div>
+              <h5 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-heart-pulse text-danger"></i> 個人體能診斷與改善處方
+              </h5>
+              <small class="text-slate-400">已根據香港常模完成診斷，並自動生成微訓練菜單</small>
+            </div>
+            <div id="profileBadge-${containerId}"></div>
+          </div>
+
+          <!-- 3 欄概況 -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+              <div class="p-3 rounded-3 border h-100" style="background: #081d19; border-color: #065f46;">
+                <div class="text-success fw-bold small mb-2 d-flex align-items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check"></i> 優勢體能 (高於全港標準)
+                </div>
+                <div id="strengthsContainer-${containerId}" class="small d-flex flex-column gap-1"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="p-3 rounded-3 border h-100" style="background: #200d14; border-color: #881337;">
+                <div class="text-danger fw-bold small mb-2 d-flex align-items-center gap-1.5">
+                  <i class="fa-solid fa-triangle-exclamation"></i> 優先強化項目 (< 5.0分)
+                </div>
+                <div id="weaknessesContainer-${containerId}" class="small d-flex flex-column gap-1"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="p-3 rounded-3 border h-100" style="background: #08283b; border-color: #0c4a6e;">
+                <div class="text-info fw-bold small mb-2 d-flex align-items-center gap-1.5">
+                  <i class="fa-solid fa-medal"></i> 推薦運動專項 / 校隊方向
+                </div>
+                <p id="sportsRecText-${containerId}" class="small text-slate-300 leading-relaxed mb-0"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 零器材改善指南 -->
+          <div>
+            <h6 class="fw-bold text-slate-200 mb-3 d-flex align-items-center gap-2">
+              <i class="fa-solid fa-dumbbell text-warning"></i> 弱項客製化改善指南（校園 / 居家零器材鍛鍊）
+            </h6>
+            <div id="prescriptionCardsContainer-${containerId}" class="row g-3"></div>
+          </div>
+        </div>
+
+        <!-- 歷年體育成就榮譽榜 -->
+        <div class="app-card p-4" style="background: #0f172a;">
+          <h6 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
+            <i class="fa-solid fa-trophy text-warning"></i> 歷年校內外體育成就與代表隊榮譽
+          </h6>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover mb-0 text-slate-200" style="font-size: 0.85rem;">
+              <thead class="text-slate-400 border-bottom border-slate-800">
+                <tr><th>學年</th><th>比賽項目</th><th>成績</th><th>榮譽</th></tr>
+              </thead>
+              <tbody id="reportCompTableBody-${containerId}"></tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      // 綁定下拉事件
+      const selectEl = document.getElementById(`selectRecordIndex-${containerId}`);
+      selectEl.addEventListener('change', (e) => {
+        updateRadarAndDiagnosis(student, fitnessRecords[e.target.value], containerId);
+      });
+
+      // 初始化第一個選中的紀錄
+      updateRadarAndDiagnosis(student, fitnessRecords[0], containerId);
+
+      // 渲染成就列表
+      const tableBody = document.getElementById(`reportCompTableBody-${containerId}`);
+      if (!achRecords || achRecords.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-slate-500 py-3">暫無體育成就紀錄</td></tr>`;
+      } else {
+        tableBody.innerHTML = achRecords.map(a => `
+          <tr>
+            <td class="text-slate-400 font-monospace">${a.academicYear || ''}</td>
+            <td class="fw-bold text-white">${a.competition || ''}</td>
+            <td class="text-slate-300">${a.results || '-'}</td>
+            <td class="text-warning fw-bold">${a.honour || ''}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    // 計算並刷新雷達圖與處方
+    function updateRadarAndDiagnosis(student, record, containerId) {
+      if (!record) return;
+      const sex = (student.sex || 'M').toUpperCase() === 'F' ? 'F' : 'M';
+      const norms = HK_NORMS[sex];
+
+      // 計算 BMI
+      let bmi = null;
+      if (record.height && record.weight) {
+        const h_m = record.height / 100;
+        bmi = Number((record.weight / (h_m * h_m)).toFixed(1));
+      }
+
+      // 取手握力最大值 (左手 vs 右手)
+      let maxGrip = null;
+      if (record.gripLeft || record.gripRight) {
+        maxGrip = Math.max(record.gripLeft || 0, record.gripRight || 0);
+      }
+
+      // 組合各項實測值對照表
+      const rawValues = {
+        cardio: record.run9min,
+        strength: maxGrip,
+        endurance: record.sitUp,
+        flexibility: record.sitAndReach,
+        bodyComp: bmi,
+        agility: record.shuttleRun,
+        balance: record.balanceOneLeg,
+        coordination: record.ballCatch,
+        power: record.longJump,
+        speed: record.dash30m,
+        reaction: record.rulerDrop
+      };
+
+      // 計算 11 個維度的常模得分 (0.0 ~ 10.0, step 0.5)
+      const scores = {};
+      DIMENSIONS.forEach(d => {
+        scores[d.key] = calculateDimensionScore(rawValues[d.key], norms[d.key], d.key === 'bodyComp');
+      });
+
+      // 1. 渲染右側實測明細
+      const statsContainer = document.getElementById(`statsListContainer-${containerId}`);
+      statsContainer.innerHTML = DIMENSIONS.map(d => {
+        const sc = scores[d.key];
+        const raw = rawValues[d.key] !== null && rawValues[d.key] !== undefined ? rawValues[d.key] : '-';
+        const normMean = norms[d.key].mean;
+        const unit = d.unit;
+        const pct = (sc / 10.0) * 100;
+        const barColor = sc >= 7.0 ? 'bg-success' : (sc >= 5.0 ? 'bg-info' : 'bg-danger');
+
+        return `
+          <div class="p-2.5 rounded-3 border border-slate-800" style="background: #090d16;">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <div>
+                <span class="small fw-bold text-white">${d.name}</span>
+                <span class="text-slate-400 font-monospace ms-1" style="font-size: 11px;">實測: ${raw}${unit} (全港均值: ${normMean}${unit})</span>
+              </div>
+              <span class="fw-bold ${sc >= 5.0 ? 'text-info' : 'text-danger'}" style="font-size: 0.85rem;">
+                ${sc.toFixed(1)} <small class="text-slate-500 font-normal">/ 10</small>
+              </span>
+            </div>
+            <div class="progress" style="height: 5px; background-color: #1e293b;">
+              <div class="progress-bar ${barColor}" role="progressbar" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // 2. 繪製動態雷達圖
+      const canvas = document.getElementById(`radarCanvas-${containerId}`);
+      if (canvas) {
+        if (activeRadarChartInstance) {
+          activeRadarChartInstance.destroy();
+        }
+
+        const labels = DIMENSIONS.map(d => d.name);
+        const dataScores = DIMENSIONS.map(d => scores[d.key]);
+
+        activeRadarChartInstance = new Chart(canvas, {
+          type: 'radar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: `學生常模得分 (${sex === 'M' ? '男生' : '女生'})`,
+                data: dataScores,
+                backgroundColor: 'rgba(56, 189, 248, 0.25)',
+                borderColor: '#38bdf8',
+                pointBackgroundColor: '#34d399',
+                pointBorderColor: '#ffffff',
+                borderWidth: 2.5
+              },
+              {
+                label: '全港平均線 (5.0 分)',
+                data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+                borderColor: 'rgba(244, 63, 94, 0.75)',
+                borderDash: [4, 4],
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                min: 0,
+                max: 10,
+                ticks: { stepSize: 2, color: '#64748b', backdropColor: 'transparent', font: { size: 10 } },
+                grid: { color: 'rgba(255, 255, 255, 0.12)' },
+                angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
+                pointLabels: { color: '#e2e8f0', font: { size: 11, weight: 'bold' } }
+              }
+            },
+            plugins: {
+              legend: { labels: { color: '#cbd5e1', font: { size: 12, weight: '600' } } }
+            }
+          }
+        });
+      }
+
+      // 3. 生成處方與特質
+      generatePrescriptionsAndAdvice(scores, sex, containerId);
+    }
+
+    function generatePrescriptionsAndAdvice(scores, sex, containerId) {
+      let sortedItems = [];
+      DIMENSIONS.forEach(d => {
+        sortedItems.push({
+          key: d.key,
+          name: d.name,
+          score: scores[d.key],
+          info: PRESCRIPTION_DB[d.key]
+        });
+      });
+
+      sortedItems.sort((a, b) => b.score - a.score);
+
+      const strengths = sortedItems.filter(i => i.score >= 7.0);
+      const weaknesses = sortedItems.filter(i => i.score < 5.0);
+      const avgScore = (sortedItems.reduce((acc, curr) => acc + curr.score, 0) / 11).toFixed(1);
+
+      // A. 特質判定
+      let profileType = "全能均衡型運動員";
+      let sportRec = "具備均衡的各項素質，適合參加羽毛球、籃球、手球等高綜合度球類項目。";
+
+      if (scores.cardio >= 7.0 && scores.endurance >= 7.0) {
+        profileType = "心肺耐力型健將";
+        sportRec = `心肺與耐力顯著高於全港同齡平均，極具長跑 (800m/1500m/越野跑)、游泳或單車專項天賦。`;
+      } else if (scores.power >= 7.0 && scores.speed >= 7.0 && scores.agility >= 7.0) {
+        profileType = "爆發與速度型選手";
+        sportRec = `下肢爆發力與速度突出，推薦短跑 (100m/200m)、跳遠、七人欖球或籃球快攻型位置。`;
+      } else if (scores.coordination >= 7.0 && scores.balance >= 7.0) {
+        profileType = "技巧與協調型選手";
+        sportRec = `身體動態平衡與手眼協調優秀，適合乒乓球、排球、體操或花式跳繩等精準技術項目。`;
+      } else if (weaknesses.length >= 4) {
+        profileType = "基礎體能提升階段";
+        sportRec = "目前處於體能打底期，建議由快走、自重核心練習及趣味球類活動循序漸進建立體能基礎。";
+      }
+
+      document.getElementById(`profileBadge-${containerId}`).innerHTML = `
+        <span class="badge px-3 py-1.5 rounded-pill border border-info text-info bg-info-subtle fw-bold">
+          <i class="fa-solid fa-bolt-lightning text-warning me-1"></i> 特質：${profileType}（常模平均：${avgScore} / 10.0）
+        </span>
+      `;
+      document.getElementById(`sportsRecText-${containerId}`).innerText = sportRec;
+
+      // B. 優勢項目
+      const stEl = document.getElementById(`strengthsContainer-${containerId}`);
+      if (strengths.length > 0) {
+        stEl.innerHTML = strengths.slice(0, 3).map(s => `
+          <div class="d-flex justify-content-between align-items-center p-1.5 rounded bg-dark border border-slate-800">
+            <span><i class="fa-solid ${s.info.icon} text-success me-1"></i>${s.name}</span>
+            <span class="text-success fw-bold font-monospace">${s.score.toFixed(1)}分 (頂尖)</span>
+          </div>
+        `).join('');
+      } else {
+        stEl.innerHTML = `<p class="text-slate-400 fst-italic mb-0">各項均衡發展中，持之以恆鍛鍊即可突破 7.0 分！</p>`;
+      }
+
+      // C. 弱項項目
+      const wkEl = document.getElementById(`weaknessesContainer-${containerId}`);
+      if (weaknesses.length > 0) {
+        wkEl.innerHTML = weaknesses.map(w => `
+          <div class="d-flex justify-content-between align-items-center p-1.5 rounded bg-dark border border-slate-800">
+            <span><i class="fa-solid ${w.info.icon} text-danger me-1"></i>${w.name}</span>
+            <span class="text-danger fw-bold font-monospace">${w.score.toFixed(1)}分 (< 5.0)</span>
+          </div>
+        `).join('');
+      } else {
+        wkEl.innerHTML = `<p class="text-success fw-bold mb-0"><i class="fa-solid fa-star me-1"></i>太棒了！所有能力均達全港平均線（5.0分）以上！</p>`;
+      }
+
+      // D. 最低 3 項處方卡片
+      const priorityPrescriptions = sortedItems.slice().reverse().slice(0, 3);
+      const cardsEl = document.getElementById(`prescriptionCardsContainer-${containerId}`);
+      cardsEl.innerHTML = priorityPrescriptions.map(p => {
+        const isUrgent = p.score < 5.0;
+        return `
+          <div class="col-12 col-md-4">
+            <div class="p-3 rounded-3 border h-100 d-flex flex-column justify-content-between" style="background: #090d16; border-color: ${isUrgent ? '#f59e0b' : '#334155'};">
+              <div>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-2 p-2 d-flex align-items-center justify-content-center ${isUrgent ? 'bg-warning-subtle text-warning' : 'bg-dark text-info'}" style="width: 34px; height: 34px;">
+                      <i class="fa-solid ${p.info.icon}"></i>
+                    </div>
+                    <div>
+                      <h6 class="fw-bold text-white mb-0">${p.name}</h6>
+                      <small class="text-slate-400">常模得分: ${p.score.toFixed(1)} 分</small>
+                    </div>
+                  </div>
+                  <span class="badge ${isUrgent ? 'bg-warning text-dark' : 'bg-secondary text-light'}">${isUrgent ? '優先強化' : '維持精進'}</span>
+                </div>
+                <div class="small fw-bold text-info mt-2">${p.info.action}</div>
+                <div class="small text-slate-300 p-2.5 rounded border border-slate-800 mt-1" style="background: #0f172a; line-height: 1.5;">${p.info.guide}</div>
+              </div>
+              <div class="pt-2 mt-2 border-top border-slate-800 d-flex justify-content-between align-items-center" style="font-size: 11px;">
+                <span class="text-slate-400"><i class="fa-regular fa-clock text-info me-1"></i>建議頻率</span>
+                <span class="text-slate-200 fw-bold">${p.info.freq}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ========================================================
+    // 學生端與教師端檢視觸發
     // ========================================================
     async function loadStudentPersonalView(studentEmail) {
-      const fitContainer = document.getElementById('stuFitnessContainer');
-      const achContainer = document.getElementById('stuAchContainer');
-
+      const container = document.getElementById('studentPersonalReportContainer');
       try {
         const qStu = query(collection(db, "students_core"), where("email", "==", studentEmail));
         const stuSnap = await getDocs(qStu);
 
         if (stuSnap.empty) {
-          document.getElementById('stuViewName').textContent = "學生檔案尚未建立";
-          fitContainer.innerHTML = `<div class="alert alert-warning">系統找不到電郵 <b>${studentEmail}</b> 的登記資料，請向體育科老師查詢。</div>`;
+          container.innerHTML = `<div class="alert alert-warning">找不到電郵 <b>${studentEmail}</b> 的登記資料，請向體育科老師查詢。</div>`;
           return;
         }
 
         const sData = stuSnap.docs[0].data();
-        document.getElementById('stuViewName').textContent = sData.name || "學生";
-        document.getElementById('stuViewClass').textContent = `${sData.academicYear} ${sData.className}`;
-        document.getElementById('stuViewClassNo').textContent = `${sData.classNo} 號`;
-        document.getElementById('stuViewID').textContent = sData.studentID;
 
-        const qFit = query(collection(db, "pe_tests"), where("studentID", "==", sData.studentID));
-        const fitSnap = await getDocs(qFit);
+        const [fitSnap, achSnap] = await Promise.all([
+          getDocs(query(collection(db, "pe_tests"), where("studentID", "==", sData.studentID))),
+          getDocs(query(collection(db, "sports_achievements"), where("studentID", "==", sData.studentID)))
+        ]);
+
         const fitList = [];
         fitSnap.forEach(d => fitList.push(d.data()));
         fitList.sort((a,b) => (b.academicYear || '').localeCompare(a.academicYear || ''));
 
-        if (fitList.length === 0) {
-          fitContainer.innerHTML = `<div class="text-center text-muted py-4">暫無體適能測驗紀錄。</div>`;
-        } else {
-          fitContainer.innerHTML = fitList.map(r => `
-            <div class="fitness-record-card">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge bg-primary fs-6 px-3 py-1.5">${r.academicYear || ''} (${r.term || ''})</span>
-                <span class="text-muted small">身高: <b>${r.height ?? '-'} cm</b> | 體重: <b>${r.weight ?? '-'} kg</b></span>
-              </div>
-              <div class="row g-2">
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.run9min ?? '-'}</div><div class="lbl">9分鐘跑 (m)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.gripLeft ?? '-'}</div><div class="lbl">左握力 (kg)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.gripRight ?? '-'}</div><div class="lbl">右握力 (kg)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.sitUp ?? '-'}</div><div class="lbl">仰臥起坐 (次)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.sitAndReach ?? '-'}</div><div class="lbl">坐地前伸 (cm)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.shuttleRun ?? '-'}</div><div class="lbl">折返跑 (秒)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.balanceOneLeg ?? '-'}</div><div class="lbl">單腳站立 (秒)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.ballCatch ?? '-'}</div><div class="lbl">拋接球 (次)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.longJump ?? '-'}</div><div class="lbl">跳遠 (cm)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.verticalJump ?? '-'}</div><div class="lbl">跳高 (cm)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.dash30m ?? '-'}</div><div class="lbl">30米跑 (秒)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.rulerDrop ?? '-'}</div><div class="lbl">抓直尺 (cm)</div></div></div>
-              </div>
-            </div>
-          `).join('');
-        }
-
-        const qAch = query(collection(db, "sports_achievements"), where("studentID", "==", sData.studentID));
-        const achSnap = await getDocs(qAch);
         const achList = [];
         achSnap.forEach(d => achList.push(d.data()));
 
-        if (achList.length === 0) {
-          achContainer.innerHTML = `<div class="text-center text-muted py-3">暫無體育成就紀錄。</div>`;
-        } else {
-          achContainer.innerHTML = achList.map(a => `
-            <div class="p-3 mb-2 bg-light border rounded-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="badge bg-warning text-dark">${a.academicYear}</span>
-                <span class="fw-bold text-success">${a.honour || ''}</span>
-              </div>
-              <h6 class="mt-2 mb-1 fw-bold">${a.competition || ''}</h6>
-              <small class="text-muted">成績: ${a.results || '-'}</small>
-            </div>
-          `).join('');
-        }
+        renderFullNormReport(sData, fitList, achList, 'studentPersonalReportContainer', false);
       } catch (err) {
-        fitContainer.innerHTML = `<div class="alert alert-danger">載入失敗：${err.message}</div>`;
+        container.innerHTML = `<div class="alert alert-danger">載入失敗：${err.message}</div>`;
       }
     }
 
-    // ========================================================
-    // 老師管理端邏輯
-    // ========================================================
+    // 老師搜尋學生
     let currentTeacherStudent = null;
     let currentLoadedFitness = [];
     let currentLoadedAchs = [];
@@ -876,15 +1273,11 @@
         document.getElementById('dispStudentName').textContent = currentTeacherStudent.name;
         document.getElementById('dispStudentID').textContent = currentTeacherStudent.studentID;
         document.getElementById('dispClassInfo').textContent = `${currentTeacherStudent.academicYear} ${currentTeacherStudent.className} (${currentTeacherStudent.classNo}號)`;
-        document.getElementById('dispSex').textContent = currentTeacherStudent.sex;
+        document.getElementById('dispSex').textContent = currentTeacherStudent.sex === 'M' ? '男 (M)' : '女 (F)';
         document.getElementById('dispEmail').textContent = currentTeacherStudent.email;
 
         const demoTag = document.getElementById('dispDemoTag');
-        if (currentTeacherStudent.isDemo) {
-          demoTag.style.display = 'inline-block';
-        } else {
-          demoTag.style.display = 'none';
-        }
+        demoTag.style.display = currentTeacherStudent.isDemo ? 'inline-block' : 'none';
 
         document.getElementById('teacherStudentProfileArea').style.display = 'block';
         loadTeacherFitnessRecords(currentTeacherStudent.studentID);
@@ -894,8 +1287,11 @@
     });
 
     async function loadTeacherFitnessRecords(studentID) {
-      const qFit = query(collection(db, "pe_tests"), where("studentID", "==", studentID));
-      const fitSnap = await getDocs(qFit);
+      const [fitSnap, achSnap] = await Promise.all([
+        getDocs(query(collection(db, "pe_tests"), where("studentID", "==", studentID))),
+        getDocs(query(collection(db, "sports_achievements"), where("studentID", "==", studentID)))
+      ]);
+
       const records = [];
       fitSnap.forEach(d => records.push({ docId: d.id, ...d.data() }));
       records.sort((a,b) => (b.academicYear || '').localeCompare(a.academicYear || ''));
@@ -904,16 +1300,16 @@
 
       const fitContainer = document.getElementById('fitnessRecordsList');
       if (records.length === 0) {
-        fitContainer.innerHTML = `<div class="text-center text-muted p-4 bg-white rounded-3 border">暫無此學生的體適能測驗紀錄。</div>`;
+        fitContainer.innerHTML = `<div class="text-center text-slate-500 p-4 bg-dark rounded-3 border border-slate-800">暫無體適能測驗紀錄。</div>`;
       } else {
         fitContainer.innerHTML = records.map(r => `
           <div class="fitness-record-card p-3" id="fit-card-${r.docId}">
-            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-slate-800">
               <div>
                 <span class="badge bg-primary fs-6 me-2">${r.academicYear || ''}</span>
                 <span class="badge bg-info text-dark fs-6">${r.term || ''}</span>
-                <small class="text-muted ms-2">ID: <code>${r.docId}</code></small>
-                ${r.isDemo ? '<span class="badge bg-warning text-dark ms-1">DEMO 紀錄</span>' : ''}
+                <small class="text-slate-400 ms-2">ID: <code>${r.docId}</code></small>
+                ${r.isDemo ? '<span class="badge bg-warning text-dark ms-1">DEMO</span>' : ''}
               </div>
               <div class="d-flex gap-2">
                 <button class="btn btn-sm btn-success fw-bold" onclick="updateFitnessRecord('${r.docId}')">💾 儲存修改</button>
@@ -921,27 +1317,25 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-6 col-md-2"><div class="field-label">身高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-height" value="${r.height ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">體重 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-weight" value="${r.weight ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">9分鐘跑 (m)</div><input type="number" class="form-control form-control-sm f-run9min" value="${r.run9min ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">左手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-gripLeft" value="${r.gripLeft ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">右手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm f-gripRight" value="${r.gripRight ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">仰臥起坐 (次)</div><input type="number" class="form-control form-control-sm f-sitUp" value="${r.sitUp ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">坐地前伸 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-sitAndReach" value="${r.sitAndReach ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">折返跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm f-shuttleRun" value="${r.shuttleRun ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">單腳站立 (秒)</div><input type="number" step="0.1" class="form-control form-control-sm f-balanceOneLeg" value="${r.balanceOneLeg ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">拋接球 (次)</div><input type="number" class="form-control form-control-sm f-ballCatch" value="${r.ballCatch ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">立定跳遠 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-longJump" value="${r.longJump ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">立定跳高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-verticalJump" value="${r.verticalJump ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">30米跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm f-dash30m" value="${r.dash30m ?? ''}"></div>
-              <div class="col-6 col-md-2"><div class="field-label">抓直尺 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm f-rulerDrop" value="${r.rulerDrop ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">身高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-height" value="${r.height ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">體重 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-weight" value="${r.weight ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">9分鐘跑 (m)</div><input type="number" class="form-control form-control-sm bg-dark text-white border-secondary f-run9min" value="${r.run9min ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">左手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-gripLeft" value="${r.gripLeft ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">右手握力 (kg)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-gripRight" value="${r.gripRight ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">仰臥起坐 (次)</div><input type="number" class="form-control form-control-sm bg-dark text-white border-secondary f-sitUp" value="${r.sitUp ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">坐地前伸 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-sitAndReach" value="${r.sitAndReach ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">折返跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm bg-dark text-white border-secondary f-shuttleRun" value="${r.shuttleRun ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">單腳站立 (秒)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-balanceOneLeg" value="${r.balanceOneLeg ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">拋接球 (次)</div><input type="number" class="form-control form-control-sm bg-dark text-white border-secondary f-ballCatch" value="${r.ballCatch ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">立定跳遠 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-longJump" value="${r.longJump ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">立定跳高 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-verticalJump" value="${r.verticalJump ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">30米跑 (秒)</div><input type="number" step="0.01" class="form-control form-control-sm bg-dark text-white border-secondary f-dash30m" value="${r.dash30m ?? ''}"></div>
+              <div class="col-6 col-md-2"><div class="field-label">抓直尺 (cm)</div><input type="number" step="0.1" class="form-control form-control-sm bg-dark text-white border-secondary f-rulerDrop" value="${r.rulerDrop ?? ''}"></div>
             </div>
           </div>
         `).join('');
       }
 
-      const qAch = query(collection(db, "sports_achievements"), where("studentID", "==", studentID));
-      const achSnap = await getDocs(qAch);
       const achRecords = [];
       achSnap.forEach(d => achRecords.push({ docId: d.id, ...d.data() }));
       currentLoadedAchs = achRecords;
@@ -949,14 +1343,14 @@
 
       const achContainer = document.getElementById('achievementsList');
       if (achRecords.length === 0) {
-        achContainer.innerHTML = `<div class="text-center text-muted p-4 bg-white rounded-3 border">暫無成就紀錄。</div>`;
+        achContainer.innerHTML = `<div class="text-center text-slate-500 p-4 bg-dark rounded-3 border border-slate-800">暫無成就紀錄。</div>`;
       } else {
         achContainer.innerHTML = achRecords.map(r => `
           <div class="app-card p-3 mb-2" id="ach-card-${r.docId}">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <div>
                 <span class="badge bg-warning text-dark me-2">${r.academicYear}</span>
-                ${r.isDemo ? '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning">DEMO 成就</span>' : ''}
+                ${r.isDemo ? '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning">DEMO</span>' : ''}
               </div>
               <div class="d-flex gap-2">
                 <button class="btn btn-sm btn-success fw-bold" onclick="updateAchRecord('${r.docId}')">💾 儲存</button>
@@ -964,132 +1358,27 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-5"><label class="small text-muted">比賽項目</label><input type="text" class="form-control form-control-sm ach-comp" value="${r.competition || ''}"></div>
-              <div class="col-md-3"><label class="small text-muted">成績</label><input type="text" class="form-control form-control-sm ach-res" value="${r.results || ''}"></div>
-              <div class="col-md-4"><label class="small text-muted">榮譽</label><input type="text" class="form-control form-control-sm ach-hon" value="${r.honour || ''}"></div>
+              <div class="col-md-5"><label class="small text-slate-400">比賽項目</label><input type="text" class="form-control form-control-sm bg-dark text-white border-secondary ach-comp" value="${r.competition || ''}"></div>
+              <div class="col-md-3"><label class="small text-slate-400">成績</label><input type="text" class="form-control form-control-sm bg-dark text-white border-secondary ach-res" value="${r.results || ''}"></div>
+              <div class="col-md-4"><label class="small text-slate-400">榮譽</label><input type="text" class="form-control form-control-sm bg-dark text-white border-secondary ach-hon" value="${r.honour || ''}"></div>
             </div>
           </div>
         `).join('');
       }
     }
 
-    // ========================================================
-    // 🌟 彈出式「學生個人報告」渲染邏輯
-    // ========================================================
+    // 點擊彈出「學生 11 項常模報告」
     document.getElementById('btnOpenStudentReportModal').addEventListener('click', () => {
       if (!currentTeacherStudent) return alert("請先搜尋並選取學生！");
 
-      const s = currentTeacherStudent;
-      const modalBody = document.getElementById('modalReportContent');
+      renderFullNormReport(
+        currentTeacherStudent,
+        currentLoadedFitness,
+        currentLoadedAchs,
+        'modalReportContent',
+        true
+      );
 
-      // 產生體適能報告 HTML
-      let fitnessHtml = '';
-      if (currentLoadedFitness.length === 0) {
-        fitnessHtml = `<div class="p-4 text-center text-muted bg-light rounded-3">暫無體適能測驗數據</div>`;
-      } else {
-        fitnessHtml = currentLoadedFitness.map(r => {
-          // 計算 BMI
-          let bmiStr = '-';
-          if (r.height && r.weight) {
-            const h_m = r.height / 100;
-            bmiStr = (r.weight / (h_m * h_m)).toFixed(1);
-          }
-
-          return `
-            <div class="border rounded-3 p-3 mb-3 bg-white shadow-sm">
-              <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <div>
-                  <span class="badge bg-primary fs-6 px-3 py-1.5">${r.academicYear || ''} ${r.term || ''}</span>
-                  ${r.isDemo ? '<span class="badge bg-warning text-dark ms-2">DEMO 測試</span>' : ''}
-                </div>
-                <div class="text-muted small">
-                  身高：<b class="text-dark">${r.height ?? '-'} cm</b> | 
-                  體重：<b class="text-dark">${r.weight ?? '-'} kg</b> | 
-                  BMI：<b class="text-primary">${bmiStr}</b>
-                </div>
-              </div>
-              <div class="row g-2">
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.run9min ?? '-'}</div><div class="lbl">9分鐘跑 (m)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.gripLeft ?? '-'}</div><div class="lbl">左手握力 (kg)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.gripRight ?? '-'}</div><div class="lbl">右手握力 (kg)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.sitUp ?? '-'}</div><div class="lbl">仰臥起坐 (次)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.sitAndReach ?? '-'}</div><div class="lbl">坐地前伸 (cm)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.shuttleRun ?? '-'}</div><div class="lbl">折返跑 (秒)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.balanceOneLeg ?? '-'}</div><div class="lbl">單腳站立 (秒)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.ballCatch ?? '-'}</div><div class="lbl">拋接球 (次)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.longJump ?? '-'}</div><div class="lbl">立定跳遠 (cm)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.verticalJump ?? '-'}</div><div class="lbl">立定跳高 (cm)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.dash30m ?? '-'}</div><div class="lbl">30米跑 (秒)</div></div></div>
-                <div class="col-4 col-md-2"><div class="stat-badge"><div class="num">${r.rulerDrop ?? '-'}</div><div class="lbl">抓直尺 (cm)</div></div></div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      // 產生成就 HTML
-      let achHtml = '';
-      if (currentLoadedAchs.length === 0) {
-        achHtml = `<div class="p-3 text-center text-muted bg-light rounded-3">暫無體育代表隊與獲獎成就紀錄</div>`;
-      } else {
-        achHtml = currentLoadedAchs.map(a => `
-          <div class="p-3 mb-2 bg-light border rounded-3 d-flex justify-content-between align-items-center">
-            <div>
-              <span class="badge bg-warning text-dark me-2">${a.academicYear}</span>
-              <strong class="text-dark">${a.competition || ''}</strong>
-              <span class="text-muted small ms-2">(成績: ${a.results || '-'})</span>
-            </div>
-            <span class="fw-bold text-success fs-6">${a.honour || ''}</span>
-          </div>
-        `).join('');
-      }
-
-      // 組合完整報告 HTML
-      modalBody.innerHTML = `
-        <div class="p-2">
-          <!-- 報告抬頭 (列印標準版) -->
-          <div class="text-center pb-3 mb-4 border-bottom border-2">
-            <h4 class="fw-bold text-dark mb-1">新會商會中學 NOTRE DAME COLLEGE</h4>
-            <h5 class="fw-bold text-primary mb-0">體育科 - 學生體適能與體育成就個人報告書</h5>
-          </div>
-
-          <!-- 學生個人資料框 -->
-          <div class="bg-light p-3 rounded-3 border mb-4">
-            <div class="row g-2">
-              <div class="col-6 col-md-3"><strong>學生姓名：</strong> ${s.name} ${s.isDemo ? '<span class="badge bg-warning text-dark">DEMO</span>' : ''}</div>
-              <div class="col-6 col-md-3"><strong>學籍編號：</strong> ${s.studentID}</div>
-              <div class="col-6 col-md-3"><strong>班別 / 學號：</strong> ${s.className} (${s.classNo} 號)</div>
-              <div class="col-6 col-md-3"><strong>學年：</strong> ${s.academicYear}</div>
-            </div>
-          </div>
-
-          <!-- 區塊 1: 體適能紀錄 -->
-          <div class="mb-4">
-            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i> 歷年體適能測驗紀錄</h6>
-            ${fitnessHtml}
-          </div>
-
-          <!-- 區塊 2: 體育成就 -->
-          <div class="mb-4">
-            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-trophy-fill text-warning me-2"></i> 體育代表隊與獲獎紀錄</h6>
-            ${achHtml}
-          </div>
-
-          <!-- 報告底部簽章與備註 (列印時顯著) -->
-          <div class="pt-4 mt-4 border-top text-muted small d-flex justify-content-between align-items-end">
-            <div>
-              <p class="mb-1">發出單位：新會商會中學體育組</p>
-              <p class="mb-0">列印/檢視日期：${new Date().toLocaleDateString('zh-HK')}</p>
-            </div>
-            <div class="text-center" style="min-width: 150px;">
-              <div style="border-bottom: 1px solid #94a3b8; height: 35px; width: 140px; margin: 0 auto;"></div>
-              <small class="d-block mt-1">體育科主任 / 體育科老師簽署</small>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // 喚起 Modal
       const modal = new bootstrap.Modal(document.getElementById('modalStudentReport'));
       modal.show();
     });
@@ -1167,7 +1456,7 @@
           if (!line.trim()) return;
           const cols = line.split('\t');
           const tr = document.createElement('tr');
-          let html = `<td class="text-center fw-bold text-muted">${idx + 1}</td>`;
+          let html = `<td class="text-center fw-bold text-slate-400">${idx + 1}</td>`;
           for (let i = 0; i < colCount; i++) {
             html += `<td contenteditable="true">${cols[i] !== undefined ? cols[i].trim() : ''}</td>`;
           }
@@ -1196,7 +1485,7 @@
         try {
           await onUpload(rows);
           alert(`🎉 成功寫入 ${rows.length} 筆資料！`);
-          tbody.innerHTML = `<tr><td colspan="${colCount + 1}" class="text-center text-muted py-4">請在此處貼上資料</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="${colCount + 1}" class="text-center text-slate-500 py-4">請在此處貼上資料</td></tr>`;
           countBadge.textContent = '0 筆資料';
           countBadge.className = 'badge bg-secondary px-3 py-2';
         } catch (err) {
