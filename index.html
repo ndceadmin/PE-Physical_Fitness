@@ -61,8 +61,15 @@
       background-color: var(--primary-hover);
       border-color: var(--primary-hover);
     }
-    .btn-outline-danger {
+    .btn-outline-danger, .btn-outline-primary, .btn-outline-warning {
       border-radius: 8px;
+    }
+
+    /* 測試工具列 */
+    .demo-toolbar {
+      background: #fffbeb;
+      border: 1px dashed #f59e0b;
+      border-radius: 12px;
     }
 
     /* 貼上區域 Dropzone */
@@ -163,7 +170,7 @@
 <body>
 
   <!-- ========================================================
-       狀態 0: 初始化載入中遮罩 (防止畫面閃爍)
+       狀態 0: 初始化載入遮罩
        ======================================================== -->
   <div id="view-loading" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="text-center">
@@ -173,7 +180,7 @@
   </div>
 
   <!-- ========================================================
-       狀態 1: 登入頁面 (未登入時顯示，登入後 100% 隱藏)
+       狀態 1: 登入頁面 (未登入時顯示)
        ======================================================== -->
   <div id="view-login" class="d-none justify-content-center align-items-center p-3" style="min-height: 100vh;">
     <div class="app-card p-4 p-md-5 text-center" style="max-width: 460px; width: 100%;">
@@ -204,7 +211,7 @@
   </div>
 
   <!-- ========================================================
-       狀態 2 & 3: 系統主內容區 (登入後才會顯示)
+       狀態 2 & 3: 系統主內容區 (登入後顯示)
        ======================================================== -->
   <div id="app-wrapper" class="d-none min-vh-100 flex-column">
 
@@ -238,6 +245,27 @@
            👨‍🏫 教師管理後台 (3 位指定老師專用)
            ==================================================== -->
       <div id="view-teacher" class="d-none">
+
+        <!-- 🛠️ 測試與 DEMO 管理工具列 (安全獨立) -->
+        <div class="demo-toolbar p-3 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3 shadow-sm">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-warning text-dark px-2.5 py-1.5 fw-bold">
+              <i class="bi bi-tools me-1"></i> 系統檢測專區
+            </span>
+            <span class="small text-muted">
+              DEMO 測試資料具有專屬標籤，<b>完全獨立運作，絕不影響或覆蓋真實學生資料</b>。
+            </span>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-bold shadow-sm" id="btnLoadDemo">
+              <i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試資料
+            </button>
+            <button class="btn btn-outline-danger btn-sm fw-bold bg-white" id="btnClearDemo">
+              <i class="bi bi-trash3-fill me-1"></i> 清除 DEMO 測試資料
+            </button>
+          </div>
+        </div>
+
         <!-- 頂部功能分頁膠囊 -->
         <ul class="nav nav-pills gap-2 mb-4 bg-white p-2 rounded-4 border shadow-sm">
           <li class="nav-item flex-fill">
@@ -256,7 +284,10 @@
           <!-- 分頁 A：搜尋與成績編輯 -->
           <div class="tab-pane fade show active" id="view-search-edit">
             <div class="app-card p-4 mb-4">
-              <h6 class="fw-bold text-muted mb-3"><i class="bi bi-funnel-fill text-primary"></i> 快速檢索學生</h6>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-muted mb-0"><i class="bi bi-funnel-fill text-primary"></i> 快速檢索學生</h6>
+                <small class="text-muted">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 1A 班 / 99 號</b> 進行檢驗</small>
+              </div>
               <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-3">
                   <label class="form-label small fw-bold text-muted mb-1">學年</label>
@@ -280,10 +311,15 @@
 
             <!-- 學生檔案與體適能卡片 -->
             <div id="teacherStudentProfileArea" style="display: none;">
-              <div class="app-card p-4 mb-4 border-start border-primary border-4">
+              <div class="app-card p-4 mb-4 border-start border-primary border-4" id="studentHeaderCard">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                   <div>
-                    <h4 class="fw-bold mb-1 text-primary" id="dispStudentName">--</h4>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                      <h4 class="fw-bold text-primary mb-0" id="dispStudentName">--</h4>
+                      <span id="dispDemoTag" class="badge bg-warning text-dark border border-dark-subtle fw-bold" style="display: none;">
+                        <i class="bi bi-info-circle-fill"></i> DEMO 測試樣本
+                      </span>
+                    </div>
                     <div class="text-muted small">
                       學籍編號：<span id="dispStudentID" class="badge bg-dark me-2">--</span>
                       班級資訊：<span id="dispClassInfo" class="fw-bold text-dark me-2">--</span>
@@ -398,7 +434,6 @@
            🎓 學生個人報告頁面 (一般學生專用)
            ==================================================== -->
       <div id="view-student" class="d-none">
-        <!-- 學生基本身分卡 -->
         <div class="app-card p-4 mb-4 border-top border-primary border-4">
           <div class="row align-items-center">
             <div class="col-md-8">
@@ -417,7 +452,6 @@
           </div>
         </div>
 
-        <!-- 體能測驗卡片清單 -->
         <div class="app-card p-4 mb-4">
           <h5 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i> 我的歷年體適能測驗紀錄</h5>
           <div id="stuFitnessContainer" class="d-flex flex-column gap-3">
@@ -425,7 +459,6 @@
           </div>
         </div>
 
-        <!-- 成就清單 -->
         <div class="app-card p-4 mb-4">
           <h5 class="fw-bold mb-3"><i class="bi bi-trophy-fill text-warning me-2"></i> 我的體育代表隊與獲獎紀錄</h5>
           <div id="stuAchContainer">
@@ -471,7 +504,7 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // DOM 元素選取
+    // DOM 元素
     const viewLoading = document.getElementById('view-loading');
     const viewLogin = document.getElementById('view-login');
     const appWrapper = document.getElementById('app-wrapper');
@@ -493,7 +526,7 @@
       return isNaN(n) ? str : n;
     };
 
-    // 🚀 核心視圖切換器 (保證畫面絕對不重疊)
+    // 視圖切換器
     function switchView(target) {
       viewLoading.classList.add('d-none');
       if (target === 'login') {
@@ -515,7 +548,6 @@
       }
     }
 
-    // 登入事件
     document.getElementById('btnLoginGoogle').addEventListener('click', async () => {
       alertBox.style.display = 'none';
       try {
@@ -525,12 +557,11 @@
       }
     });
 
-    // 登出事件
     document.getElementById('btnLogout').addEventListener('click', () => {
       signOut(auth);
     });
 
-    // 監聽登入狀態
+    // 狀態監聽
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         switchView('login');
@@ -539,14 +570,12 @@
 
       const email = (user.email || "").toLowerCase().trim();
 
-      // 檢查校園網域
       if (!email.endsWith("@ndc.edu.hk")) {
         alert(`❌ 存取拒絕！\n\n檢測到帳號為：${email}\n本系統僅限 @ndc.edu.hk 學校帳戶登入。`);
         await signOut(auth);
         return;
       }
 
-      // 權限分流
       if (TEACHER_EMAILS.includes(email)) {
         currentUserDisplay.innerHTML = `<span class="badge bg-warning text-dark me-1">體育科老師</span> ${email}`;
         switchView('teacher');
@@ -554,6 +583,122 @@
         currentUserDisplay.innerHTML = `<span class="badge bg-primary text-white me-1">學生</span> ${email}`;
         switchView('student');
         loadStudentPersonalView(email);
+      }
+    });
+
+    // ========================================================
+    // 🛠️ DEMO 測試資料注入與安全清除邏輯
+    // ========================================================
+    document.getElementById('btnLoadDemo').addEventListener('click', async () => {
+      const btn = document.getElementById('btnLoadDemo');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> 寫入 DEMO 中...';
+
+      try {
+        const batch = writeBatch(db);
+
+        // 1. DEMO 學生資料 (陳大文 1A 99 / 李美玲 2B 88)
+        const demoStudents = [
+          {
+            docId: "DEMO_2025-2026_DEMO001",
+            data: { studentID: "DEMO001", academicYear: "2025-2026", className: "1A", classNo: 99, name: "陳大文 (DEMO)", sex: "M", email: "demo.student1@ndc.edu.hk", isDemo: true, updatedAt: serverTimestamp() }
+          },
+          {
+            docId: "DEMO_2025-2026_DEMO002",
+            data: { studentID: "DEMO002", academicYear: "2025-2026", className: "2B", classNo: 88, name: "李美玲 (DEMO)", sex: "F", email: "demo.student2@ndc.edu.hk", isDemo: true, updatedAt: serverTimestamp() }
+          }
+        ];
+        demoStudents.forEach(s => batch.set(doc(db, "students_core", s.docId), s.data, { merge: true }));
+
+        // 2. DEMO 體適能紀錄 (包含跨學年紀錄)
+        const demoTests = [
+          {
+            docId: "DEMO_FIT_001_1",
+            data: { isDemo: true, academicYear: "2024-2025", term: "第一學期", studentID: "DEMO001", height: 156.5, weight: 48.0, run9min: 1420, gripLeft: 23.5, gripRight: 25.0, sitUp: 33, sitAndReach: 29.0, shuttleRun: 11.2, balanceOneLeg: 28.5, ballCatch: 18, longJump: 168, verticalJump: 36, dash30m: 5.1, rulerDrop: 14.0, createdAt: serverTimestamp() }
+          },
+          {
+            docId: "DEMO_FIT_001_2",
+            data: { isDemo: true, academicYear: "2025-2026", term: "第一學期", studentID: "DEMO001", height: 163.0, weight: 52.5, run9min: 1580, gripLeft: 27.0, gripRight: 29.5, sitUp: 39, sitAndReach: 33.5, shuttleRun: 10.4, balanceOneLeg: 35.0, ballCatch: 22, longJump: 185, verticalJump: 42, dash30m: 4.7, rulerDrop: 11.5, createdAt: serverTimestamp() }
+          },
+          {
+            docId: "DEMO_FIT_002_1",
+            data: { isDemo: true, academicYear: "2025-2026", term: "第一學期", studentID: "DEMO002", height: 158.0, weight: 46.2, run9min: 1360, gripLeft: 20.0, gripRight: 21.5, sitUp: 31, sitAndReach: 36.0, shuttleRun: 11.6, balanceOneLeg: 42.0, ballCatch: 20, longJump: 152, verticalJump: 31, dash30m: 5.4, rulerDrop: 12.5, createdAt: serverTimestamp() }
+          }
+        ];
+        demoTests.forEach(t => batch.set(doc(db, "pe_tests", t.docId), t.data, { merge: true }));
+
+        // 3. DEMO 體育成就紀錄
+        const demoAchs = [
+          {
+            docId: "DEMO_ACH_001_1",
+            data: { isDemo: true, academicYear: "2024-2025", studentID: "DEMO001", competition: "校運會 男子丙組 100米", results: "12.85 秒", honour: "冠軍 🥇", createdAt: serverTimestamp() }
+          },
+          {
+            docId: "DEMO_ACH_001_2",
+            data: { isDemo: true, academicYear: "2025-2026", studentID: "DEMO001", competition: "學界越野錦標賽 男子乙組", results: "18 分 15 秒", honour: "殿軍 (第四名)", createdAt: serverTimestamp() }
+          },
+          {
+            docId: "DEMO_ACH_002_1",
+            data: { isDemo: true, academicYear: "2025-2026", studentID: "DEMO002", competition: "校際羽毛球比賽 女子單打", results: "八強入圍", honour: "優異獎 🎖️", createdAt: serverTimestamp() }
+          }
+        ];
+        demoAchs.forEach(a => batch.set(doc(db, "sports_achievements", a.docId), a.data, { merge: true }));
+
+        await batch.commit();
+
+        // 自動為搜尋列填入測試資料
+        document.getElementById('searchYear').value = "2025-2026";
+        document.getElementById('searchClass').value = "1A";
+        document.getElementById('searchClassNo').value = "99";
+
+        alert("✅ DEMO 測試資料注入成功！\n\n已自動在搜尋欄填入【2025-2026 / 1A 班 / 99 號 (陳大文)】，點擊「搜尋學生檔案」即可立即檢測各項功能。");
+      } catch (err) {
+        alert("❌ 注入 DEMO 失敗：" + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-database-fill-add me-1"></i> 注入 DEMO 測試資料';
+      }
+    });
+
+    document.getElementById('btnClearDemo').addEventListener('click', async () => {
+      const confirmDelete = confirm("⚠️ 確定要清除所有 DEMO 測試資料嗎？\n\n系統僅會刪除標記為 isDemo: true 的測試資料，絕不會影響或刪除任何真實學生記錄。");
+      if (!confirmDelete) return;
+
+      const btn = document.getElementById('btnClearDemo');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> 清除中...';
+
+      try {
+        const batch = writeBatch(db);
+        let deletedCount = 0;
+
+        // 查詢所有 isDemo == true 的文件
+        const [stuSnap, fitSnap, achSnap] = await Promise.all([
+          getDocs(query(collection(db, "students_core"), where("isDemo", "==", true))),
+          getDocs(query(collection(db, "pe_tests"), where("isDemo", "==", true))),
+          getDocs(query(collection(db, "sports_achievements"), where("isDemo", "==", true)))
+        ]);
+
+        stuSnap.forEach(d => { batch.delete(d.ref); deletedCount++; });
+        fitSnap.forEach(d => { batch.delete(d.ref); deletedCount++; });
+        achSnap.forEach(d => { batch.delete(d.ref); deletedCount++; });
+
+        if (deletedCount > 0) {
+          await batch.commit();
+          // 如果目前正在檢視 DEMO 學生，關閉該檢視區
+          if (currentTeacherStudent && currentTeacherStudent.isDemo) {
+            document.getElementById('teacherStudentProfileArea').style.display = 'none';
+            currentTeacherStudent = null;
+          }
+          alert(`🎉 已成功安全清除 ${deletedCount} 筆 DEMO 測試資料！\n真實學生資料庫完好無缺。`);
+        } else {
+          alert("ℹ️ 目前資料庫中沒有任何 DEMO 測試資料。");
+        }
+      } catch (err) {
+        alert("❌ 清除 DEMO 失敗：" + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-trash3-fill me-1"></i> 清除 DEMO 測試資料';
       }
     });
 
@@ -580,7 +725,6 @@
         document.getElementById('stuViewClassNo').textContent = `${sData.classNo} 號`;
         document.getElementById('stuViewID').textContent = sData.studentID;
 
-        // 讀取體適能
         const qFit = query(collection(db, "pe_tests"), where("studentID", "==", sData.studentID));
         const fitSnap = await getDocs(qFit);
         const fitList = [];
@@ -614,7 +758,6 @@
           `).join('');
         }
 
-        // 讀取成就
         const qAch = query(collection(db, "sports_achievements"), where("studentID", "==", sData.studentID));
         const achSnap = await getDocs(qAch);
         const achList = [];
@@ -671,8 +814,16 @@
         document.getElementById('dispClassInfo').textContent = `${currentTeacherStudent.academicYear} ${currentTeacherStudent.className} (${currentTeacherStudent.classNo}號)`;
         document.getElementById('dispSex').textContent = currentTeacherStudent.sex;
         document.getElementById('dispEmail').textContent = currentTeacherStudent.email;
-        document.getElementById('teacherStudentProfileArea').style.display = 'block';
 
+        // 如果是 DEMO 學生，顯示專屬標籤
+        const demoTag = document.getElementById('dispDemoTag');
+        if (currentTeacherStudent.isDemo) {
+          demoTag.style.display = 'inline-block';
+        } else {
+          demoTag.style.display = 'none';
+        }
+
+        document.getElementById('teacherStudentProfileArea').style.display = 'block';
         loadTeacherFitnessRecords(currentTeacherStudent.studentID);
       } catch (err) {
         alert("搜尋失敗：" + err.message);
@@ -698,6 +849,7 @@
                 <span class="badge bg-primary fs-6 me-2">${r.academicYear || ''}</span>
                 <span class="badge bg-info text-dark fs-6">${r.term || ''}</span>
                 <small class="text-muted ms-2">ID: <code>${r.docId}</code></small>
+                ${r.isDemo ? '<span class="badge bg-warning text-dark ms-1">DEMO 紀錄</span>' : ''}
               </div>
               <div class="d-flex gap-2">
                 <button class="btn btn-sm btn-success fw-bold" onclick="updateFitnessRecord('${r.docId}')">💾 儲存修改</button>
@@ -737,7 +889,10 @@
         achContainer.innerHTML = achRecords.map(r => `
           <div class="app-card p-3 mb-2" id="ach-card-${r.docId}">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="badge bg-warning text-dark">${r.academicYear}</span>
+              <div>
+                <span class="badge bg-warning text-dark me-2">${r.academicYear}</span>
+                ${r.isDemo ? '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning">DEMO 成就</span>' : ''}
+              </div>
               <div class="d-flex gap-2">
                 <button class="btn btn-sm btn-success fw-bold" onclick="updateAchRecord('${r.docId}')">💾 儲存</button>
                 <button class="btn btn-sm btn-outline-danger fw-bold" onclick="deleteAchRecord('${r.docId}')">🗑️ 刪除</button>
@@ -871,7 +1026,7 @@
         const docRef = doc(db, "students_core", `${r[1]}_${r[0]}`);
         batch.set(docRef, {
           studentID: r[0], academicYear: r[1], className: r[2], classNo: parseNum(r[3]),
-          name: r[4], sex: r[5], email: r[6].toLowerCase(), updatedAt: serverTimestamp()
+          name: r[4], sex: r[5], email: r[6].toLowerCase(), isDemo: false, updatedAt: serverTimestamp()
         }, { merge: true });
       });
       await batch.commit();
@@ -887,7 +1042,7 @@
           gripLeft: parseNum(r[7]), gripRight: parseNum(r[8]), sitUp: parseNum(r[9]),
           sitAndReach: parseNum(r[10]), shuttleRun: parseNum(r[11]), balanceOneLeg: parseNum(r[12]),
           ballCatch: parseNum(r[13]), longJump: parseNum(r[14]), verticalJump: parseNum(r[15]),
-          dash30m: parseNum(r[16]), rulerDrop: parseNum(r[17]), createdAt: serverTimestamp()
+          dash30m: parseNum(r[16]), rulerDrop: parseNum(r[17]), isDemo: false, createdAt: serverTimestamp()
         }, { merge: true });
       });
       await batch.commit();
@@ -899,7 +1054,7 @@
         const docRef = r[0] ? doc(db, "sports_achievements", r[0]) : doc(collection(db, "sports_achievements"));
         batch.set(docRef, {
           academicYear: r[1], studentID: r[2], competition: r[3], results: r[4], honour: r[5],
-          createdAt: serverTimestamp()
+          isDemo: false, createdAt: serverTimestamp()
         }, { merge: true });
       });
       await batch.commit();
