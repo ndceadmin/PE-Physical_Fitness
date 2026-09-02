@@ -3,126 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>學校體適能與體育成就系統</title>
-  <!-- Bootstrap 5 CSS -->
+  <title>體育數據批次匯入系統 (Excel 貼上專用)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background-color: #f8f9fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: none; margin-bottom: 20px; }
-    .paste-box { font-family: monospace; font-size: 0.85rem; height: 160px; }
-    .nav-pills .nav-link.active { background-color: #0d6efd; }
+    body { background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .card { border-radius: 12px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .paste-area { font-family: monospace; font-size: 0.82rem; height: 180px; }
+    .table-preview { max-height: 280px; overflow-y: auto; font-size: 0.8rem; }
   </style>
 </head>
 <body class="p-3 p-md-4">
   <div class="container" style="max-width: 1100px;">
     
-    <!-- 頂部列：使用者資訊與登出 -->
-    <header class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
-      <h4 class="mb-0 text-primary">🏃‍♂️ 體能與體育成就管理系統</h4>
-      <div id="authSection">
-        <button id="btnLogin" class="btn btn-outline-primary" style="display:none;">使用 Google 登入</button>
-        <div id="userInfo" style="display:none;" class="d-flex align-items-center gap-2">
-          <span id="userEmailSpan" class="badge bg-light text-dark border"></span>
-          <span id="userRoleBadge" class="badge bg-secondary"></span>
-          <button id="btnLogout" class="btn btn-sm btn-outline-danger">登出</button>
-        </div>
-      </div>
-    </header>
-
-    <!-- 載入中動畫 -->
-    <div id="loading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2 text-muted">系統載入中，請稍候...</p>
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
+      <h4 class="text-primary mb-0">📥 體育數據批次匯入工具</h4>
+      <span class="badge bg-success p-2">支援 Excel 直接複製貼上</span>
     </div>
 
-    <!-- 1. 學生專屬 Dashboard -->
-    <div id="studentPanel" style="display:none;">
-      <div id="studentProfileContent"></div>
-    </div>
+    <!-- 頁籤選單 -->
+    <ul class="nav nav-pills mb-3 bg-white p-2 rounded shadow-sm" id="importTab" role="tablist">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-students">📋 1. 學生核心資料 (7 欄)</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-fitness">⚡ 2. 體適能測驗數據 (18 欄)</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-achievements">🏆 3. 歷年體育成就 (6 欄)</button>
+      </li>
+    </ul>
 
-    <!-- 2. 老師管理專區 -->
-    <div id="teacherPanel" style="display:none;">
-      <ul class="nav nav-pills mb-3 bg-white p-2 rounded shadow-sm" id="teacherTab" role="tablist">
-        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-search">🔍 1. 查詢學生檔案</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-core">📋 2. 匯入 CORE 名單</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-tests">⚡ 3. 匯入體適能結果</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-achievements">🏆 4. 匯入體育成就(含成績)</button></li>
-      </ul>
-
-      <div class="tab-content">
-        <!-- 老師功能 1: 查詢學生 (支援 學年+班別+學號 或 學生編號) -->
-        <div class="tab-pane fade show active" id="tab-search">
-          <div class="card p-4">
-            <h5 class="card-title mb-3">查找學生歷年體育檔案</h5>
-            <div class="row g-2 mb-3">
-              <div class="col-md-3">
-                <input type="text" id="searchYear" class="form-control" placeholder="學年 (如 2025-2026)">
-              </div>
-              <div class="col-md-2">
-                <input type="text" id="searchClass" class="form-control" placeholder="班別 (如 1A)">
-              </div>
-              <div class="col-md-2">
-                <input type="number" id="searchClassNo" class="form-control" placeholder="學號 (如 5)">
-              </div>
-              <div class="col-md-3">
-                <button class="btn btn-primary w-100" id="btnSearchByClass">依班級學號搜尋</button>
-              </div>
-            </div>
-            <div class="d-flex align-items-center gap-2 mb-4">
-              <span class="text-muted">或直接輸入學生編號：</span>
-              <input type="text" id="searchStudentID" class="form-control" placeholder="S10201" style="max-width: 180px;">
-              <button class="btn btn-outline-secondary" id="btnSearchByID">依編號搜尋</button>
-            </div>
-            <div id="teacherSearchResult"></div>
+    <div class="tab-content">
+      
+      <!-- ================= 1. 學生核心資料 ================= -->
+      <div class="tab-pane fade show active" id="tab-students">
+        <div class="card p-4 mb-3">
+          <h5>1. 貼上學生基本名單 (CORE)</h5>
+          <div class="alert alert-info py-2 small">
+            <strong>Excel 複製順序（共 7 欄）：</strong><br>
+            <code>學生編號 | 學年 | 班別 | 學號 | 姓名 | 性別 | 學生電郵</code>
+          </div>
+          <textarea id="pasteStudents" class="form-control paste-area mb-3" placeholder="S10201&#9;2025-2026&#9;1A&#9;5&#9;陳大文&#9;M&#9;s10201@school.edu.hk"></textarea>
+          
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" id="btnPreviewStudents">👁️ 預覽解析</button>
+            <button class="btn btn-success" id="btnUploadStudents" disabled>🚀 確認寫入 Firestore</button>
           </div>
         </div>
-
-        <!-- 老師功能 2: 貼上匯入 Core 資料 -->
-        <div class="tab-pane fade" id="tab-core">
-          <div class="card p-4">
-            <h5>📋 批次貼上學生核心資料 (CORE)</h5>
-            <p class="text-muted small">請由 Excel 複製 7 欄直接貼上：<br>
-              <code>學年 | 學生編號 | 班別 | 學號 | 姓名 | 性別 | 學生電郵</code>
-            </p>
-            <textarea id="pasteCore" class="form-control paste-box mb-3" placeholder="2025-2026&#9;S10201&#9;1A&#9;5&#9;陳大文&#9;M&#9;s10201@school.edu.hk"></textarea>
-            <button class="btn btn-success" id="btnUploadCore">確認寫入 Core 資料庫</button>
-          </div>
-        </div>
-
-        <!-- 老師功能 3: 貼上匯入 體適能測試 -->
-        <div class="tab-pane fade" id="tab-tests">
-          <div class="card p-4">
-            <h5>⚡ 批次貼上體適能測試結果</h5>
-            <p class="text-muted small">請由 Excel 複製 5 欄直接貼上：<br>
-              <code>學年 | 學期/次別 | 學生編號 | 抓直尺(cm) | 30秒拋接球(次)</code>
-            </p>
-            <textarea id="pasteTests" class="form-control paste-box mb-3" placeholder="2025-2026&#9;上學期&#9;S10201&#9;12.5&#9;22"></textarea>
-            <button class="btn btn-success" id="btnUploadTests">確認寫入 PE Test 資料庫</button>
-          </div>
-        </div>
-
-        <!-- 老師功能 4: 貼上匯入 體育成就 (含「成績」) -->
-        <div class="tab-pane fade" id="tab-achievements">
-          <div class="card p-4">
-            <h5>🏆 批次貼上校內外體育成就</h5>
-            <p class="text-muted small">請由 Excel 複製 7 欄直接貼上（<strong>已加入成績欄</strong>）：<br>
-              <code>學年 | 學生編號 | 組別 | 比賽名稱 | 項目 | 成績(秒數/距離) | 獲得榮譽</code>
-            </p>
-            <textarea id="pasteAch" class="form-control paste-box mb-3" placeholder="2025-2026&#9;S10201&#9;男甲&#9;全港學界田徑賽&#9;100米&#9;11.82秒&#9;殿軍&#10;2025-2026&#9;S10202&#9;女乙&#9;校運會&#9;跳遠&#9;4.52米&#9;冠軍"></textarea>
-            <button class="btn btn-success" id="btnUploadAch">確認寫入成就資料庫</button>
-          </div>
-        </div>
+        <div id="previewAreaStudents" class="table-preview bg-white p-3 rounded shadow-sm d-none"></div>
       </div>
+
+      <!-- ================= 2. 體適能測驗數據 ================= -->
+      <div class="tab-pane fade" id="tab-fitness">
+        <div class="card p-4 mb-3">
+          <h5>2. 貼上體適能測驗數據 (PE Tests)</h5>
+          <div class="alert alert-info py-2 small">
+            <strong>Excel 複製順序（共 18 欄）：</strong><br>
+            <code>1.記錄欄位 | 2.學年 | 3.學期 | 4.學生編號 | 5.身高 | 6.體重 | 7.9分鐘跑 | 8.左手握力 | 9.右手握力 | 10.仰臥起坐 | 11.坐地前伸 | 12.折返跑 | 13.單腳站立 | 14.拋接球 | 15.立定跳遠 | 16.立定跳高 | 17.30米跑 | 18.抓直尺</code>
+          </div>
+          <textarea id="pasteFitness" class="form-control paste-area mb-3" placeholder="PE2025-01&#9;2025-2026&#9;上學期&#9;S10201&#9;165.5&#9;52&#9;1800&#9;28.5&#9;31&#9;35&#9;28&#9;10.8&#9;45&#9;22&#9;185&#9;42&#9;4.8&#9;12.5"></textarea>
+          
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" id="btnPreviewFitness">👁️ 預覽解析</button>
+            <button class="btn btn-success" id="btnUploadFitness" disabled>🚀 確認寫入 Firestore</button>
+          </div>
+        </div>
+        <div id="previewAreaFitness" class="table-preview bg-white p-3 rounded shadow-sm d-none"></div>
+      </div>
+
+      <!-- ================= 3. 歷年體育成就 ================= -->
+      <div class="tab-pane fade" id="tab-achievements">
+        <div class="card p-4 mb-3">
+          <h5>3. 貼上體育成就與得獎記錄</h5>
+          <div class="alert alert-info py-2 small">
+            <strong>Excel 複製順序（共 6 欄）：</strong><br>
+            <code>1.記錄欄位 | 2.學年 | 3.學生編號 | 4.比賽名稱 | 5.成績 | 6.榮譽</code>
+          </div>
+          <textarea id="pasteAch" class="form-control paste-area mb-3" placeholder="ACH001&#9;2025-2026&#9;S10201&#9;全港學界田徑錦標賽&#9;11.82秒&#9;男子甲組100米 冠軍"></textarea>
+          
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" id="btnPreviewAch">👁️ 預覽解析</button>
+            <button class="btn btn-success" id="btnUploadAch" disabled>🚀 確認寫入 Firestore</button>
+          </div>
+        </div>
+        <div id="previewAreaAch" class="table-preview bg-white p-3 rounded shadow-sm d-none"></div>
+      </div>
+
     </div>
   </div>
 
   <!-- Firebase v10 Modular SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, doc, collection, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // ⚠️ 請替換為您自己的 Firebase Config 物件
+    // ⚠️ 請填入你的 Firebase 設定
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -133,285 +108,232 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
 
-    // DOM 元素
-    const loadingDiv = document.getElementById('loading');
-    const btnLogin = document.getElementById('btnLogin');
-    const btnLogout = document.getElementById('btnLogout');
-    const userInfoDiv = document.getElementById('userInfo');
-    const userEmailSpan = document.getElementById('userEmailSpan');
-    const userRoleBadge = document.getElementById('userRoleBadge');
-    const studentPanel = document.getElementById('studentPanel');
-    const teacherPanel = document.getElementById('teacherPanel');
+    // 輔助工具：處理數值轉型 (遇到空字串或 - 轉為 null，其餘轉 float)
+    const num = (v) => {
+      if (v === undefined || v === null) return null;
+      const str = String(v).trim();
+      if (str === "" || str === "-" || str === "N/A") return null;
+      const n = Number(str);
+      return isNaN(n) ? str : n;
+    };
 
-    // 1. 監聽登入狀態切換
-    onAuthStateChanged(auth, async (user) => {
-      loadingDiv.style.display = 'none';
-      if (user) {
-        btnLogin.style.display = 'none';
-        userInfoDiv.style.display = 'flex';
-        userEmailSpan.textContent = user.email;
-
-        // 檢查是否為老師角色
-        const roleDoc = await getDoc(doc(db, "roles", user.email.toLowerCase()));
-        if (roleDoc.exists() && (roleDoc.data().role === 'teacher' || roleDoc.data().role === 'admin')) {
-          userRoleBadge.textContent = "教職員/管理員";
-          teacherPanel.style.display = 'block';
-          studentPanel.style.display = 'none';
-        } else {
-          // 學生身分：以電郵搜尋學生編號
-          userRoleBadge.textContent = "學生";
-          teacherPanel.style.display = 'none';
-          studentPanel.style.display = 'block';
-          loadStudentDashboardByEmail(user.email);
-        }
-      } else {
-        btnLogin.style.display = 'block';
-        userInfoDiv.style.display = 'none';
-        teacherPanel.style.display = 'none';
-        studentPanel.style.display = 'none';
+    // 輔助工具：批次切片 (防止 Firestore 超過 500 筆上限)
+    async function commitBatchInChunks(records, buildDocCallback) {
+      const CHUNK_SIZE = 400; // 安全分批數量
+      let total = 0;
+      for (let i = 0; i < records.length; i += CHUNK_SIZE) {
+        const chunk = records.slice(i, i + CHUNK_SIZE);
+        const batch = writeBatch(db);
+        chunk.forEach(item => buildDocCallback(batch, item));
+        await batch.commit();
+        total += chunk.length;
       }
-    });
-
-    // 登入/登出按鈕事件
-    btnLogin.addEventListener('click', () => signInWithPopup(auth, provider).catch(err => alert(err.message)));
-    btnLogout.addEventListener('click', () => signOut(auth));
-
-    // 2. 學生載入個人 Dashboard
-    async function loadStudentDashboardByEmail(email) {
-      const q = query(collection(db, "students_core"), where("email", "==", email.toLowerCase()));
-      const snap = await getDocs(q);
-      if (snap.empty) {
-        document.getElementById('studentProfileContent').innerHTML = `
-          <div class="alert alert-warning">查無此 Google 電郵對應的學生編號，請聯絡體育科老師協助匯入 CORE 名單。</div>`;
-        return;
-      }
-      // 取最新的核心資料
-      const studentData = snap.docs[0].data();
-      renderStudentProfileView(studentData.studentID, 'studentProfileContent');
+      return total;
     }
 
-    // 3. 渲染學生完整個人體育檔案 (共用於學生 Dashboard 及 老師查詢結果)
-    async function renderStudentProfileView(studentID, targetElementId) {
-      const target = document.getElementById(targetElementId);
-      target.innerHTML = `<div class="spinner-border spinner-border-sm text-primary"></div> 讀取學生檔案中...`;
+    // 暫存解析結果
+    let parsedStudents = [];
+    let parsedFitness = [];
+    let parsedAch = [];
 
+    // ==========================================
+    // 1. 學生資料解析與寫入
+    // ==========================================
+    document.getElementById('btnPreviewStudents').addEventListener('click', () => {
+      const text = document.getElementById('pasteStudents').value.trim();
+      if (!text) return alert("請先貼上資料！");
+      
+      parsedStudents = [];
+      const lines = text.split('\n');
+      lines.forEach(line => {
+        const c = line.split('\t').map(s => s.trim());
+        if (c.length >= 7) {
+          parsedStudents.push({
+            studentID: c[0],
+            academicYear: c[1],
+            className: c[2],
+            classNo: num(c[3]),
+            name: c[4],
+            sex: c[5],
+            email: c[6].toLowerCase()
+          });
+        }
+      });
+
+      if (parsedStudents.length === 0) return alert("解析失敗，請確認欄位數至少為 7 欄並以 Tab 間隔！");
+
+      const previewDiv = document.getElementById('previewAreaStudents');
+      previewDiv.classList.remove('d-none');
+      previewDiv.innerHTML = `
+        <h6>預覽即將匯入 ${parsedStudents.length} 筆資料：</h6>
+        <table class="table table-sm table-bordered">
+          <thead class="table-light"><tr><th>編號</th><th>學年</th><th>班別</th><th>學號</th><th>姓名</th><th>性別</th><th>電郵</th></tr></thead>
+          <tbody>
+            ${parsedStudents.slice(0, 5).map(s => `<tr><td>${s.studentID}</td><td>${s.academicYear}</td><td>${s.className}</td><td>${s.classNo}</td><td>${s.name}</td><td>${s.sex}</td><td>${s.email}</td></tr>`).join('')}
+          </tbody>
+        </table>
+        ${parsedStudents.length > 5 ? `<small class="text-muted">...其餘 ${parsedStudents.length - 5} 筆已隱藏</small>` : ''}
+      `;
+      document.getElementById('btnUploadStudents').disabled = false;
+    });
+
+    document.getElementById('btnUploadStudents').addEventListener('click', async () => {
+      const btn = document.getElementById('btnUploadStudents');
+      btn.disabled = true;
+      btn.textContent = "寫入中...";
       try {
-        // 抓取 Core
-        const coreQuery = query(collection(db, "students_core"), where("studentID", "==", studentID));
-        const coreSnap = await getDocs(coreQuery);
-        if (coreSnap.empty) {
-          target.innerHTML = `<div class="alert alert-danger">查無學生編號 [${studentID}] 的基本資料</div>`;
-          return;
-        }
-        const info = coreSnap.docs[0].data();
-
-        // 抓取體適能測試 (PE Tests)
-        const peQuery = query(collection(db, "pe_tests"), where("studentID", "==", studentID));
-        const peSnap = await getDocs(peQuery);
-        let tests = [];
-        peSnap.forEach(d => tests.push(d.data()));
-
-        // 抓取體育成就 (Achievements)
-        const achQuery = query(collection(db, "sports_achievements"), where("studentID", "==", studentID));
-        const achSnap = await getDocs(achQuery);
-        let achs = [];
-        achSnap.forEach(d => achs.push(d.data()));
-
-        // 產生 HTML
-        const testRows = tests.map(t => `
-          <tr>
-            <td>${t.academicYear} (${t.term})</td>
-            <td><strong>${t.rulerCm}</strong> cm</td>
-            <td><strong>${t.ballToss}</strong> 次</td>
-          </tr>
-        `).join('');
-
-        const achRows = achs.map(a => `
-          <tr>
-            <td>${a.academicYear}</td>
-            <td>${a.division}</td>
-            <td>${a.competition}</td>
-            <td>${a.event}</td>
-            <td><span class="badge bg-secondary font-monospace">${a.result || '-'}</span></td>
-            <td><span class="badge bg-warning text-dark">${a.honor}</span></td>
-          </tr>
-        `).join('');
-
-        target.innerHTML = `
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="card p-3 bg-light">
-                <h6 class="border-bottom pb-2">👤 學生基本資料</h6>
-                <p class="mb-1"><strong>姓名：</strong>${info.name} (${info.gender})</p>
-                <p class="mb-1"><strong>編號：</strong>${info.studentID}</p>
-                <p class="mb-1"><strong>現讀班級：</strong>${info.className} (${info.classNo}號)</p>
-                <p class="mb-0 text-muted small"><strong>電郵：</strong>${info.email}</p>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <div class="card p-3">
-                <h6 class="border-bottom pb-2">⚡ 歷年體適能測試記錄</h6>
-                <table class="table table-sm text-center">
-                  <thead class="table-light"><tr><th>學期</th><th>抓直尺 (反應)</th><th>30秒拋接 (手眼協調)</th></tr></thead>
-                  <tbody>${testRows || '<tr><td colspan="3" class="text-muted">暫無測驗記錄</td></tr>'}</tbody>
-                </table>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="card p-3">
-                <h6 class="border-bottom pb-2">🏆 歷年校內外體育成就</h6>
-                <table class="table table-hover table-sm">
-                  <thead class="table-light"><tr><th>學年</th><th>組別</th><th>比賽名稱</th><th>項目</th><th>成績 (秒數/距離)</th><th>榮譽</th></tr></thead>
-                  <tbody>${achRows || '<tr><td colspan="6" class="text-muted">暫無獎項記錄</td></tr>'}</tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        `;
+        const count = await commitBatchInChunks(parsedStudents, (batch, s) => {
+          // 以 "學年_學生編號" 為 Doc ID 避免重覆
+          const ref = doc(db, "students_core", `${s.academicYear}_${s.studentID}`);
+          batch.set(ref, { ...s, updatedAt: serverTimestamp() }, { merge: true });
+        });
+        alert(`🎉 成功匯入/更新 ${count} 位學生資料！`);
+        document.getElementById('pasteStudents').value = '';
+        document.getElementById('previewAreaStudents').classList.add('d-none');
       } catch (err) {
-        target.innerHTML = `<div class="alert alert-danger">讀取失敗：${err.message}</div>`;
+        alert("寫入失敗: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 確認寫入 Firestore";
       }
-    }
-
-    // 4. 老師查詢事件：依「學年+班別+學號」搜尋
-    document.getElementById('btnSearchByClass').addEventListener('click', async () => {
-      const year = document.getElementById('searchYear').value.trim();
-      const className = document.getElementById('searchClass').value.trim();
-      const classNo = Number(document.getElementById('searchClassNo').value.trim());
-
-      if (!year || !className || !classNo) {
-        alert("請完整輸入 學年、班別、學號");
-        return;
-      }
-
-      const q = query(
-        collection(db, "students_core"),
-        where("academicYear", "==", year),
-        where("className", "==", className),
-        where("classNo", "==", classNo)
-      );
-      const snap = await getDocs(q);
-      if (snap.empty) {
-        document.getElementById('teacherSearchResult').innerHTML = `<div class="alert alert-warning">找不到 ${year} ${className}班 ${classNo}號 的學生資料</div>`;
-        return;
-      }
-      renderStudentProfileView(snap.docs[0].data().studentID, 'teacherSearchResult');
     });
 
-    // 老師查詢事件：依「學生編號」搜尋
-    document.getElementById('btnSearchByID').addEventListener('click', () => {
-      const studentID = document.getElementById('searchStudentID').value.trim();
-      if (!studentID) return alert("請輸入學生編號");
-      renderStudentProfileView(studentID, 'teacherSearchResult');
-    });
+    // ==========================================
+    // 2. 體適能資料解析與寫入
+    // ==========================================
+    document.getElementById('btnPreviewFitness').addEventListener('click', () => {
+      const text = document.getElementById('pasteFitness').value.trim();
+      if (!text) return alert("請先貼上資料！");
 
-    // 5. 批次匯入：CORE 資料
-    document.getElementById('btnUploadCore').addEventListener('click', async () => {
-      const raw = document.getElementById('pasteCore').value.trim();
-      if (!raw) return alert("請先貼上資料！");
-      const lines = raw.split('\n');
-      const batch = writeBatch(db);
-      let count = 0;
-
+      parsedFitness = [];
+      const lines = text.split('\n');
       lines.forEach(line => {
-        const cols = line.split('\t').map(c => c.trim());
-        if (cols.length >= 7) {
-          // 學年 | 學生編號 | 班別 | 學號 | 姓名 | 性別 | 學生電郵
-          const [year, sid, cName, cNo, name, gender, email] = cols;
-          // Document ID 設定為 "學年_學生編號"
-          const docRef = doc(db, "students_core", `${year}_${sid}`);
-          batch.set(docRef, {
-            academicYear: year,
-            studentID: sid,
-            className: cName,
-            classNo: Number(cNo),
-            name: name,
-            gender: gender,
-            email: email.toLowerCase(),
-            updatedAt: serverTimestamp()
+        const c = line.split('\t').map(s => s.trim());
+        if (c.length >= 18) {
+          parsedFitness.push({
+            recordID: c[0] || null,
+            academicYear: c[1],
+            term: c[2],
+            studentID: c[3],
+            height: num(c[4]),
+            weight: num(c[5]),
+            run9min: num(c[6]),
+            gripLeft: num(c[7]),
+            gripRight: num(c[8]),
+            sitUp: num(c[9]),
+            sitAndReach: num(c[10]),
+            shuttleRun: num(c[11]),
+            balanceOneLeg: num(c[12]),
+            ballCatch: num(c[13]),
+            longJump: num(c[14]),
+            verticalJump: num(c[15]),
+            dash30m: num(c[16]),
+            rulerDrop: num(c[17])
           });
-          count++;
         }
       });
 
-      if (count === 0) return alert("未檢測到有效資料，請確認是否以 Tab 分隔。");
-      await batch.commit();
-      alert(`成功匯入 ${count} 筆 CORE 名單！`);
-      document.getElementById('pasteCore').value = '';
+      if (parsedFitness.length === 0) return alert("解析失敗，請確認欄位數是否為完整的 18 欄！");
+
+      const previewDiv = document.getElementById('previewAreaFitness');
+      previewDiv.classList.remove('d-none');
+      previewDiv.innerHTML = `
+        <h6>預覽即將匯入 ${parsedFitness.length} 筆測驗記錄：</h6>
+        <table class="table table-sm table-bordered">
+          <thead class="table-light"><tr><th>RecordID</th><th>學年</th><th>學期</th><th>學生編號</th><th>身高</th><th>體重</th><th>仰臥起坐</th><th>折返跑</th></tr></thead>
+          <tbody>
+            ${parsedFitness.slice(0, 5).map(f => `<tr><td>${f.recordID}</td><td>${f.academicYear}</td><td>${f.term}</td><td>${f.studentID}</td><td>${f.height}</td><td>${f.weight}</td><td>${f.sitUp}</td><td>${f.shuttleRun}</td></tr>`).join('')}
+          </tbody>
+        </table>
+        ${parsedFitness.length > 5 ? `<small class="text-muted">...其餘 ${parsedFitness.length - 5} 筆已隱藏</small>` : ''}
+      `;
+      document.getElementById('btnUploadFitness').disabled = false;
     });
 
-    // 6. 批次匯入：體適能測試
-    document.getElementById('btnUploadTests').addEventListener('click', async () => {
-      const raw = document.getElementById('pasteTests').value.trim();
-      if (!raw) return alert("請先貼上資料！");
-      const lines = raw.split('\n');
-      const batch = writeBatch(db);
-      let count = 0;
+    document.getElementById('btnUploadFitness').addEventListener('click', async () => {
+      const btn = document.getElementById('btnUploadFitness');
+      btn.disabled = true;
+      btn.textContent = "寫入中...";
+      try {
+        const count = await commitBatchInChunks(parsedFitness, (batch, f) => {
+          // 若有 Record ID 則以此為 key，否則自動生成
+          const ref = f.recordID ? doc(db, "pe_tests", f.recordID) : doc(collection(db, "pe_tests"));
+          batch.set(ref, { ...f, createdAt: serverTimestamp() }, { merge: true });
+        });
+        alert(`🎉 成功寫入 ${count} 筆體適能測驗記錄！`);
+        document.getElementById('pasteFitness').value = '';
+        document.getElementById('previewAreaFitness').classList.add('d-none');
+      } catch (err) {
+        alert("寫入失敗: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 確認寫入 Firestore";
+      }
+    });
 
+    // ==========================================
+    // 3. 體育成就解析與寫入
+    // ==========================================
+    document.getElementById('btnPreviewAch').addEventListener('click', () => {
+      const text = document.getElementById('pasteAch').value.trim();
+      if (!text) return alert("請先貼上資料！");
+
+      parsedAch = [];
+      const lines = text.split('\n');
       lines.forEach(line => {
-        const cols = line.split('\t').map(c => c.trim());
-        if (cols.length >= 5) {
-          // 學年 | 學期/次別 | 學生編號 | 直尺 | 拋接球
-          const [year, term, sid, ruler, toss] = cols;
-          const newDocRef = doc(collection(db, "pe_tests"));
-          batch.set(newDocRef, {
-            academicYear: year,
-            term: term,
-            studentID: sid,
-            rulerCm: Number(ruler),
-            ballToss: Number(toss),
-            createdAt: serverTimestamp()
+        const c = line.split('\t').map(s => s.trim());
+        if (c.length >= 6) {
+          parsedAch.push({
+            recordID: c[0] || null,
+            academicYear: c[1],
+            studentID: c[2],
+            competition: c[3],
+            results: c[4],
+            honour: c[5]
           });
-          count++;
         }
       });
 
-      if (count === 0) return alert("未檢測到有效資料，請檢查格式。");
-      await batch.commit();
-      alert(`成功寫入 ${count} 筆體適能測試記錄！`);
-      document.getElementById('pasteTests').value = '';
+      if (parsedAch.length === 0) return alert("解析失敗，請確認欄位數是否為完整的 6 欄！");
+
+      const previewDiv = document.getElementById('previewAreaAch');
+      previewDiv.classList.remove('d-none');
+      previewDiv.innerHTML = `
+        <h6>預覽即將匯入 ${parsedAch.length} 筆成就記錄：</h6>
+        <table class="table table-sm table-bordered">
+          <thead class="table-light"><tr><th>RecordID</th><th>學年</th><th>學生編號</th><th>比賽名稱</th><th>成績</th><th>榮譽</th></tr></thead>
+          <tbody>
+            ${parsedAch.slice(0, 5).map(a => `<tr><td>${a.recordID}</td><td>${a.academicYear}</td><td>${a.studentID}</td><td>${a.competition}</td><td>${a.results}</td><td>${a.honour}</td></tr>`).join('')}
+          </tbody>
+        </table>
+        ${parsedAch.length > 5 ? `<small class="text-muted">...其餘 ${parsedAch.length - 5} 筆已隱藏</small>` : ''}
+      `;
+      document.getElementById('btnUploadAch').disabled = false;
     });
 
-    // 7. 批次匯入：體育成就 (含「成績」欄位)
     document.getElementById('btnUploadAch').addEventListener('click', async () => {
-      const raw = document.getElementById('pasteAch').value.trim();
-      if (!raw) return alert("請先貼上資料！");
-      const lines = raw.split('\n');
-      const batch = writeBatch(db);
-      let count = 0;
-
-      lines.forEach(line => {
-        const cols = line.split('\t').map(c => c.trim());
-        if (cols.length >= 7) {
-          // 學年 | 學生編號 | 組別 | 比賽名稱 | 項目 | 成績 | 榮譽
-          const [year, sid, division, comp, eventName, resultVal, honor] = cols;
-          const newDocRef = doc(collection(db, "sports_achievements"));
-          batch.set(newDocRef, {
-            academicYear: year,
-            studentID: sid,
-            division: division,
-            competition: comp,
-            event: eventName,
-            result: resultVal, // ⭐ 成績 (例如 11.82秒 / 4.52米)
-            honor: honor,
-            createdAt: serverTimestamp()
-          });
-          count++;
-        }
-      });
-
-      if (count === 0) return alert("未檢測到有效資料，請檢查格式。");
-      await batch.commit();
-      alert(`成功寫入 ${count} 筆體育成就記錄！`);
-      document.getElementById('pasteAch').value = '';
+      const btn = document.getElementById('btnUploadAch');
+      btn.disabled = true;
+      btn.textContent = "寫入中...";
+      try {
+        const count = await commitBatchInChunks(parsedAch, (batch, a) => {
+          const ref = a.recordID ? doc(db, "sports_achievements", a.recordID) : doc(collection(db, "sports_achievements"));
+          batch.set(ref, { ...a, createdAt: serverTimestamp() }, { merge: true });
+        });
+        alert(`🎉 成功寫入 ${count} 筆體育成就記錄！`);
+        document.getElementById('pasteAch').value = '';
+        document.getElementById('previewAreaAch').classList.add('d-none');
+      } catch (err) {
+        alert("寫入失敗: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 確認寫入 Firestore";
+      }
     });
   </script>
 
-  <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
