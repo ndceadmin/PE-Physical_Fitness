@@ -123,6 +123,13 @@
       box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
     }
 
+    .bmi-stat-card {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
     @media print {
       body {
         background: #ffffff !important;
@@ -156,7 +163,7 @@
         background: #ffffff !important;
         color: #000000 !important;
       }
-      .app-card {
+      .app-card, .bmi-stat-card {
         background: #ffffff !important;
         border-color: #cbd5e1 !important;
         color: #000000 !important;
@@ -174,7 +181,7 @@
   <div id="view-loading" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="text-center">
       <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;"></div>
-      <p class="text-slate-400 mt-3 small fw-bold">正在載入精準分齡常模數據庫中...</p>
+      <p class="text-slate-400 mt-3 small fw-bold">正在載入獻主會聖母院書院體適能常模系統...</p>
     </div>
   </div>
 
@@ -187,7 +194,7 @@
         </div>
       </div>
       <h3 class="fw-bold mb-1 text-white">體育科體適能數據系統</h3>
-      <p class="text-slate-400 small mb-4">新會商會中學 (NDC) ｜ 實歲精準分齡常模分析平台</p>
+      <p class="text-slate-400 small mb-4">獻主會聖母院書院 (NDC) ｜ 實歲精準分齡常模分析平台</p>
 
       <div class="bg-slate-900 border border-slate-700 rounded-3 p-3 text-start small mb-4">
         <div class="fw-bold text-info mb-1">
@@ -218,7 +225,7 @@
             <i class="fa-solid fa-heart-pulse"></i>
           </div>
           <div>
-            <span class="fw-bold fs-6 d-block text-white leading-none">體育科數據管理系統</span>
+            <span class="fw-bold fs-6 d-block text-white leading-none">獻主會聖母院書院 體適能管理系統</span>
             <small class="text-slate-400" style="font-size: 11px;">Notre Dame College ｜ 依據 DOB 與測試日之實歲精確常模系統</small>
           </div>
         </div>
@@ -246,7 +253,7 @@
               <i class="bi bi-calendar-check me-1"></i> 實歲精準分齡檢測
             </span>
             <span class="small text-slate-300">
-              DEMO 包含「陳大文 (DOB: 15/10/2012)」，於 2024-10 (12歲) 及 2025-11 (13歲) 測驗，<b>系統自動依測驗日實歲調用專屬常模</b>。
+              DEMO 包含「陳大文 (DOB: 15/10/2012)」，於 2024-10 (12歲) 及 2025-11 (13歲) 測驗，<b>系統自動依測驗日實歲調用專屬常模並即時計算 BMI</b>。
             </span>
           </div>
           <div class="d-flex gap-2">
@@ -279,7 +286,7 @@
             <div class="app-card p-4 mb-4">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="fw-bold text-info mb-0"><i class="bi bi-funnel-fill me-1"></i> 快速檢索學生</h6>
-                <small class="text-slate-400">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 2A 班 / 99 號</b> 進行實歲常模對照</small>
+                <small class="text-slate-400">提示：若已注入 DEMO，可搜尋 <b>2025-2026 / 2A 班 / 99 號</b> 進行實歲常模與 BMI 對照</small>
               </div>
               <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-3">
@@ -324,7 +331,7 @@
 
                   <div>
                     <button class="btn btn-info btn-sm fw-bold px-3 py-2 shadow-sm d-flex align-items-center gap-2 rounded-3 text-dark" id="btnOpenStudentReportModal" style="background-color: #38bdf8; border: none;">
-                      <i class="fa-solid fa-chart-pie"></i> 📄 檢視學生個人分齡常模報告 (11項星形圖)
+                      <i class="fa-solid fa-chart-pie"></i> 📄 檢視學生個人分齡常模報告 (含BMI與11項星形圖)
                     </button>
                   </div>
                 </div>
@@ -443,7 +450,7 @@
       <div class="modal-content border-0 rounded-4 shadow-lg text-white" style="background-color: #0b1120;">
         <div class="modal-header border-bottom border-slate-800 px-4 py-3" style="background-color: #0f172a;">
           <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2" id="modalReportTitle">
-            <i class="fa-solid fa-person-running text-info"></i> 學生 11 項能力實歲常模檔案與改善處方報告書
+            <i class="fa-solid fa-person-running text-info"></i> 獻主會聖母院書院 體能常模與處方報告書
           </h5>
           <div class="d-flex gap-2">
             <button class="btn btn-outline-light btn-sm fw-bold px-3 border-slate-700" onclick="window.print()">
@@ -605,7 +612,7 @@
       strength: { name: '最大肌力', test: '手握力', icon: 'fa-hand-back-fist', action: '毛巾擰乾訓練 / 懸垂提握', guide: '雙手緊握濕毛巾用力擰乾維持 10 秒（做 5 組）；或在單槓上做自重靜態懸掛 15-20 秒。', freq: '每週 3 次，每次 5-8 分鐘' },
       endurance: { name: '肌耐力', test: '1分鐘仰臥起坐', icon: 'fa-cubes-stacked', action: '核心三部曲（棒式 + 死蟲式 + 臀橋）', guide: '棒式支撐 30 秒 + 死蟲式左右交替各 10 次 + 臀橋 15 次，組間休息 30 秒，進行 3 循環。', freq: '每週 4 次 / 睡前練習' },
       flexibility: { name: '柔軟度', test: '坐地前伸', icon: 'fa-person-booth', action: '毛巾輔助坐姿前伸牽拉', guide: '坐姿雙腿伸直，毛巾套住腳底，背部挺直緩慢向前牽拉至膕繩肌緊繃，靜態停留 20 秒，做 4 組。', freq: '每天運動後或洗澡後' },
-      bodyComp: { name: '身體組成', test: 'BMI 理想度', icon: 'fa-weight-scale', action: '微運動融入生活與均衡飲食', guide: '偏重者：少喝含糖飲料，每天快走 20 分鐘；偏輕者：每餐補充一隻蛋或一杯奶，配合徒手深蹲。', freq: '日常生活規律養成' },
+      bodyComp: { name: '身體組成 (BMI)', test: 'BMI 理想度', icon: 'fa-weight-scale', action: '微運動融入生活與均衡飲食', guide: '偏重者：少喝含糖飲料，每天快走 20 分鐘；偏輕者：每餐補充一隻蛋或一杯奶，配合徒手深蹲。', freq: '日常生活規律養成' },
       agility: { name: '敏捷性', test: '4x10m折返跑', icon: 'fa-person-running', action: '地磚十字快速跳 / 步法微調', guide: '以客廳地磚為中心，前腳掌著地快速向「前後左右」跳躍 20 秒，休息 20 秒，做 4 組。', freq: '每週 3 次熱身時進行' },
       balance: { name: '平衡力', test: '閉目單腳站', icon: 'fa-scale-balanced', action: '刷牙單腳站 / 閉目金雞獨立', guide: '早晚刷牙時各單腳站立 45 秒；熟練後嘗試閉眼站立 15 秒或站在摺疊毛巾上練習。', freq: '每天早晚各 1 次' },
       coordination: { name: '協調性', test: '30秒拋接球', icon: 'fa-baseball', action: '單/雙網球對牆交叉拋接', guide: '距離牆面 1.5 米，右手拋球左手接，再換左手拋右手接，練習連續 30 次不落地。', freq: '每週 3 次，每次 5 分鐘' },
@@ -619,7 +626,7 @@
       { key: 'strength', name: '最大肌力', test: '手握力', unit: 'kg' },
       { key: 'endurance', name: '肌耐力', test: '仰臥起坐', unit: '次' },
       { key: 'flexibility', name: '柔軟度', test: '坐地前伸', unit: 'cm' },
-      { key: 'bodyComp', name: '身體組成', test: 'BMI', unit: '' },
+      { key: 'bodyComp', name: '身體組成(BMI)', test: 'BMI', unit: 'kg/m²' },
       { key: 'agility', name: '敏捷性', test: '4x10m折返', unit: '秒' },
       { key: 'balance', name: '平衡力', test: '閉目單腳站', unit: '秒' },
       { key: 'coordination', name: '協調性', test: '30秒拋接球', unit: '次' },
@@ -627,6 +634,22 @@
       { key: 'speed', name: '速度', test: '30米衝刺', unit: '秒' },
       { key: 'reaction', name: '反應時間', test: '抓直尺', unit: 'cm' }
     ];
+
+    // BMI 評級分析器 (香港青少年通用標準)
+    function getBMIEvaluation(bmi) {
+      if (bmi === null || bmi === undefined || isNaN(bmi)) {
+        return { text: '未提供身高體重', badgeClass: 'bg-secondary', status: '無資料' };
+      }
+      if (bmi < 18.5) {
+        return { text: '體重偏輕', badgeClass: 'bg-warning text-dark', status: '偏輕 (Underweight)' };
+      } else if (bmi <= 22.9) {
+        return { text: '體重適中 (正常)', badgeClass: 'bg-success text-white', status: '適中 (Normal)' };
+      } else if (bmi <= 24.9) {
+        return { text: '過重邊緣', badgeClass: 'bg-warning text-dark', status: '過重 (Overweight)' };
+      } else {
+        return { text: '體重超重 / 肥胖', badgeClass: 'bg-danger text-white', status: '肥胖 (Obese)' };
+      }
+    }
 
     // 🗓️ 日期解析器 (支援 dd/mm/yyyy, dd/mm/yy, yyyy-mm-dd)
     function parseCustomDate(str) {
@@ -639,12 +662,10 @@
       if (parts.length === 3) {
         let day, month, year;
         if (parts[0].length === 4) {
-          // yyyy-mm-dd
           year = parseInt(parts[0], 10);
           month = parseInt(parts[1], 10) - 1;
           day = parseInt(parts[2], 10);
         } else {
-          // dd/mm/yy or dd/mm/yyyy
           day = parseInt(parts[0], 10);
           month = parseInt(parts[1], 10) - 1;
           year = parseInt(parts[2], 10);
@@ -676,18 +697,12 @@
     // 取得該次測驗之年齡與年級標籤
     function getRecordAgeAndForm(student, record) {
       let calcAge = null;
-      
-      // 1. 優先以 DOB + 測試日期 精確計算
       if (student.dob && record.testDate) {
         calcAge = calculateExactAge(student.dob, record.testDate);
       }
-      
-      // 2. 其次使用記錄自帶 age 欄位
       if (calcAge === null && record.age) {
         calcAge = record.age;
       }
-
-      // 3. 容錯：若均無日期則依學年班級推算
       if (calcAge === null) {
         const cls = (student.className || '').trim().toUpperCase();
         let baseGrade = 1;
@@ -799,7 +814,7 @@
 
       const email = (user.email || "").toLowerCase().trim();
       if (!email.endsWith("@ndc.edu.hk")) {
-        alert(`❌ 存取拒絕！\n\n檢測到帳號為：${email}\n本系統僅限 @ndc.edu.hk 學校帳戶登入。`);
+        alert(`❌ 存取拒絕！\n\n檢測到帳號為：${email}\n本系統僅限獻主會聖母院書院 @ndc.edu.hk 學校帳戶登入。`);
         await signOut(auth);
         return;
       }
@@ -873,7 +888,7 @@
         document.getElementById('searchClass').value = "2A";
         document.getElementById('searchClassNo').value = "99";
 
-        alert("✅ DEMO 測試資料注入成功！\n\n已填入【陳大文 (DOB: 15/10/2012)】。\n點擊「搜尋學生檔案」進入報告，即可檢驗系統依據「測試日期 - 出生日期」所計算的實歲常模切換！");
+        alert("✅ DEMO 測試資料注入成功！\n\n已填入【陳大文 (DOB: 15/10/2012)】。\n點擊「搜尋學生檔案」進入報告，即可檢視包含身高、體重、BMI 評級及實歲常模星形圖！");
       } catch (err) {
         alert("❌ 注入 DEMO 失敗：" + err.message);
       } finally {
@@ -920,7 +935,7 @@
     });
 
     // ========================================================
-    // 🎨 完整 11 項【分齡常模雷達圖報告】核心渲染
+    // 🎨 完整 11 項【分齡常模雷達圖 + 身體形態 BMI 專區】核心渲染
     // ========================================================
     let activeRadarChartInstance = null;
 
@@ -945,6 +960,7 @@
       }).join('');
 
       container.innerHTML = `
+        <!-- 學生個人資訊頂部欄 -->
         <div class="app-card p-4 mb-4" style="background: #0f172a; border-color: #1e293b;">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
             <div class="d-flex align-items-center gap-3">
@@ -959,6 +975,7 @@
                   ${student.isDemo ? '<span class="badge bg-warning text-dark">DEMO</span>' : ''}
                 </div>
                 <div class="text-slate-400 small mt-1">
+                  學校：<span class="text-white fw-bold me-2">獻主會聖母院書院</span> ｜
                   學籍編號：<span class="text-slate-200 font-monospace">${student.studentID}</span> ｜ 
                   出生日期：<span class="text-info font-monospace">${student.dob || '未提供'}</span> ｜ 
                   電郵：<span class="text-slate-300">${student.email}</span>
@@ -970,6 +987,40 @@
                 <span class="d-inline-block rounded-circle bg-emerald-400 me-1" style="width: 8px; height: 8px; background-color: #34d399;"></span>
                 5.0 分 = 全港同性別實歲常模平均線 (P50)
               </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🌟 身體形態指標與 BMI 專屬展示區塊 🌟 -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="bmi-stat-card">
+              <div class="text-slate-400 small fw-bold mb-1"><i class="fa-solid fa-ruler-vertical text-info me-1"></i> 實測身高</div>
+              <div class="d-flex align-items-baseline gap-1">
+                <h4 class="fw-bold text-white mb-0" id="dispMetricHeight-${containerId}">--</h4>
+                <small class="text-slate-400">cm</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="bmi-stat-card">
+              <div class="text-slate-400 small fw-bold mb-1"><i class="fa-solid fa-weight-scale text-warning me-1"></i> 實測體重</div>
+              <div class="d-flex align-items-baseline gap-1">
+                <h4 class="fw-bold text-white mb-0" id="dispMetricWeight-${containerId}">--</h4>
+                <small class="text-slate-400">kg</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="bmi-stat-card border-info" style="background: #082f49; border-color: #0284c7 !important;">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <div class="text-info small fw-bold"><i class="fa-solid fa-chart-simple me-1"></i> 身體質量指數 (BMI)</div>
+                <span id="dispBMIBadge-${containerId}" class="badge bg-success">計算中</span>
+              </div>
+              <div class="d-flex align-items-baseline gap-2">
+                <h3 class="fw-bold text-white mb-0 font-monospace" id="dispMetricBMI-${containerId}">--</h3>
+                <span class="text-slate-300 small">kg/m² (全港實歲中位數: <span id="dispNormBMI-${containerId}" class="text-info fw-bold">--</span> kg/m²)</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1109,10 +1160,37 @@
       const groupBadgeEl = document.getElementById(`normGroupBadge-${containerId}`);
       if (groupBadgeEl) groupBadgeEl.textContent = `${sexLabel}生 ${testAge}歲 香港常模平均 (P50)`;
 
+      // 計算 BMI 與身體形態
       let bmi = null;
       if (record.height && record.weight) {
         const h_m = record.height / 100;
         bmi = Number((record.weight / (h_m * h_m)).toFixed(1));
+      }
+
+      // 更新頂部 BMI 專屬展示卡片
+      const heightEl = document.getElementById(`dispMetricHeight-${containerId}`);
+      const weightEl = document.getElementById(`dispMetricWeight-${containerId}`);
+      const bmiEl = document.getElementById(`dispMetricBMI-${containerId}`);
+      const bmiBadgeEl = document.getElementById(`dispBMIBadge-${containerId}`);
+      const normBmiEl = document.getElementById(`dispNormBMI-${containerId}`);
+
+      if (heightEl) heightEl.textContent = record.height ? record.height.toFixed(1) : '--';
+      if (weightEl) weightEl.textContent = record.weight ? record.weight.toFixed(1) : '--';
+      if (normBmiEl) normBmiEl.textContent = norms.bodyComp.mean.toFixed(1);
+
+      if (bmi !== null) {
+        if (bmiEl) bmiEl.textContent = bmi.toFixed(1);
+        const evalRes = getBMIEvaluation(bmi);
+        if (bmiBadgeEl) {
+          bmiBadgeEl.className = `badge ${evalRes.badgeClass} fw-bold px-2 py-1`;
+          bmiBadgeEl.textContent = evalRes.status;
+        }
+      } else {
+        if (bmiEl) bmiEl.textContent = '--';
+        if (bmiBadgeEl) {
+          bmiBadgeEl.className = 'badge bg-secondary';
+          bmiBadgeEl.textContent = '無資料';
+        }
       }
 
       let maxGrip = null;
@@ -1153,7 +1231,7 @@
             <div class="d-flex justify-content-between align-items-center mb-1">
               <div>
                 <span class="small fw-bold text-white">${d.name}</span>
-                <span class="text-slate-400 font-monospace ms-1" style="font-size: 11px;">實測: ${raw}${unit} (全港${testAge}歲均值: ${normMean}${unit})</span>
+                <span class="text-slate-400 font-monospace ms-1" style="font-size: 11px;">實測: ${raw} ${unit} (全港${testAge}歲均值: ${normMean} ${unit})</span>
               </div>
               <span class="fw-bold ${sc >= 5.0 ? 'text-info' : 'text-danger'}" style="font-size: 0.85rem;">
                 ${sc.toFixed(1)} <small class="text-slate-500 font-normal">/ 10</small>
